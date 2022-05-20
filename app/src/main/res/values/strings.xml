@@ -1,3 +1,31 @@
 <resources>
     <string name="app_name">Gayatri Ladies Wears</string>
+    <string name="login_text">Login</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="signup_text">Signup</string>
+    <string name="phonenumber_hint">Phone number</string>
+    <string name="get_otp_text">Get OTP</string>
+    <string name="dont_have_an_account">Don\'t have any account?</string>
+    <string name="otp_hint">OTP</string>
+    <string name="submit_btn">Submit</string>
+    <string name="lets_go_btn">Let\'s go...</string>
+    <string name="passward_hint">Passward</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="full_name_hint">Full Name</string>
+    <string name="create_passward_hint">Create Passward</string>
+    <string name="confirm_passward_hint">Confirm Passward</string>
+    <string name="address_hint">Address</string>
+    <string name="pincode_hint">Pin Code</string>
+    <string name="district_hint">District</string>
+    <string name="state_hint">State</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>

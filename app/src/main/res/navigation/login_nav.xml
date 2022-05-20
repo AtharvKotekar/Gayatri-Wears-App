@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_nav"
+    app:startDestination="@id/login">
+
+    <fragment
+        android:id="@+id/login"
+        android:name="com.gayatriladieswears.app.Login"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_login_to_loginPhoneNumberFragment"
+            app:destination="@id/loginPhoneNumberFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_login_to_signupFragment"
+            app:destination="@id/signupFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginPhoneNumberFragment"
+        android:name="com.gayatriladieswears.app.LoginPhoneNumberFragment"
+        android:label="fragment_login_phone_number"
+        tools:layout="@layout/fragment_login_phone_number" >
+        <action
+            android:id="@+id/action_loginPhoneNumberFragment_to_loginOtpFragment"
+            app:destination="@id/loginOtpFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_loginPhoneNumberFragment_to_signupFragment"
+            app:destination="@id/signupFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/login" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginOtpFragment"
+        android:name="com.gayatriladieswears.app.LoginOtpFragment"
+        android:label="fragment_login_otp"
+        tools:layout="@layout/fragment_login_otp" >
+        <action
+            android:id="@+id/action_loginOtpFragment_to_loginPasswardFragment"
+            app:destination="@id/loginPasswardFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginPasswardFragment"
+        android:name="com.gayatriladieswears.app.LoginPasswardFragment"
+        android:label="fragment_login_passward"
+        tools:layout="@layout/fragment_login_passward" />
+    <fragment
+        android:id="@+id/signupFragment"
+        android:name="com.gayatriladieswears.app.SignupFragment"
+        android:label="fragment_signup"
+        tools:layout="@layout/fragment_signup" >
+        <action
+            android:id="@+id/action_signupFragment_to_loginPhoneNumberFragment"
+            app:destination="@id/loginPhoneNumberFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/login" />
+        <action
+            android:id="@+id/action_signupFragment_to_signupOtpFragment"
+            app:destination="@id/signupOtpFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/signupOtpFragment"
+        android:name="com.gayatriladieswears.app.SignupOtpFragment"
+        android:label="SignupOtpFragment" >
+        <action
+            android:id="@+id/action_signupOtpFragment_to_signupAddressFragment"
+            app:destination="@id/signupAddressFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/signupAddressFragment"
+        android:name="com.gayatriladieswears.app.SignupAddressFragment"
+        android:label="SignupAddressFragment" />
+</navigation>
