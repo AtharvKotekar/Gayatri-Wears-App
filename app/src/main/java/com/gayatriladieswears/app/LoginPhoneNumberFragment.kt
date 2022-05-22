@@ -40,6 +40,9 @@ class LoginPhoneNumberFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         bundle = Bundle()
 
+
+
+
         binding.getOtpBtn.setOnClickListener {
             if (binding.editTextPhoneNumberLogin.text.toString() == "") {
                 binding.editTextPhoneNumberLogin.hint = "Please Enter Your Phonenumber"
@@ -72,6 +75,7 @@ class LoginPhoneNumberFragment : Fragment() {
             override fun onVerificationFailed(e: FirebaseException) {
                 Log.i(TAG, "onVerificationFailed: Oppps")
                 Toast.makeText(context, "Failed", Toast.LENGTH_LONG).show()
+                binding.progressBar.visibility = View.GONE
             }
 
             override fun onCodeSent(
@@ -85,11 +89,9 @@ class LoginPhoneNumberFragment : Fragment() {
                 Log.d("TAG","onCodeSent:$verificationId")
                 resendToken = token
                 bundle.putString("id", storedVerificationId)
-                findNavController().navigate(R.id.action_loginPhoneNumberFragment_to_loginOtpFragment)
+                findNavController().navigate(R.id.action_loginPhoneNumberFragment_to_loginOtpFragment,bundle)
+                binding.progressBar.visibility = View.GONE
 
-//                var intent = Intent(applicationContext, Verify::class.java)
-//                intent.putExtra("storedVerificationId",storedVerificationId)
-//                startActivity(intent)
             }
         }
 
@@ -100,14 +102,9 @@ class LoginPhoneNumberFragment : Fragment() {
     }
 
 
-
-
-
-
-
     fun login(phoneNumber: String) {
         var number = phoneNumber.trim()
-
+        binding.progressBar.visibility = View.VISIBLE
         if (!number.isEmpty()) {
             number = "+91$number"
             Log.i(TAG, "login: Getting otp")

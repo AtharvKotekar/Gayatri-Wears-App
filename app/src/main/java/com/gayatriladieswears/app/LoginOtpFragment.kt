@@ -22,25 +22,16 @@ class LoginOtpFragment : Fragment() {
     private lateinit var storedVerificationId:String
     private lateinit var otpGiven: String
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): ConstraintLayout {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentLoginOtpBinding.inflate(inflater, container, false)
 
         auth = FirebaseAuth.getInstance()
-        var currentUser = auth.currentUser
+
         storedVerificationId = arguments?.getString("id").toString()
         otpGiven = binding.editTextOtpLogin.text.toString()
 
 
 
-            if (currentUser == null) {
-                requireActivity().run {
-                    requireActivity().run {
-                        val intent = Intent(this, HomeActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }
-                }
-            }
 
 
 
@@ -52,7 +43,7 @@ class LoginOtpFragment : Fragment() {
                     vibratePhone()
 
                 } else {
-                    verify(otpGiven)
+                    verify()
                 }
             }
 
@@ -60,16 +51,12 @@ class LoginOtpFragment : Fragment() {
 
     }
 
-    fun verify(otpGiven:String){
-        var otp=otpGiven.trim()
-        if(!otp.isEmpty()){
+    fun verify(){
             Toast.makeText(context, "Getting Otp", Toast.LENGTH_SHORT).show()
             val credential : PhoneAuthCredential = PhoneAuthProvider.getCredential(
-                storedVerificationId, otp)
+                storedVerificationId, binding.editTextOtpLogin.text.toString())
             signInWithPhoneAuthCredential(credential)
-        }else{
-            Toast.makeText(context,"Enter OTP", Toast.LENGTH_SHORT).show()
-        }
+
     }
 
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
