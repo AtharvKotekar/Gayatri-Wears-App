@@ -17,7 +17,14 @@ class SignupOtpFragment : Fragment() {
         binding = FragmentSignupOtpBinding.inflate(inflater,container,false)
 
         binding.submitBtnSignup.setOnClickListener {
-            findNavController().navigate(R.id.action_signupOtpFragment_to_signupAddressFragment)
+            if(binding.editTextOtpSignup.text.toString() == ""){
+                binding.editTextOtpSignup.hint = "Please Enter OTP"
+                binding.editTextOtpSignup.setHintTextColor(resources.getColor(R.color.red))
+                vibratePhone()
+            }
+            else {
+                findNavController().navigate(R.id.action_signupOtpFragment_to_signupAddressFragment)
+            }
         }
 
         return binding.root

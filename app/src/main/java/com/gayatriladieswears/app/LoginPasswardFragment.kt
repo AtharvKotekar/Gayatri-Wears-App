@@ -16,11 +16,19 @@ class LoginPasswardFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentLoginPasswardBinding.inflate(inflater,container,false)
 
+
+
         binding.letsGoBtn.setOnClickListener {
-            requireActivity().run{
-                val intent = Intent(this, HomeActivity::class.java)
-                startActivity(intent)
-                finish()
+            if(binding.editTextPasswordLogin.text.toString() == ""){
+                binding.editTextPasswordLogin.hint = "Please Enter Your Password"
+                binding.editTextPasswordLogin.setHintTextColor(resources.getColor(R.color.red))
+                vibratePhone()
+            }else {
+                requireActivity().run {
+                    val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
             }
         }
 

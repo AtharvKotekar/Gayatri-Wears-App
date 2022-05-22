@@ -20,7 +20,38 @@ class SignupFragment : Fragment() {
         }
 
         binding.getOtpBtnSignup.setOnClickListener {
-            findNavController().navigate(R.id.action_signupFragment_to_signupOtpFragment)
+            if(binding.editTextFullNameSignup.text.toString() == ""){
+                binding.editTextFullNameSignup.hint = "Please Enter Your Fullname"
+                binding.editTextFullNameSignup.setHintTextColor(resources.getColor(R.color.red))
+                vibratePhone()
+            }else{
+                if (binding.editTextPhonenumberSignup.text.toString() == ""){
+                    binding.editTextPhonenumberSignup.hint = "Please Enter Your Phonenumber"
+                    binding.editTextPhonenumberSignup.setHintTextColor(resources.getColor(R.color.red))
+                    vibratePhone()
+                }else{
+                    if(binding.editTextCreatePasswardSignup.text.toString() == ""){
+                        binding.editTextCreatePasswardSignup.hint = "Please Create A Password"
+                        binding.editTextCreatePasswardSignup.setHintTextColor(resources.getColor(R.color.red))
+                        vibratePhone()
+                    }else{
+                        if(binding.editTextConfirmPasswardSignup.text.toString() == ""){
+                            binding.editTextConfirmPasswardSignup.hint = "Please Confirm Your Password"
+                            binding.editTextConfirmPasswardSignup.setHintTextColor(resources.getColor(R.color.red))
+                            vibratePhone()
+                        }else{
+                            findNavController().navigate(R.id.action_signupFragment_to_signupOtpFragment)
+                        }
+                    }
+                }
+            }
+
+
+
+
+
+
+
         }
 
         return binding.root

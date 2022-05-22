@@ -31,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <EditText
-        android:id="@+id/editTextAddress"
+        android:id="@+id/editTextAddressSignup"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -52,7 +52,7 @@
 
 
     <EditText
-        android:id="@+id/editTextPincode"
+        android:id="@+id/editTextPincodeSignup"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -69,10 +69,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAddress" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextAddressSignup" />
 
     <EditText
-        android:id="@+id/editTextDistrict"
+        android:id="@+id/editTextDistrictSignup"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -89,10 +89,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPincode" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextPincodeSignup" />
 
     <EditText
-        android:id="@+id/editTextState"
+        android:id="@+id/editTextStateSignup"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -109,7 +109,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDistrict" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextDistrictSignup" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/lets_go_btn_signup"
@@ -127,7 +127,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextState" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextStateSignup" />
 
     <ImageView
         android:id="@+id/imageView6"

@@ -19,7 +19,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.GayatriLadiesWears.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.GayatriLadiesWears.AppBarOverlay" parent="Theme.MaterialComponents.DayNight.NoActionBar" />
 
-    <style name="Theme.GayatriLadiesWears.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.GayatriLadiesWears.PopupOverlay" parent="Theme.MaterialComponents.DayNight.NoActionBar" />
 </resources>

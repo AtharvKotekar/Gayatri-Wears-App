@@ -16,11 +16,42 @@ class SignupAddressFragment : Fragment() {
         binding = FragmentSignupAddressBinding.inflate(inflater,container,false)
 
         binding.letsGoBtnSignup.setOnClickListener {
-            requireActivity().run{
-                val intent = Intent(this, HomeActivity::class.java)
-                startActivity(intent)
-                finish()
+
+            if(binding.editTextAddressSignup.text.toString() == ""){
+                binding.editTextAddressSignup.hint = "Please Enter Address"
+                binding.editTextAddressSignup.setHintTextColor(resources.getColor(R.color.red))
+                vibratePhone()
+            }else{
+                if(binding.editTextPincodeSignup.text.toString() == ""){
+                    binding.editTextPincodeSignup.hint = "Please Enter Pincode"
+                    binding.editTextPincodeSignup.setHintTextColor(resources.getColor(R.color.red))
+                    vibratePhone()
+                }else{
+                    if(binding.editTextDistrictSignup.text.toString() == ""){
+                        binding.editTextDistrictSignup.hint = "Please Enter District"
+                        binding.editTextDistrictSignup.setHintTextColor(resources.getColor(R.color.red))
+                        vibratePhone()
+                    }else{
+                        if(binding.editTextStateSignup.text.toString() == ""){
+                            binding.editTextStateSignup.hint = "Please Enter State"
+                            binding.editTextStateSignup.setHintTextColor(resources.getColor(R.color.red))
+                            vibratePhone()
+
+                        }else{
+                            requireActivity().run{
+                                val intent = Intent(this, HomeActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            }
+                        }
+                    }
+                }
             }
+
+
+
+
+
         }
 
         return binding.root

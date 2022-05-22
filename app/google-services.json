@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "896168280622",
+    "project_id": "gayatri-ladies-wears",
+    "storage_bucket": "gayatri-ladies-wears.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:896168280622:android:70c7461a19cfb198b9d5bf",
+        "android_client_info": {
+          "package_name": "com.gayatriladieswears.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "896168280622-7mjkurunpfmmtgrn22iqtfcjigbjcqcf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gayatriladieswears.app",
+            "certificate_hash": "735b9ea0fd9852a547727a80413e9a01e8050627"
+          }
+        },
+        {
+          "client_id": "896168280622-lcmaptja7p1fj4hm1s4i6u3o67h0f8m7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcOKRoFSbFVuLx16O6GNqEnBDnblYQsPI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "896168280622-lcmaptja7p1fj4hm1s4i6u3o67h0f8m7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

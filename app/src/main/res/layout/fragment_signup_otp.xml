@@ -31,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <EditText
-        android:id="@+id/editTextOtp"
+        android:id="@+id/editTextOtpSignup"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -65,7 +65,7 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextOtp"
+        app:layout_constraintTop_toBottomOf="@+id/editTextOtpSignup"
         />
 
     <ImageView
