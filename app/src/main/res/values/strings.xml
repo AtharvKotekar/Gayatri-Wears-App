@@ -28,4 +28,23 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="discover">Discover</string>
+    <string name="explore_our_top_categories">Explore Our Top <font color='#1D1D1F'>Categories</font></string>
+    <string name="search_bar_hint">Search for products</string>
+    <string name="spolight_title"><font color='#F5F5F7'>Spotlight On.</font> Take a look at what\'s new right now.</string>
+    <string name="shop_size">Shop by <font color='#1D1D1F'>Size</font></string>
+    <string name="tradition_thought">Art Without  <font color='#1D1D1F'>Tradition</font> Looks Like A Boat Without Beam.</string>
+    <string name="tradition">Traditional Wears</string>
+    <string name="fabric_thought">Only an excellent <font color='#F5F5F7'>fabric</font> can originate an excellent fashion.</string>
+    <string name="shop_fabric">Shop By Fabric</string>
+    <string name="new_collection">New Collections</string>
+    <string name="shop_color">Shop By Colors</string>
+    <string name="color_thought"><font color='#F5F5F7'>Color</font> possesses a language without words.</string>
+    <string name="shop_more">Shop More</string>
+    <string name="deal_thought">The real <font color='#1D1D1F'>deal</font> is always going to win in the end.</string>
+    <string name="fashion_thought"><font color='#1D1D1F'>Fashion </font>is like eating you shouldn\'t stick to same menu.</string>
+    <string name="deal_shop">Best Deals</string>
+    <string name="price_high_to_low">Price - High to Low</string>
+    <string name="price_low_to_high">Price - Low to High</string>
+    <string name="discount">Discount</string>
 </resources>

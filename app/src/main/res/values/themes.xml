@@ -22,4 +22,15 @@
     <style name="Theme.GayatriLadiesWears.AppBarOverlay" parent="Theme.MaterialComponents.DayNight.NoActionBar" />
 
     <style name="Theme.GayatriLadiesWears.PopupOverlay" parent="Theme.MaterialComponents.DayNight.NoActionBar" />
+
+    <style name="ProgressBarTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorAccent">@color/pink</item>
+    </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@animator/slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@animator/slide_out_bottom</item>
+    </style>
+
+
 </resources>

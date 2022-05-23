@@ -1,13 +1,14 @@
 {
   "project_info": {
     "project_number": "896168280622",
+    "firebase_url": "https://gayatri-ladies-wears-default-rtdb.firebaseio.com",
     "project_id": "gayatri-ladies-wears",
     "storage_bucket": "gayatri-ladies-wears.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:896168280622:android:70c7461a19cfb198b9d5bf",
+        "mobilesdk_app_id": "1:896168280622:android:2633b04327554c12b9d5bf",
         "android_client_info": {
           "package_name": "com.gayatriladieswears.app"
         }

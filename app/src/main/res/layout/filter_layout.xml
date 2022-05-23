@@ -1,0 +1,1353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    style="android.R.style.Theme_Material_Light_NoActionBar_Fullscreen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/offWhite">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:elevation="@dimen/cardview_compat_inset_shadow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_close_24" />
+
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Filter"
+            android:textColor="@color/pink"
+            android:textSize="20sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/close"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <ScrollView
+        android:id="@+id/scrollView3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/offWhite2"
+        app:layout_constraintBottom_toTopOf="@+id/filter_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/offWhite"
+            android:paddingBottom="60dp">
+
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Colors"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <CheckBox
+                android:id="@+id/pink_checkbox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="170dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:bufferType="editable"
+                android:button="?android:attr/listChoiceIndicatorMultiple"
+                android:buttonTint="@color/black"
+                android:drawableLeft="@drawable/ic_baseline_circle_24"
+                android:drawablePadding="20dp"
+                android:drawableTint="@color/pink"
+                android:fontFamily="@font/roboto_light"
+                android:layoutDirection="rtl"
+                android:text="Pink"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView20" />
+
+
+            <CheckBox
+                android:id="@+id/blue_checkbox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="170dp"
+                android:layout_marginEnd="32dp"
+                android:bufferType="editable"
+                android:button="?android:attr/listChoiceIndicatorMultiple"
+                android:buttonTint="@color/black"
+                android:drawableLeft="@drawable/ic_baseline_circle_24"
+                android:drawablePadding="20dp"
+                android:drawableTint="@android:color/holo_blue_dark"
+                android:fontFamily="@font/roboto_light"
+                android:layoutDirection="rtl"
+                android:text="Blue"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/pink_checkbox" />
+
+            <CheckBox
+                android:id="@+id/green_checkbox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="170dp"
+                android:layout_marginEnd="32dp"
+                android:bufferType="editable"
+                android:button="?android:attr/listChoiceIndicatorMultiple"
+                android:buttonTint="@color/black"
+                android:drawableLeft="@drawable/ic_baseline_circle_24"
+                android:drawablePadding="20dp"
+                android:drawableTint="@android:color/holo_green_dark"
+                android:fontFamily="@font/roboto_light"
+                android:layoutDirection="rtl"
+                android:text="Green"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/blue_checkbox" />
+
+            <CheckBox
+                android:id="@+id/black_checkbox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="170dp"
+                android:layout_marginEnd="32dp"
+                android:bufferType="editable"
+                android:button="?android:attr/listChoiceIndicatorMultiple"
+                android:buttonTint="@color/black"
+                android:drawableLeft="@drawable/ic_baseline_circle_24"
+                android:drawablePadding="20dp"
+                android:drawableTint="@android:color/black"
+                android:fontFamily="@font/roboto_light"
+                android:layoutDirection="rtl"
+                android:text="Black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/green_checkbox" />
+
+            <CheckBox
+                android:id="@+id/yellow_checkbox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="170dp"
+                android:layout_marginEnd="32dp"
+                android:bufferType="editable"
+                android:button="?android:attr/listChoiceIndicatorMultiple"
+                android:buttonTint="@color/black"
+                android:drawableLeft="@drawable/ic_baseline_circle_24"
+                android:drawablePadding="20dp"
+                android:drawableTint="#FFFF00"
+                android:fontFamily="@font/roboto_light"
+                android:layoutDirection="rtl"
+                android:text="Yellow"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/black_checkbox" />
+
+            <CheckBox
+                android:id="@+id/white_checkbox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="170dp"
+                android:layout_marginEnd="32dp"
+                android:bufferType="editable"
+                android:button="?android:attr/listChoiceIndicatorMultiple"
+                android:buttonTint="@color/black"
+                android:drawableLeft="@drawable/ic_baseline_circle_24"
+                android:drawablePadding="20dp"
+                android:drawableTint="@android:color/white"
+                android:fontFamily="@font/roboto_light"
+                android:layoutDirection="rtl"
+                android:text="White"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/yellow_checkbox" />
+
+            <CheckBox
+                android:id="@+id/red_checkbox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="170dp"
+                android:layout_marginEnd="32dp"
+                android:bufferType="editable"
+                android:button="?android:attr/listChoiceIndicatorMultiple"
+                android:buttonTint="@color/black"
+                android:drawableLeft="@drawable/ic_baseline_circle_24"
+                android:drawablePadding="20dp"
+                android:drawableTint="@android:color/holo_red_dark"
+                android:fontFamily="@font/roboto_light"
+                android:layoutDirection="rtl"
+                android:text="Red"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/white_checkbox" />
+
+            <CheckBox
+                android:id="@+id/grey_checkbox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="170dp"
+                android:layout_marginEnd="32dp"
+                android:bufferType="editable"
+                android:button="?android:attr/listChoiceIndicatorMultiple"
+                android:buttonTint="@color/black"
+                android:drawableLeft="@drawable/ic_baseline_circle_24"
+                android:drawablePadding="20dp"
+                android:drawableTint="@android:color/darker_gray"
+                android:fontFamily="@font/roboto_light"
+                android:layoutDirection="rtl"
+                android:text="Gray"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/red_checkbox" />
+
+            <CheckBox
+                android:id="@+id/navyblue_checkbox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="170dp"
+                android:layout_marginEnd="32dp"
+                android:bufferType="editable"
+                android:button="?android:attr/listChoiceIndicatorMultiple"
+                android:buttonTint="@color/black"
+                android:drawableLeft="@drawable/ic_baseline_circle_24"
+                android:drawablePadding="20dp"
+                android:drawableTint="#000080"
+                android:fontFamily="@font/roboto_light"
+                android:layoutDirection="rtl"
+                android:text="Navy Blue"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/grey_checkbox" />
+
+            <CheckBox
+                android:id="@+id/orange_checkbox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="170dp"
+                android:layout_marginEnd="32dp"
+                android:bufferType="editable"
+                android:button="?android:attr/listChoiceIndicatorMultiple"
+                android:buttonTint="@color/black"
+                android:drawableLeft="@drawable/ic_baseline_circle_24"
+                android:drawablePadding="20dp"
+                android:drawableTint="@android:color/holo_orange_dark"
+                android:fontFamily="@font/roboto_light"
+                android:layoutDirection="rtl"
+                android:text="Orange"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/navyblue_checkbox" />
+
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Size"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+
+            <View
+                android:id="@+id/view3"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/orange_checkbox" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/textView21"
+                app:layout_constraintTop_toBottomOf="@+id/textView21"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_xs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="XS"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_s"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="S"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_m"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="M"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_l"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="L"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_xl"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="XL"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_xxl"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="XXL"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
+
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Price"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/textView22"
+                app:layout_constraintTop_toBottomOf="@+id/textView22"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_under_499"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Under 499"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_under_799"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Under 799"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_under_999"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Under 999"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_under_1499"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Under 1499"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_under_1799"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Under 1799"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_under_1999"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Under 1999"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_under_2499"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Under 2499"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_under_2999"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Under 2999"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_under_3999"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Under 3999"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <View
+                android:id="@+id/view5"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chipGroup2" />
+
+            <TextView
+                android:id="@+id/textView23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Category"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view5" />
+
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/textView23"
+                app:layout_constraintTop_toBottomOf="@+id/textView23"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_salwar_kameez"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Salwar Kameez"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_kurti"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Kurti"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_dress_material"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Dress Material"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_chuddidar"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Chuddidar"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_cigar_pant_dress"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Cigar Pant Dress"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_legins"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Legins"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+            </com.google.android.material.chip.ChipGroup>
+
+
+            <View
+                android:id="@+id/view6"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chipGroup3" />
+
+            <TextView
+                android:id="@+id/textView24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Material"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view6" />
+
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/textView24"
+                app:layout_constraintTop_toBottomOf="@+id/textView24"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_cotton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Cotton"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_silk"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Silk"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_rayon"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Rayon"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_georgette"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Georgette"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_organza"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Organza"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_chiffon"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Chiffon"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_viscose"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Viscose"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+            </com.google.android.material.chip.ChipGroup>
+
+
+            <View
+                android:id="@+id/view7"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chipGroup4" />
+
+            <TextView
+                android:id="@+id/textView26"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Pattern"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view7" />
+
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/textView26"
+                app:layout_constraintTop_toBottomOf="@+id/textView26"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_printed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Printed"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_floral"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Floral"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_solid"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Solid"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_geometric"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Geometric"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_checks"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Checks"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_detailing"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Detailing"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+            </com.google.android.material.chip.ChipGroup>
+
+
+            <View
+                android:id="@+id/view8"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chipGroup5" />
+
+            <TextView
+                android:id="@+id/textView27"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Occasion"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view8" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/textView27"
+                app:layout_constraintTop_toBottomOf="@+id/textView27"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_festival"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Festival"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_casual"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Casual"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_party"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Party"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_wedding"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Wedding"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_semi_formal"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/chip_selection_color"
+                    android:bufferType="editable"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:elevation="@dimen/cardview_compat_inset_shadow"
+                    android:padding="8dp"
+                    android:text="Semi Formal"
+                    android:textColor="@color/text_selection_color"
+                    android:textSize="18sp"
+                    app:checkedIcon="@drawable/ic_baseline_check_24"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/offWhite"
+                    app:checkedIconVisible="true" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/filter_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:elevation="@dimen/cardview_default_elevation"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintGuide_percent="0.5"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center|center_horizontal|center_vertical"
+            android:text="Close"
+            android:textAlignment="center"
+            android:textColor="@color/offWhite"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="1dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/offWhite"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/apply"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center|center_horizontal|center_vertical"
+            android:text="Apply"
+            android:textAlignment="center"
+            android:textColor="@color/pink"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

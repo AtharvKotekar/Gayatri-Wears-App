@@ -11,11 +11,6 @@
         android:icon="@drawable/ic_baseline_dashboard_24"/>
 
     <item
-        android:id="@+id/cartFragment"
-        android:title="Cart"
-        android:icon="@drawable/ic_baseline_shopping_bag_24"/>
-
-    <item
         android:id="@+id/profileFragment"
         android:title="Profile"
         android:icon="@drawable/ic_baseline_person_24"/>

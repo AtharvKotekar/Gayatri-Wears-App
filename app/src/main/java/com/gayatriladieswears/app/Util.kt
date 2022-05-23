@@ -1,17 +1,19 @@
 package com.gayatriladieswears.app
 
+import android.R
+import android.animation.AnimatorSet
 import android.content.Context
-import android.content.Intent
+import android.graphics.Rect
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.util.Log
-import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
+import android.view.View
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
+import androidx.navigation.NavOptions
+import com.gayatriladieswears.app.Fragments.HomeFragment
 import com.google.firebase.auth.*
-import java.util.concurrent.TimeUnit
+
 
 fun Fragment.vibratePhone() {
     val vibrator = context?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
@@ -21,5 +23,26 @@ fun Fragment.vibratePhone() {
         vibrator.vibrate(200)
     }
 }
+
+fun getData(fragment: HomeFragment) {
+    FirestoreClass().getTopCategories(fragment)
+    FirestoreClass().getProducts(fragment,"tag", "Spotlight On")
+    FirestoreClass().getSizes(fragment)
+    FirestoreClass().getProducts(fragment,"tag", "Traditional")
+    FirestoreClass().getFabrics(fragment)
+    FirestoreClass().getProducts(fragment,"tag", "New Collection")
+    FirestoreClass().getColors(fragment)
+    FirestoreClass().getDeals(fragment)
+}
+
+
+
+
+
+
+
+
+
+
 
 

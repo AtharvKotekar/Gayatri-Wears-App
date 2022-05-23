@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/login"
-        android:name="com.gayatriladieswears.app.Login"
+        android:name="com.gayatriladieswears.app.Fragments.Login"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginPhoneNumberFragment"
-        android:name="com.gayatriladieswears.app.LoginPhoneNumberFragment"
+        android:name="com.gayatriladieswears.app.Fragments.LoginPhoneNumberFragment"
         android:label="fragment_login_phone_number"
         tools:layout="@layout/fragment_login_phone_number" >
         <action
@@ -49,7 +49,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginOtpFragment"
-        android:name="com.gayatriladieswears.app.LoginOtpFragment"
+        android:name="com.gayatriladieswears.app.Fragments.LoginOtpFragment"
         android:label="fragment_login_otp"
         tools:layout="@layout/fragment_login_otp" >
         <action
@@ -62,12 +62,12 @@
     </fragment>
     <fragment
         android:id="@+id/loginPasswardFragment"
-        android:name="com.gayatriladieswears.app.LoginPasswardFragment"
+        android:name="com.gayatriladieswears.app.Fragments.LoginPasswardFragment"
         android:label="fragment_login_passward"
         tools:layout="@layout/fragment_login_passward" />
     <fragment
         android:id="@+id/signupFragment"
-        android:name="com.gayatriladieswears.app.SignupFragment"
+        android:name="com.gayatriladieswears.app.Fragments.SignupFragment"
         android:label="fragment_signup"
         tools:layout="@layout/fragment_signup" >
         <action
@@ -88,7 +88,7 @@
     </fragment>
     <fragment
         android:id="@+id/signupOtpFragment"
-        android:name="com.gayatriladieswears.app.SignupOtpFragment"
+        android:name="com.gayatriladieswears.app.Fragments.SignupOtpFragment"
         android:label="SignupOtpFragment" >
         <action
             android:id="@+id/action_signupOtpFragment_to_signupAddressFragment"
@@ -100,6 +100,6 @@
     </fragment>
     <fragment
         android:id="@+id/signupAddressFragment"
-        android:name="com.gayatriladieswears.app.SignupAddressFragment"
+        android:name="com.gayatriladieswears.app.Fragments.SignupAddressFragment"
         android:label="SignupAddressFragment" />
 </navigation>

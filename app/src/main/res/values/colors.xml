@@ -6,9 +6,16 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#1D1D1F</color>
+    <color name="black2">#B31D1D1F</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="blue">#354498</color>
+    <color name="green">#2D6C30</color>
     <color name="offWhite">#F5F5F7</color>
+    <color name="offWhite2">#E3E3E3</color>
     <color name="gray">#6E6E73</color>
     <color name="pink">#FF0852</color>
     <color name="red">#C60E00</color>
+    <color name="yellow">#CCBC31</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="transparent_white">#80FFFFFF</color>
 </resources>

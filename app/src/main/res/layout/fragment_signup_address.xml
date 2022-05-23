@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".LoginPasswardFragment" >
+    tools:context=".Fragments.SignupAddressFragment" >
 
     <ImageView
         android:id="@+id/imageView3"
@@ -62,7 +62,8 @@
         android:ems="10"
         android:fontFamily="@font/roboto_medium"
         android:hint="@string/pincode_hint"
-        android:inputType="textPostalAddress"
+        android:inputType="number"
+        android:autofillHints="postalAddress"
         android:padding="16dp"
         android:textColor="@color/offWhite"
         android:textColorHint="@color/offWhite"
@@ -128,6 +129,22 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextStateSignup" />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressBarLinear"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:indicatorColor="@color/pink"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lets_go_btn_signup"
+        app:trackColor="@color/offWhite"
+        app:trackCornerRadius="8dp" />
 
     <ImageView
         android:id="@+id/imageView6"
