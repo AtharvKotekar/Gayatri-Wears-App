@@ -81,6 +81,7 @@ class ProductsAdaptor(private val context:Context, private var list: ArrayList<P
             bundle.putString("pattern",model.pattern)
             bundle.putString("occasion",model.occasion)
             bundle.putString("mrp",model.mrp.toString())
+            bundle.putString("id",model.id)
             bundle.putStringArrayList("sizes",model.size)
             bundle.putStringArrayList("tag",model.tag)
 

@@ -170,7 +170,7 @@ class SignupFragment : Fragment() {
                 bundle.putString("id", storedVerificationId)
                 bundle.putString("firstName", binding.editTextFirstNameSignup.text.toString())
                 bundle.putString("lastName", binding.editTextLastNameSignup.text.toString())
-                bundle.putString("phone", "+91${binding.editTextPhonenumberSignup.text.toString()}")
+                bundle.putString("phone", binding.editTextPhonenumberSignup.text.toString())
                 binding.progressBarLinear.visibility = View.GONE
                 findNavController().navigate(R.id.action_signupFragment_to_signupOtpFragment,bundle)
 

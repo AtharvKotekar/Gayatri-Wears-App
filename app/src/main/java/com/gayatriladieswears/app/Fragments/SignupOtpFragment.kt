@@ -98,15 +98,13 @@ class SignupOtpFragment : Fragment() {
 
                     findNavController().navigate(R.id.action_signupOtpFragment_to_signupAddressFragment,bundle)
 
-// ...
+
                 } else {
 
-// Sign in failed, display a message and update the UI
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
 
                         binding.imageView4.visibility = View.VISIBLE
                         binding.progressBarLinear.visibility = View.GONE
-// The verification code entered was invalid
                         Toast.makeText(context,"Invalid OTP", Toast.LENGTH_SHORT).show()
                     }
                 }

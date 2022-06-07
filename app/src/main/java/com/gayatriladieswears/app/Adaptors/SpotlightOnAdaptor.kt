@@ -55,6 +55,7 @@ class SpotlightOnAdaptor(private val context: Context, private var list: ArrayLi
             bundle.putString("mrp",model.mrp.toString())
             bundle.putStringArrayList("sizes",model.size)
             bundle.putStringArrayList("tag",model.tag)
+            bundle.putString("id",model.id)
             holder.itemView.findNavController().navigate(R.id.action_homeFragment_to_productDetailFragment,bundle)
         }
 

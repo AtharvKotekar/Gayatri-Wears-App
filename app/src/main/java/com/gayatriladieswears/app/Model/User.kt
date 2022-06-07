@@ -9,6 +9,4 @@ class User (
     val pinCode:String = "",
     val district:String = "",
     val state:String = ""
-
-
 )

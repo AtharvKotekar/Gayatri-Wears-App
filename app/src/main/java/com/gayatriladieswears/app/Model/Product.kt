@@ -12,6 +12,7 @@ class Product (
     val occasion:String = "",
     val mrp:Int = 0,
     val deal:String = "",
+    val id:String = "",
     val tag:ArrayList<String> = ArrayList(),
     val size:ArrayList<String> = ArrayList()
 

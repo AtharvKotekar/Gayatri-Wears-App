@@ -27,6 +27,23 @@
         <item name="colorAccent">@color/pink</item>
     </style>
 
+    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColor">@color/offWhite</item>
+        <item name="android:colorAccent">@color/offWhite</item>
+        <item name="android:textColorPrimary">@color/offWhite</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="fontFamily">@font/roboto_medium</item>
+    </style>
+
+    <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/offWhite</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/offWhite</item>
+    </style>
+
     <style name="DialogAnimation">
         <item name="android:windowEnterAnimation">@animator/slide_in_bottom</item>
         <item name="android:windowExitAnimation">@animator/slide_out_bottom</item>

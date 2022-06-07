@@ -9,10 +9,8 @@ import android.view.View
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import com.gayatriladieswears.app.Activities.HomeActivity
-import com.gayatriladieswears.app.Fragments.HomeFragment
-import com.gayatriladieswears.app.Fragments.ProductDetailFragment
-import com.gayatriladieswears.app.Fragments.ShopingFragment
-import com.gayatriladieswears.app.Fragments.SignupAddressFragment
+import com.gayatriladieswears.app.Adaptors.CartAdaptor
+import com.gayatriladieswears.app.Fragments.*
 import com.gayatriladieswears.app.Model.*
 import com.google.android.gms.tasks.Task
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -49,6 +47,70 @@ open  class FirestoreClass {
             }
 
     }
+
+    fun updateCart(fragment: Fragment,quantity: String,userId: String,productId: String){
+        val iteamList:ArrayList<CartItem> = ArrayList()
+        mFirestore.collection("Cart")
+            .document(userId+productId)
+            .update("cartQuantity",quantity)
+
+    }
+
+
+    fun addToCart(fragment: Fragment,addtoCartItem: CartItem,userId: String,productId: String){
+        mFirestore.collection("Cart")
+            .document(userId+productId)
+            .set(addtoCartItem, SetOptions.merge())
+            .addOnSuccessListener {
+
+            }
+            .addOnFailureListener {
+                Log.i(TAG, "addToCart On Failed:${it.localizedMessage} ")
+            }
+    }
+
+
+    fun checkProductExistInCart(fragment: ProductDetailFragment,productId:String,userId:String){
+        mFirestore.collection("Cart")
+            .whereEqualTo("userId",userId)
+            .whereEqualTo("productId",productId)
+            .get()
+            .addOnSuccessListener { document ->
+                    if(document.documents.size > 0){
+                        fragment.addToCartProductExist()
+                    }else{
+                        fragment.addToCart()
+                    }
+                }
+
+            }
+
+    fun getCartProducts(fragment: Fragment,userId: String){
+        val iteamList:ArrayList<CartItem> = ArrayList()
+        mFirestore.collection("Cart")
+            .whereEqualTo("userId",userId)
+            .get()
+            .addOnSuccessListener { document ->
+                for (i in document.documents) {
+                    val iteam = i.toObject(CartItem::class.java)
+                    iteamList.add(iteam!!)
+                }
+                when(fragment){
+                    is CartFragment -> {
+                        fragment.getCartProducts(iteamList)
+                    }
+                }
+            }
+    }
+
+    fun removeCartProduct(fragment: CartFragment,productId: String,userId: String){
+        mFirestore.collection("Cart")
+            .document(userId+productId)
+            .delete()
+    }
+
+
+
 
     fun getFilterDialogProducts(fragment: ShopingFragment, listColor: MutableList<String>,size:String,price:Int,category:String,material:String,pattern:String,occasion:String) {
         val iteamList: ArrayList<Product> = ArrayList()
@@ -854,11 +916,10 @@ open  class FirestoreClass {
             }
     }
 
-    fun getCategorizeProduct(fragment:Fragment,field:String,filter:String,name:String){
-
+    fun getCategorizeProduct(fragment:Fragment,field:String,filter:String,id:String){
         mFirestore.collection("Products")
             .whereEqualTo(field,filter)
-            .whereNotEqualTo("name",name)
+            .whereNotEqualTo("id",id)
             .get()
             .addOnSuccessListener { document ->
                 Log.i(TAG, "getCategorized: ${document.documents.toString()}")
@@ -871,6 +932,25 @@ open  class FirestoreClass {
                     is ProductDetailFragment -> {
                         fragment.getCategorizedProduct(iteamList)
                     }
+                }
+            }
+    }
+
+    fun getProductById(fragment: Fragment,productId: String,holder: CartAdaptor.myViewHolder){
+        val iteamList: ArrayList<Product> = ArrayList()
+        mFirestore.collection("Products")
+            .whereEqualTo("id",productId)
+            .get()
+            .addOnSuccessListener { document ->
+                for (i in document.documents){
+                    val iteam = i.toObject(Product::class.java)
+                    iteamList.add(iteam!!)
+                    when(fragment){
+                        is CartFragment -> {
+                            fragment.getProductById(iteamList,holder)
+                        }
+                }
+
                 }
             }
     }

@@ -88,6 +88,15 @@ class HomeActivity : AppCompatActivity() {
                 )
 
             }
+            else if(destination.label == "fragment_cart"){
+                val handler = Handler()
+                handler.postDelayed(
+                    Runnable {
+                        binding.bottomNav.visibility = View.GONE
+                    },100
+                )
+
+            }
         }
 
     }

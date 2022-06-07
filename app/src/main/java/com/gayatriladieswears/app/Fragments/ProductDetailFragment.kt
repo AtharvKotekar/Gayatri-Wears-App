@@ -1,7 +1,9 @@
 package com.gayatriladieswears.app.Fragments
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.ContentValues.TAG
+import android.content.res.ColorStateList
 import android.graphics.Paint
 import android.graphics.Rect
 import android.os.Build
@@ -11,7 +13,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
+import androidx.core.view.children
+import androidx.core.view.isEmpty
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.navigation.fragment.findNavController
@@ -19,10 +25,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.gayatriladieswears.app.Adaptors.TraditonalAdaptor
 import com.gayatriladieswears.app.FirestoreClass
+import com.gayatriladieswears.app.Model.CartItem
 import com.gayatriladieswears.app.Model.Product
 import com.gayatriladieswears.app.R
 import com.gayatriladieswears.app.databinding.FragmentProductDetailBinding
 import com.gayatriladieswears.app.databinding.FragmentShopingBinding
+import com.gayatriladieswears.app.vibratePhone
+import com.google.android.material.chip.Chip
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import kotlin.math.log
 
 class ProductDetailFragment : Fragment() {
 
@@ -37,15 +49,23 @@ class ProductDetailFragment : Fragment() {
     var occasion:String = ""
     var mrp:String = ""
     var deal:String = ""
+    var id:String = ""
     var tag:ArrayList<String> = ArrayList()
     var size:ArrayList<String> = ArrayList()
 
+
     private lateinit var binding: FragmentProductDetailBinding
+    private lateinit var auth: FirebaseAuth
 
 
     @SuppressLint("NewApi", "ResourceAsColor")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentProductDetailBinding.inflate(inflater,container,false)
+        id = arguments?.getString("id").toString()
+        checkSizes()
+
+
+        auth = FirebaseAuth.getInstance()
 
 
 
@@ -61,7 +81,15 @@ class ProductDetailFragment : Fragment() {
         mrp = arguments?.getString("mrp").toString()
         tag = arguments?.getStringArrayList("tag") as ArrayList<String>
         size = arguments?.getStringArrayList("sizes") as ArrayList<String>
-        FirestoreClass().getCategorizeProduct(this,"category",category,name)
+
+
+
+
+        FirestoreClass().getCategorizeProduct(this,"category",category,id)
+
+
+
+        
 
         Glide
             .with(requireContext())
@@ -88,7 +116,6 @@ class ProductDetailFragment : Fragment() {
 
 
 
-
         binding.backBtn.setOnClickListener {
             if (findNavController().currentDestination?.id == R.id.productDetailFragment) {
                 activity?.onBackPressed()
@@ -100,7 +127,16 @@ class ProductDetailFragment : Fragment() {
         }
 
         binding.addToBagBtn.setOnClickListener{
-            findNavController().navigate(R.id.action_productDetailFragment_to_cartFragment)
+            if(binding.chipGroup.checkedChipIds.isEmpty()){
+                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Please select the size", Snackbar.LENGTH_LONG)
+                snackBar.setBackgroundTint(resources.getColor(R.color.red))
+                snackBar.setTextColor(resources.getColor(R.color.white))
+                snackBar.show()
+                vibratePhone()
+            }else{
+                FirestoreClass().checkProductExistInCart(this,id,auth.currentUser!!.uid)
+            }
+
         }
 
 
@@ -112,7 +148,126 @@ class ProductDetailFragment : Fragment() {
         val adaptor = TraditonalAdaptor(requireContext(),iteamList)
         binding.recylerView.adapter = adaptor
         binding.recylerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
+
     }
+
+    fun addToCart(){
+        if(binding.chipGroup.isEmpty()){
+            val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Please select the size.", Snackbar.LENGTH_SHORT)
+            snackBar.setBackgroundTint(resources.getColor(R.color.red))
+            snackBar.setTextColor(resources.getColor(R.color.white))
+            snackBar.show()
+            vibratePhone()
+        }else{
+            val size = binding.chipGroup.findViewById<Chip>(binding.chipGroup.checkedChipId).text.toString()
+            val cartIteam = CartItem(id, auth.currentUser!!.uid, price.toInt(), mrp.toInt(), color, size, image, "1", name, dis)
+            FirestoreClass().addToCart(this,cartIteam,auth.currentUser!!.uid,id)
+            findNavController().navigate(R.id.action_productDetailFragment_to_cartFragment)
+        }
+
+        }
+       
+
+    fun addToCartProductExist(){
+        val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Product is already present in bag.", Snackbar.LENGTH_LONG)
+        snackBar.setBackgroundTint(resources.getColor(R.color.black))
+        snackBar.setTextColor(resources.getColor(R.color.white))
+        snackBar.show()
+
+        findNavController().navigate(R.id.action_productDetailFragment_to_cartFragment)
+    }
+
+    fun checkSizes(){
+        FirestoreClass().mFirestore.collection("Products")
+            .whereEqualTo("id",id)
+            .whereArrayContains("size","XS")
+            .get()
+            .addOnSuccessListener {
+                if(it.documents.size > 0){
+                    binding.productChipXs.isEnabled = true
+                }else{
+                    binding.productChipXs.isEnabled = false
+                    binding.productChipXs.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(this.requireContext(), R.color.gray2))
+                    binding.productChipXs.setTextColor(resources.getColor(R.color.black))
+                }
+            }
+
+        FirestoreClass().mFirestore.collection("Products")
+            .whereEqualTo("id",id)
+            .whereArrayContains("size","S")
+            .get()
+            .addOnSuccessListener {
+                if(it.documents.size > 0){
+                    binding.productChipS.isEnabled = true
+                }else{
+                    binding.productChipS.isEnabled = false
+                    binding.productChipS.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(this.requireContext(), R.color.gray2))
+                    binding.productChipS.setTextColor(resources.getColor(R.color.black))
+                }
+            }
+
+        FirestoreClass().mFirestore.collection("Products")
+            .whereEqualTo("id",id)
+            .whereArrayContains("size","M")
+            .get()
+            .addOnSuccessListener {
+                if(it.documents.size > 0){
+                    binding.productChipM.isEnabled = true
+                }else{
+                    binding.productChipM.isEnabled = false
+                    binding.productChipM.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(this.requireContext(), R.color.gray2))
+                    binding.productChipM.setTextColor(resources.getColor(R.color.black))
+                }
+            }
+
+        FirestoreClass().mFirestore.collection("Products")
+            .whereEqualTo("id",id)
+            .whereArrayContains("size","L")
+            .get()
+            .addOnSuccessListener {
+                if(it.documents.size > 0){
+                    binding.productChipL.isEnabled = true
+                }else{
+                    binding.productChipL.isEnabled = false
+                    binding.productChipL.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(this.requireContext(), R.color.gray2))
+                    binding.productChipL.setTextColor(resources.getColor(R.color.black))
+                }
+            }
+
+        FirestoreClass().mFirestore.collection("Products")
+            .whereEqualTo("id",id)
+            .whereArrayContains("size","XL")
+            .get()
+            .addOnSuccessListener {
+                if(it.documents.size > 0){
+                    binding.productChipXl.isEnabled = true
+                }else{
+                    binding.productChipXl.isEnabled = false
+                    binding.productChipXl.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(this.requireContext(), R.color.gray2))
+                    binding.productChipXl.setTextColor(resources.getColor(R.color.black))
+                }
+            }
+
+        FirestoreClass().mFirestore.collection("Products")
+            .whereEqualTo("id",id)
+            .whereArrayContains("size","XXL")
+            .get()
+            .addOnSuccessListener {
+                if(it.documents.size > 0){
+                    binding.productChipXxl.isEnabled = true
+
+                }else{
+                    binding.productChipXxl.isEnabled = false
+                    binding.productChipXxl.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(this.requireContext(), R.color.gray2))
+                    binding.productChipXxl.setTextColor(resources.getColor(R.color.black))
+
+                }
+            }
+
+
+    }
+
+
 
 
 

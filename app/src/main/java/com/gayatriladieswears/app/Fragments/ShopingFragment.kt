@@ -77,7 +77,7 @@ class ShopingFragment : Fragment() {
 
         from = arguments?.getString("from").toString()
         title = arguments?.getString("title").toString()
-        binding.reasultNameText.text = "$from - $title"
+        binding.reasultNameText.text = "${from.capitalize()} - $title"
         FirestoreClass().getSpecifyProducts(this,from,title)
 
         binding.backBtn.setOnClickListener {

@@ -62,8 +62,10 @@ class TraditonalAdaptor(private val context: Context, private var list: ArrayLis
             bundle.putString("pattern",model.pattern)
             bundle.putString("occasion",model.occasion)
             bundle.putString("mrp",model.mrp.toString())
+            bundle.putString("id",model.id)
             bundle.putStringArrayList("sizes",model.size)
             bundle.putStringArrayList("tag",model.tag)
+
 
         if (holder.itemView.findNavController().currentDestination?.id == R.id.productDetailFragment) {
             holder.itemView.findNavController().navigate(R.id.action_productDetailFragment_self,bundle)
