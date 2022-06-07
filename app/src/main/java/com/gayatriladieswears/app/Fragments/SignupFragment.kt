@@ -122,10 +122,9 @@ class SignupFragment : Fragment() {
                                         snackBar.setTextColor(resources.getColor(R.color.white))
                                         snackBar.show()
                                         vibratePhone()
-                                        removePhoneKeypad()
                                     } else {
-                                        login(binding.editTextPhonenumberSignup.text.toString())
                                         removePhoneKeypad()
+                                        login(binding.editTextPhonenumberSignup.text.toString())
                                     }
                                 }
                             } else {

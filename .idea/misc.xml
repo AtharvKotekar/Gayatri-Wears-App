@@ -14,12 +14,14 @@
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/drawable/baseline_filter_alt_24.xml" value="0.1965" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/drawable/baseline_filter_list_18.xml" value="0.1965" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/drawable/baseline_shopping_bag_24.xml" value="0.1965" />
+        <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/drawable/black_btn_bg.xml" value="0.194" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/drawable/bottonnav_icon_color.xml" value="0.1965" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/drawable/btn_pink_bg.xml" value="0.191" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/drawable/btn_white_bg.xml" value="0.191" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/drawable/deal_iteam_bg.xml" value="0.1965" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/drawable/dialog_bttomshhet_bg.xml" value="0.1965" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/drawable/edittext_bg.xml" value="0.191" />
+        <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/drawable/edittext_bg_black.xml" value="0.194" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.1965" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/drawable/ic_baseline_check_24.xml" value="0.1745" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.1965" />
@@ -44,6 +46,7 @@
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/activity_login.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/activity_splash.xml" value="0.22083333333333333" />
+        <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/address_iteam.xml" value="0.2" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/cart_iteam.xml" value="0.264" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/deal_iteam.xml" value="0.4" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/fabric_iteam.xml" value="0.264" />
@@ -56,14 +59,16 @@
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/fragment_login_passward.xml" value="0.20925925925925926" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/fragment_login_phone_number.xml" value="0.20925925925925926" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/fragment_main_screen.xml" value="0.22083333333333333" />
-        <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/fragment_product_detail.xml" value="0.17519379844961241" />
+        <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/fragment_order_add_adress.xml" value="0.25" />
+        <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/fragment_order_address.xml" value="0.2" />
+        <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/fragment_product_detail.xml" value="0.26263800116211505" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/fragment_profile.xml" value="0.1962962962962963" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/fragment_shoping.xml" value="0.4" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/fragment_signup.xml" value="0.2" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/fragment_signup_address.xml" value="0.20925925925925926" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/fragment_signup_otp.xml" value="0.20925925925925926" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/laoding_dialog.xml" value="0.20833333333333334" />
-        <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/product_iteam.xml" value="0.264" />
+        <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/product_iteam.xml" value="0.536" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/product_iteam_shimmer.xml" value="0.20833333333333334" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/shop_size_iteam.xml" value="0.4" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/size_chip_iteam.xml" value="0.15202702702702703" />

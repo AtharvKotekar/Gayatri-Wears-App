@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
+import com.google.firebase.firestore.ktx.toObject
 
 
 open  class FirestoreClass {
@@ -25,7 +26,7 @@ open  class FirestoreClass {
     val phone = auth.currentUser?.phoneNumber.toString()
 
 
-    fun register(fragment: SignupAddressFragment, userInfo: User, progressBar: ProgressBar) {
+    fun register(fragment: SignupOtpFragment, userInfo: User, progressBar: ProgressBar) {
 
         mFirestore.collection("users")
             .document(userInfo.phone)
@@ -47,6 +48,45 @@ open  class FirestoreClass {
             }
 
     }
+
+    fun addAddress(fragment: Fragment,addressInfo:Address){
+        mFirestore.collection("Address")
+            .document()
+            .set(addressInfo, SetOptions.merge())
+            .addOnSuccessListener { document ->
+                mFirestore.collection("Address")
+
+            }
+    }
+
+    fun getAddress(fragment:OrderAddressFragment,userId: String){
+        mFirestore.collection("Address")
+            .whereEqualTo("userId",userId)
+            .get()
+            .addOnSuccessListener { document ->
+
+                Log.i(TAG, "getAddress: ${document.documents.toString()}")
+                
+                val addressList:ArrayList<Address> = ArrayList()
+                for (i in document.documents){
+                    val address = i.toObject(Address::class.java)!!
+                    address.id = i.id
+                    addressList.add(address)
+                    mFirestore.collection("Address").document(address.id).update("id",address.id.toString())
+                }
+
+                fragment.getAddressList(addressList)
+            }
+    }
+
+    fun deleteAddress(fragment: Fragment,userId: String,id: String){
+        mFirestore.collection("Address")
+            .document(id)
+            .delete()
+            .addOnSuccessListener {
+            }
+    }
+
 
     fun updateCart(fragment: Fragment,quantity: String,userId: String,productId: String){
         val iteamList:ArrayList<CartItem> = ArrayList()
@@ -954,6 +994,8 @@ open  class FirestoreClass {
                 }
             }
     }
+
+
 
 
 

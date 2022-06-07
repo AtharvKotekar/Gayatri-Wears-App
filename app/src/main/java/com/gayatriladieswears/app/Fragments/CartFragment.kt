@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.location.LocationRequestCompat
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -18,6 +19,8 @@ import com.gayatriladieswears.app.Model.CartItem
 import com.gayatriladieswears.app.Model.Product
 import com.gayatriladieswears.app.R
 import com.gayatriladieswears.app.databinding.FragmentCartBinding
+import com.gayatriladieswears.app.vibratePhone
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -25,6 +28,7 @@ class CartFragment : Fragment() {
     lateinit var binding:FragmentCartBinding
     lateinit var auth:FirebaseAuth
     lateinit var dialog:Dialog
+    var outOfStockPresent = false
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCartBinding.inflate(inflater,container,false)
 
@@ -48,10 +52,24 @@ class CartFragment : Fragment() {
             }
         }
 
+        binding.placeOrderButton.setOnClickListener {
+            if(outOfStockPresent == true){
+                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Please remove 'Out of Stock' Products from bag.", Snackbar.LENGTH_SHORT)
+                snackBar.setBackgroundTint(resources.getColor(R.color.red))
+                snackBar.setTextColor(resources.getColor(R.color.white))
+                snackBar.show()
+                vibratePhone()
+            }
+            else{
+                findNavController().navigate(R.id.action_cartFragment_to_orderAddressFragment)
+            }
+        }
+
         return binding.root
     }
 
     fun getCartProducts(iteamList: ArrayList<CartItem>) {
+        outOfStockPresent = false
         if(iteamList.isEmpty()){
             binding.iteamSize.text = "Your Cart - 0 Items"
             binding.emtyCartImage.visibility = View.VISIBLE
@@ -72,6 +90,9 @@ class CartFragment : Fragment() {
             binding.priceSummary.visibility = View.VISIBLE
             binding.view15.visibility = View.VISIBLE
             binding.view16.visibility = View.VISIBLE
+            val adaptor = CartAdaptor(requireContext(),this,iteamList)
+            binding.recyclerView9.adapter = adaptor
+            binding.recyclerView9.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
             var mPrice = 0
             var mMrp = 0
             for (i in iteamList){
@@ -84,9 +105,6 @@ class CartFragment : Fragment() {
             binding.bottomPrice.text = mPrice.toString()
             binding.iteamSize.text = "Your Cart - ${iteamList.size} Items"
             binding.shippingCharges.text = "0"
-            val adaptor = CartAdaptor(requireContext(),this,iteamList)
-            binding.recyclerView9.adapter = adaptor
-            binding.recyclerView9.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
             dialog.dismiss()
         }
 
@@ -113,6 +131,7 @@ class CartFragment : Fragment() {
         holder.itemView.findNavController()
             .navigate(R.id.action_cartFragment_to_productDetailFragment, bundle)
     }
+
 
 
 }

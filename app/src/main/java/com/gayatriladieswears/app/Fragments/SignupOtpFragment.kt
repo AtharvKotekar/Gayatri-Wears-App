@@ -10,6 +10,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.gayatriladieswears.app.Activities.LoginActivity
+import com.gayatriladieswears.app.FirestoreClass
+import com.gayatriladieswears.app.Model.User
 import com.gayatriladieswears.app.R
 import com.gayatriladieswears.app.databinding.FragmentSignupOtpBinding
 import com.gayatriladieswears.app.vibratePhone
@@ -86,17 +88,17 @@ class SignupOtpFragment : Fragment() {
                     firebaseUser = task.result!!.user!!
                     uid = firebaseUser.uid
 
-                    bundle.putString("firstName", firstName)
-                    bundle.putString("lastName", lastName)
-                    bundle.putString("phone", phone)
-                    bundle.putString("uid", uid)
+                    removePhoneKeypad()
+                    val user = User(
+                        uid,
+                        phone.trim{it <= ' '},
+                        firstName.trim{it <= ' '},
+                        lastName.trim{it <= ' '},
+                    )
 
+                    FirestoreClass().register(this,user,binding.progressBarLinear)
                     binding.imageView4.visibility = View.VISIBLE
                     binding.progressBarLinear.visibility = View.GONE
-
-
-
-                    findNavController().navigate(R.id.action_signupOtpFragment_to_signupAddressFragment,bundle)
 
 
                 } else {

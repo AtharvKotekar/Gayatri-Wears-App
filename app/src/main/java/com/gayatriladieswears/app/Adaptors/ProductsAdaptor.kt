@@ -61,6 +61,16 @@ class ProductsAdaptor(private val context:Context, private var list: ArrayList<P
             .centerCrop()
             .into(holder.image)
 
+        if(model.stock == 0){
+            holder.stock.visibility = View.VISIBLE
+            holder.stock.text = "Out of Stock"
+        }else if(model.stock < 5){
+            holder.stock.visibility = View.VISIBLE
+            holder.stock.text = "Limited Stock"
+        }else{
+            holder.stock.visibility = View.GONE
+        }
+
         holder.title.text = model.name
         holder.des.text = model.dis
         holder.price.text = model.price.toString()
@@ -82,6 +92,7 @@ class ProductsAdaptor(private val context:Context, private var list: ArrayList<P
             bundle.putString("occasion",model.occasion)
             bundle.putString("mrp",model.mrp.toString())
             bundle.putString("id",model.id)
+            bundle.putString("stock",model.stock.toString())
             bundle.putStringArrayList("sizes",model.size)
             bundle.putStringArrayList("tag",model.tag)
 
@@ -104,6 +115,7 @@ class ProductsAdaptor(private val context:Context, private var list: ArrayList<P
         val price = view.findViewById<TextView>(R.id.spotlight_price)
         val sizes = view.findViewById<RecyclerView>(R.id.recyclerView_size)
         val mrp = view.findViewById<TextView>(R.id.spotlight_mrp)
+        val stock = view.findViewById<TextView>(R.id.spotlight_stock_text)
     }
 
 

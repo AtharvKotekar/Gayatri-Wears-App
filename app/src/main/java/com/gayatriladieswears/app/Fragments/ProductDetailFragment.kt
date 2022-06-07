@@ -50,6 +50,7 @@ class ProductDetailFragment : Fragment() {
     var mrp:String = ""
     var deal:String = ""
     var id:String = ""
+    var stock:String = ""
     var tag:ArrayList<String> = ArrayList()
     var size:ArrayList<String> = ArrayList()
 
@@ -79,11 +80,20 @@ class ProductDetailFragment : Fragment() {
         pattern = arguments?.getString("pattern").toString()
         occasion = arguments?.getString("occasion").toString()
         mrp = arguments?.getString("mrp").toString()
+        stock = arguments?.getString("stock").toString()
         tag = arguments?.getStringArrayList("tag") as ArrayList<String>
         size = arguments?.getStringArrayList("sizes") as ArrayList<String>
 
 
-
+        if(stock.toInt() == 0){
+            binding.stockText.visibility = View.VISIBLE
+            binding.stockText.text = "Out of Stock"
+        }else if(stock.toInt() < 5 ){
+            binding.stockText.visibility = View.VISIBLE
+            binding.stockText.text = "Limited Stock"
+        }else{
+            binding.stockText.visibility = View.GONE
+        }
 
         FirestoreClass().getCategorizeProduct(this,"category",category,id)
 

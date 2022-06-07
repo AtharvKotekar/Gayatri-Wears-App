@@ -17,6 +17,13 @@
             app:exitAnim="@anim/slide_out"
             app:popEnterAnim="@anim/slide_in"
             app:popExitAnim="@anim/slide_out" />
+        <action
+            android:id="@+id/action_cartFragment_to_orderAddressFragment"
+            app:destination="@id/orderAddressFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/slide_out"
+            app:popEnterAnim="@anim/slide_in"
+            app:popExitAnim="@anim/slide_out" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
@@ -96,5 +103,32 @@
             app:popEnterAnim="@anim/slide_in"
             app:popExitAnim="@anim/slide_out"
             app:popUpTo="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderAddressFragment"
+        android:name="com.gayatriladieswears.app.Fragments.OrderAddressFragment"
+        android:label="fragment_order_address"
+        tools:layout="@layout/fragment_order_address" >
+        <action
+            android:id="@+id/action_orderAddressFragment_to_orderAddAdressFragment"
+            app:destination="@id/orderAddAdressFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/slide_out"
+            app:popEnterAnim="@anim/slide_in"
+            app:popExitAnim="@anim/slide_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderAddAdressFragment"
+        android:name="com.gayatriladieswears.app.Fragments.OrderAddAdressFragment"
+        android:label="fragment_order_add_adress"
+        tools:layout="@layout/fragment_order_add_adress" >
+        <action
+            android:id="@+id/action_orderAddAdressFragment_to_orderAddressFragment"
+            app:destination="@id/orderAddressFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/slide_out"
+            app:popEnterAnim="@anim/slide_in"
+            app:popExitAnim="@anim/slide_out"
+            app:popUpTo="@id/orderAddAdressFragment" />
     </fragment>
 </navigation>

@@ -1,9 +1,11 @@
 package com.gayatriladieswears.app.Adaptors
 
 import android.app.Dialog
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +25,7 @@ import com.gayatriladieswears.app.vibratePhone
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import kotlin.math.log
 
 class CartAdaptor(private val context: Context,private var fragment: CartFragment,private var list: ArrayList<CartItem>) : RecyclerView.Adapter<CartAdaptor.myViewHolder>() {
 
@@ -38,6 +41,7 @@ class CartAdaptor(private val context: Context,private var fragment: CartFragmen
         var sub = view.findViewById<ImageView>(R.id.cart_minus)
         var delete = view.findViewById<ImageView>(R.id.cart_delete)
         var quality = view.findViewById<TextView>(R.id.cart_quantity)
+        var stock = view.findViewById<TextView>(R.id.cart_stock_text)
 
     }
 
@@ -50,12 +54,39 @@ class CartAdaptor(private val context: Context,private var fragment: CartFragmen
     override fun onBindViewHolder(holder: myViewHolder, position: Int) {
         val model = list[position]
 
+        FirestoreClass().mFirestore.collection("Products")
+            .whereEqualTo("id",model.productId)
+            .get()
+            .addOnSuccessListener {
+                val iteamList: ArrayList<Product> = ArrayList()
+                for (i in it.documents){
+                    val iteam = i.toObject(Product::class.java)
+                    iteamList.add(iteam!!)
+                }
+                if(iteamList.size == 1){
+                    if (iteamList[0].stock == 0){
+                        holder.stock.visibility = View.VISIBLE
+                        holder.stock.text = "Out of Stock"
+                        fragment.outOfStockPresent = true
+                        
+                    }else if(iteamList[0].stock < 5){
+                        holder.stock.visibility = View.VISIBLE
+                        holder.stock.text = "Limited Stock"
+                    }else{
+                        holder.stock.visibility = View.GONE
+                    }
+                }
+            }
+
+
+
         Glide
             .with(context)
             .load(model.image)
             .placeholder(R.drawable.baseline_shopping_bag_24)
             .centerCrop()
             .into(holder.image)
+
 
         holder.name.text = model.name
         holder.dis.text = model.dis
@@ -71,6 +102,16 @@ class CartAdaptor(private val context: Context,private var fragment: CartFragmen
             fragment.dialog.show()
             FirestoreClass().getProductById(fragment,model.productId,holder)
         }
+
+
+
+
+
+
+
+
+
+
 
         var quantity:Int = model.cartQuantity.toInt()
         holder.add.setOnClickListener {
@@ -96,12 +137,11 @@ class CartAdaptor(private val context: Context,private var fragment: CartFragmen
 
         }
 
-
         holder.delete.setOnClickListener {
             val dialog = MaterialAlertDialogBuilder(context,R.style.AppCompatAlertDialogStyle)
                 dialog.setTitle("Remove From Bag")
                 dialog.setMessage("Do you really want to remove ${model.name} from Bag?")
-                dialog.background = context.resources.getDrawable(R.drawable.loading_dialog_bg)
+                dialog.background = context.resources.getDrawable(R.drawable.black_btn_bg)
                 dialog.setNegativeButton("Cancel") { dialog, which ->
                     dialog.dismiss()
                 }

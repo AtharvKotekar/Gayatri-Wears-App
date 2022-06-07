@@ -122,6 +122,20 @@
                 tools:itemCount="4"
                 tools:listitem="@layout/size_iteam" />
 
+            <TextView
+                android:id="@+id/spotlight_stock_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Limited Stock"
+                android:textColor="@color/red"
+                android:textSize="10sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/recyclerView_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/recyclerView_size"
+                app:layout_constraintTop_toTopOf="@+id/recyclerView_size" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
