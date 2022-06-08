@@ -18,6 +18,8 @@ import com.google.firebase.auth.FirebaseAuth
 class OrderAddressFragment : Fragment() {
     lateinit var dialog:Dialog
     private lateinit var binding: FragmentOrderAddressBinding
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentOrderAddressBinding.inflate(inflater,container,false)
 
@@ -28,6 +30,8 @@ class OrderAddressFragment : Fragment() {
         dialog.show()
 
 
+
+
         FirestoreClass().getAddress(this,FirebaseAuth.getInstance().currentUser!!.uid)
 
         binding.addAddressBtn.setOnClickListener {
@@ -36,6 +40,12 @@ class OrderAddressFragment : Fragment() {
         }
 
         binding.backBtn.setOnClickListener {
+            if (findNavController().currentDestination?.id == com.gayatriladieswears.app.R.id.orderAddressFragment) {
+                activity?.onBackPressed()
+            }
+        }
+
+        binding.bagBtn.setOnClickListener {
             if (findNavController().currentDestination?.id == com.gayatriladieswears.app.R.id.orderAddressFragment) {
                 activity?.onBackPressed()
             }

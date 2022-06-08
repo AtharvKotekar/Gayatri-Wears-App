@@ -42,7 +42,10 @@ android {
         viewBinding = true
     }
 
+
+
 }
+
 
 dependencies {
 
@@ -68,6 +71,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation 'com.github.amarjain07:StickyScrollView:1.0.3'
+    implementation 'com.razorpay:checkout:1.6.19'
 
 
 }

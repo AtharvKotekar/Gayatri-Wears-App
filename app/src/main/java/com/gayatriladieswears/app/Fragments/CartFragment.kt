@@ -95,16 +95,25 @@ class CartFragment : Fragment() {
             binding.recyclerView9.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
             var mPrice = 0
             var mMrp = 0
+            var mShippingCharges = 0
             for (i in iteamList){
                 mPrice = mPrice + (i.price * i.cartQuantity.toInt())
                 mMrp = mMrp + (i.mrp * i. cartQuantity.toInt())
             }
+            if((mMrp - (mMrp - mPrice)) < 699){
+                mShippingCharges = 99
+            }else{
+                mShippingCharges = 0
+            }
+            binding.iteamSize.text = "Your Cart - ${iteamList.size} Items"
             binding.bagPrice.text = mMrp.toString()
             binding.bagDiscount.text = "- ${(mMrp - mPrice)}"
-            binding.totalPrice.text = (mMrp - (mMrp - mPrice)).toString()
-            binding.bottomPrice.text = mPrice.toString()
-            binding.iteamSize.text = "Your Cart - ${iteamList.size} Items"
-            binding.shippingCharges.text = "0"
+            binding.shippingCharges.text = mShippingCharges.toString()
+            binding.totalPrice.text = (mMrp - (mMrp - mPrice) + mShippingCharges).toString()
+            binding.bottomPrice.text = (mMrp - (mMrp - mPrice) + mShippingCharges).toString()
+
+
+
             dialog.dismiss()
         }
 

@@ -22,6 +22,7 @@
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/drawable/dialog_bttomshhet_bg.xml" value="0.1965" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/drawable/edittext_bg.xml" value="0.191" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/drawable/edittext_bg_black.xml" value="0.194" />
+        <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.194" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.1965" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/drawable/ic_baseline_check_24.xml" value="0.1745" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.1965" />
@@ -53,7 +54,8 @@
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/filter_layout.xml" value="0.264" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/fragment_cart.xml" value="0.2" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/fragment_category.xml" value="0.1962962962962963" />
-        <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/fragment_home.xml" value="0.21554601812112542" />
+        <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/fragment_check_out.xml" value="0.264" />
+        <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/fragment_home.xml" value="0.10400000000000001" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/fragment_login.xml" value="0.2" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/fragment_login_otp.xml" value="0.20925925925925926" />
         <entry key="..\:/Users/anilk/AndroidStudioProjects/GayatriLadiesWears/app/src/main/res/layout/fragment_login_passward.xml" value="0.20925925925925926" />

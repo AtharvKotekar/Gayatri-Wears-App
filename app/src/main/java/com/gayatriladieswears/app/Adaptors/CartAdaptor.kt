@@ -12,9 +12,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.gayatriladieswears.app.CheckOutFragment
 import com.gayatriladieswears.app.FirestoreClass
 import com.gayatriladieswears.app.Fragments.CartFragment
 import com.gayatriladieswears.app.Model.CartItem
@@ -27,7 +29,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import kotlin.math.log
 
-class CartAdaptor(private val context: Context,private var fragment: CartFragment,private var list: ArrayList<CartItem>) : RecyclerView.Adapter<CartAdaptor.myViewHolder>() {
+class CartAdaptor(private val context: Context,private var fragment: Fragment,private var list: ArrayList<CartItem>) : RecyclerView.Adapter<CartAdaptor.myViewHolder>() {
 
     class myViewHolder(view: View) : RecyclerView.ViewHolder(view){
         val image = view.findViewById<ImageView>(R.id.cart_image)
@@ -42,6 +44,7 @@ class CartAdaptor(private val context: Context,private var fragment: CartFragmen
         var delete = view.findViewById<ImageView>(R.id.cart_delete)
         var quality = view.findViewById<TextView>(R.id.cart_quantity)
         var stock = view.findViewById<TextView>(R.id.cart_stock_text)
+        var quantity_text = view.findViewById<TextView>(R.id.quantity_text)
 
     }
 
@@ -67,7 +70,6 @@ class CartAdaptor(private val context: Context,private var fragment: CartFragmen
                     if (iteamList[0].stock == 0){
                         holder.stock.visibility = View.VISIBLE
                         holder.stock.text = "Out of Stock"
-                        fragment.outOfStockPresent = true
                         
                     }else if(iteamList[0].stock < 5){
                         holder.stock.visibility = View.VISIBLE
@@ -97,59 +99,65 @@ class CartAdaptor(private val context: Context,private var fragment: CartFragmen
         holder.color.text = model.color
         holder.quality.text = model.cartQuantity
 
+        when(fragment){
+            is CartFragment -> {
 
-        holder.image.setOnClickListener {
-            fragment.dialog.show()
-            FirestoreClass().getProductById(fragment,model.productId,holder)
-        }
+                holder.quantity_text.visibility = View.GONE
+
+                holder.image.setOnClickListener {
+                    (fragment as CartFragment).dialog.show()
+                    FirestoreClass().getProductById(fragment,model.productId,holder)
+                }
+
+                var quantity:Int = model.cartQuantity.toInt()
+                holder.add.setOnClickListener {
+                    quantity++
+                    FirestoreClass().updateCart(fragment,quantity.toString(),model.userId,model.productId)
+                    FirestoreClass().getCartProducts(fragment,model.userId)
+                    (fragment as CartFragment).dialog.show()
+                }
+
+                holder.sub.setOnClickListener {
+                    if(quantity > 1){
+                        quantity--
+                        FirestoreClass().updateCart(fragment,quantity.toString(),model.userId,model.productId)
+                        FirestoreClass().getCartProducts(fragment,model.userId)
+                        (fragment as CartFragment).dialog.show()
+                    }else{
+                        val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "You must have to select at least 1 quantity.", Snackbar.LENGTH_SHORT)
+                        snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                        snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                        snackBar.show()
+                        fragment.vibratePhone()
+                    }
 
 
+                }
 
-
-
-
-
-
-
-
-
-        var quantity:Int = model.cartQuantity.toInt()
-        holder.add.setOnClickListener {
-            quantity++
-            FirestoreClass().updateCart(fragment,quantity.toString(),model.userId,model.productId)
-            FirestoreClass().getCartProducts(fragment,model.userId)
-            fragment.dialog.show()
-        }
-        holder.sub.setOnClickListener {
-            if(quantity > 1){
-                quantity--
-                FirestoreClass().updateCart(fragment,quantity.toString(),model.userId,model.productId)
-                FirestoreClass().getCartProducts(fragment,model.userId)
-                fragment.dialog.show()
-            }else{
-                val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "You must have to select at least 1 quantity.", Snackbar.LENGTH_SHORT)
-                snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
-                snackBar.setTextColor(fragment.resources.getColor(R.color.white))
-                snackBar.show()
-                fragment.vibratePhone()
+                holder.delete.setOnClickListener {
+                    val dialog = MaterialAlertDialogBuilder(context,R.style.AppCompatAlertDialogStyle)
+                    dialog.setTitle("Remove From Bag")
+                    dialog.setMessage("Do you really want to remove ${model.name} from Bag?")
+                    dialog.background = context.resources.getDrawable(R.drawable.black_btn_bg)
+                    dialog.setNegativeButton("Cancel") { dialog, which ->
+                        dialog.dismiss()
+                    }
+                    dialog.setPositiveButton("Remove") { dialog, which ->
+                        FirestoreClass().removeCartProduct(fragment as CartFragment,model.productId,FirebaseAuth.getInstance().currentUser!!.uid)
+                        FirestoreClass().getCartProducts(fragment,FirebaseAuth.getInstance().currentUser!!.uid)
+                    }
+                    dialog.show()
+                }
             }
 
-
-        }
-
-        holder.delete.setOnClickListener {
-            val dialog = MaterialAlertDialogBuilder(context,R.style.AppCompatAlertDialogStyle)
-                dialog.setTitle("Remove From Bag")
-                dialog.setMessage("Do you really want to remove ${model.name} from Bag?")
-                dialog.background = context.resources.getDrawable(R.drawable.black_btn_bg)
-                dialog.setNegativeButton("Cancel") { dialog, which ->
-                    dialog.dismiss()
-                }
-                dialog.setPositiveButton("Remove") { dialog, which ->
-                    FirestoreClass().removeCartProduct(fragment,model.productId,FirebaseAuth.getInstance().currentUser!!.uid)
-                    FirestoreClass().getCartProducts(fragment,FirebaseAuth.getInstance().currentUser!!.uid)
-                }
-                dialog.show()
+            is CheckOutFragment -> {
+                holder.add.visibility = View.GONE
+                holder.sub.visibility = View.GONE
+                holder.delete.visibility = View.GONE
+                holder.quality.visibility = View.GONE
+                holder.quantity_text.text = "Quantity  -  ${model.cartQuantity}"
+                holder.quantity_text.visibility = View.VISIBLE
+            }
         }
 
     }

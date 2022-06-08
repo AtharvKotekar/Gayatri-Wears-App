@@ -116,6 +116,13 @@
             app:exitAnim="@anim/slide_out"
             app:popEnterAnim="@anim/slide_in"
             app:popExitAnim="@anim/slide_out" />
+        <action
+            android:id="@+id/action_orderAddressFragment_to_checkOutFragment"
+            app:destination="@id/checkOutFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/slide_out"
+            app:popEnterAnim="@anim/slide_in"
+            app:popExitAnim="@anim/slide_out" />
     </fragment>
     <fragment
         android:id="@+id/orderAddAdressFragment"
@@ -129,6 +136,20 @@
             app:exitAnim="@anim/slide_out"
             app:popEnterAnim="@anim/slide_in"
             app:popExitAnim="@anim/slide_out"
-            app:popUpTo="@id/orderAddAdressFragment" />
+            app:popUpTo="@id/cartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkOutFragment"
+        android:name="com.gayatriladieswears.app.CheckOutFragment"
+        android:label="fragment_check_out"
+        tools:layout="@layout/fragment_check_out" >
+        <action
+            android:id="@+id/action_checkOutFragment_to_orderAddressFragment"
+            app:destination="@id/orderAddressFragment"
+            app:enterAnim="@anim/slide_out"
+            app:exitAnim="@anim/slide_in"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/slide_in"
+            app:popUpTo="@id/cartFragment" />
     </fragment>
 </navigation>

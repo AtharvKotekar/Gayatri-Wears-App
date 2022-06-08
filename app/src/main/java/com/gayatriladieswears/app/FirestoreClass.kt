@@ -139,6 +139,10 @@ open  class FirestoreClass {
                     is CartFragment -> {
                         fragment.getCartProducts(iteamList)
                     }
+
+                    is CheckOutFragment -> {
+                        fragment.getAllCartProducts(iteamList)
+                    }
                 }
             }
     }

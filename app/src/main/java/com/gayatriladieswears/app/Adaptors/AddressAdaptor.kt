@@ -1,12 +1,14 @@
 package com.gayatriladieswears.app.Adaptors
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.gayatriladieswears.app.FirestoreClass
 import com.gayatriladieswears.app.Fragments.CartFragment
@@ -35,6 +37,7 @@ class AddressAdaptor(private val context: Context, private var fragment: OrderAd
 
     override fun onBindViewHolder(holder: myViewHolder, position: Int) {
         val model = list[position]
+        val bundle = Bundle()
         holder.name.text = model.fullName.toString()
         holder.address.text = model.address.toString()
         holder.tag.text = model.tag.toString()
@@ -46,15 +49,28 @@ class AddressAdaptor(private val context: Context, private var fragment: OrderAd
             dialog.background = context.resources.getDrawable(R.drawable.black_btn_bg)
             dialog.setNegativeButton("Cancel") { dialog, which ->
                 dialog.dismiss()
-            }
+                }
             dialog.setPositiveButton("Remove") { dialog, which ->
                 fragment.dialog.show()
                 FirestoreClass().deleteAddress(fragment,FirebaseAuth.getInstance().currentUser!!.uid,model.id)
                 FirestoreClass().getAddress(fragment,FirebaseAuth.getInstance().currentUser!!.uid)
-            }
+                }
             dialog.show()
+            }
+        holder.itemView.setOnClickListener {
+            bundle.putString("name",model.fullName)
+            bundle.putString("pincode",model.pinCode)
+            bundle.putString("address",model.address)
+            bundle.putString("landmark",model.landMark)
+            bundle.putString("phone",model.phoneNumber)
+            bundle.putString("addressId",model.id)
+            bundle.putString("addressTag",model.tag)
+            holder.itemView.findNavController().navigate(R.id.action_orderAddressFragment_to_checkOutFragment,bundle)
+            }
+
+
         }
-    }
+
 
     override fun getItemCount(): Int {
         return list.size

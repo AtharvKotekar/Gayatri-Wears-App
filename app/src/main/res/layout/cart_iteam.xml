@@ -216,6 +216,19 @@
                 app:layout_constraintEnd_toStartOf="@+id/cart_delete"
                 app:layout_constraintStart_toEndOf="@+id/cart_size" />
 
+            <TextView
+                android:id="@+id/quantity_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="4dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Quantity  -  1"
+                android:textColor="@color/black"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/textView38"
+                app:layout_constraintStart_toEndOf="@+id/cardView4" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

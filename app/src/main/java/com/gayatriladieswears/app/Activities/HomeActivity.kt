@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -20,8 +21,9 @@ import com.gayatriladieswears.app.R
 import com.gayatriladieswears.app.databinding.ActivityHomeBinding
 import com.gayatriladieswears.app.getData
 import com.google.firebase.auth.FirebaseAuth
+import com.razorpay.PaymentResultListener
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), PaymentResultListener {
 
     lateinit var binding:ActivityHomeBinding
     private lateinit var navController: NavController
@@ -122,7 +124,14 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
+    override fun onPaymentSuccess(p0: String?) {
+        Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
+    }
 
+    override fun onPaymentError(p0: Int, p1: String?) {
+        Toast.makeText(this, "Failed $p1", Toast.LENGTH_SHORT).show()
+        Log.e(TAG, "onPaymentError: $p1", )
+    }
 
 
 }

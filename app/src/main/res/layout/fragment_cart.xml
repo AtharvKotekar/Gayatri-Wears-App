@@ -26,7 +26,7 @@
                 android:id="@+id/back_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:visibility="visible"
@@ -106,13 +106,15 @@
 
             </androidx.recyclerview.widget.RecyclerView>
 
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/price_summary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view15">
 
@@ -250,7 +252,6 @@
                     app:layout_constraintStart_toStartOf="@+id/shipping_charges" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
             <View
                 android:id="@+id/view15"
                 android:layout_width="0dp"
@@ -288,8 +289,10 @@
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view16">
+                app:layout_constraintTop_toBottomOf="@+id/view16"
+                app:layout_constraintVertical_bias="0.0">
 
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -297,9 +300,9 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="4dp"
                     android:background="@drawable/btn_pink_bg"
                     android:fontFamily="@font/roboto_medium"
                     android:text="Place Order"
@@ -373,10 +376,10 @@
                 android:id="@+id/shop_btn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="24dp"
-                android:background="@drawable/btn_pink_bg"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/black_btn_bg"
                 android:text="Shop"
                 android:textAllCaps="false"
                 android:textColor="@color/offWhite"
