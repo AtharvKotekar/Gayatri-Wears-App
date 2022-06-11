@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth
 class OrderAddressFragment : Fragment() {
     lateinit var dialog:Dialog
     private lateinit var binding: FragmentOrderAddressBinding
+    var fromProfile:Boolean = false
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -28,6 +29,8 @@ class OrderAddressFragment : Fragment() {
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.setCancelable(false)
         dialog.show()
+
+        fromProfile = arguments?.getBoolean("fromProfile") == true
 
 
 

@@ -70,6 +70,12 @@ class CartAdaptor(private val context: Context,private var fragment: Fragment,pr
                     if (iteamList[0].stock == 0){
                         holder.stock.visibility = View.VISIBLE
                         holder.stock.text = "Out of Stock"
+
+                        when(fragment){
+                            is CartFragment -> {
+                                (fragment as CartFragment).outOfStockPresent = true
+                            }
+                        }
                         
                     }else if(iteamList[0].stock < 5){
                         holder.stock.visibility = View.VISIBLE

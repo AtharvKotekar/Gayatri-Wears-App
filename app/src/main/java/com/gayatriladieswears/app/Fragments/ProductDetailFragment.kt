@@ -137,15 +137,24 @@ class ProductDetailFragment : Fragment() {
         }
 
         binding.addToBagBtn.setOnClickListener{
-            if(binding.chipGroup.checkedChipIds.isEmpty()){
-                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Please select the size", Snackbar.LENGTH_LONG)
+            if(stock == "0"){
+                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Sorry this product is out of stock.", Snackbar.LENGTH_LONG)
                 snackBar.setBackgroundTint(resources.getColor(R.color.red))
                 snackBar.setTextColor(resources.getColor(R.color.white))
                 snackBar.show()
                 vibratePhone()
             }else{
-                FirestoreClass().checkProductExistInCart(this,id,auth.currentUser!!.uid)
+                if(binding.chipGroup.checkedChipIds.isEmpty()){
+                    val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Please select the size", Snackbar.LENGTH_LONG)
+                    snackBar.setBackgroundTint(resources.getColor(R.color.red))
+                    snackBar.setTextColor(resources.getColor(R.color.white))
+                    snackBar.show()
+                    vibratePhone()
+                }else{
+                    FirestoreClass().checkProductExistInCart(this,id,auth.currentUser!!.uid)
+                }
             }
+
 
         }
 

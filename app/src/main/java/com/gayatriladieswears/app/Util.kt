@@ -10,9 +10,13 @@ import android.os.Vibrator
 import android.view.View
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavOptions
 import com.gayatriladieswears.app.Fragments.HomeFragment
 import com.google.firebase.auth.*
+
+val FragmentManager.currentNavigationFragment: Fragment?
+    get() = primaryNavigationFragment?.childFragmentManager?.fragments?.first()
 
 
 fun Fragment.vibratePhone() {

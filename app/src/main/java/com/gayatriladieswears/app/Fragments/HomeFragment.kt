@@ -4,12 +4,16 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ScrollView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -26,6 +30,7 @@ import com.gayatriladieswears.app.Model.Sizes
 import com.gayatriladieswears.app.ViewModel.HomeViewModel
 import com.gayatriladieswears.app.ViewModel.HomeViewModelFactory
 import com.gayatriladieswears.app.databinding.FragmentHomeBinding
+import com.google.firebase.auth.FirebaseAuth
 
 
 class HomeFragment : Fragment() {
@@ -35,8 +40,8 @@ class HomeFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentHomeBinding.inflate(inflater,container,false)
-
         binding.scrollView2.smoothScrollBy(0,0)
+
 
         binding.shimmerViewContainerTopCategory.visibility = View.VISIBLE
         binding.shimmerViewContainerTopCategory.startShimmer()
@@ -54,6 +59,40 @@ class HomeFragment : Fragment() {
         dialog.show()
 
         getData(this)
+        FirestoreClass().mFirestore.collection("users").whereEqualTo("id",FirebaseAuth.getInstance().currentUser?.uid).get()
+            .addOnSuccessListener {
+                for (i in it.documents){
+                    binding.navDrawer.getHeaderView(0).findViewById<TextView>(R.id.name_text).text = (i.getString("firstName")+" "+i.getString("lastName")).toString()
+                }
+            }
+
+        binding.navDrawer.setNavigationItemSelectedListener { menuIteam ->
+            when(menuIteam.itemId){
+                 R.id.home -> {
+                     binding.drawerLayout.close()
+                 }
+                R.id.cart -> {
+                    binding.drawerLayout.close()
+                    findNavController().navigate(R.id.cartFragment)
+                }
+                R.id.orders -> {
+                    binding.drawerLayout.close()
+                    findNavController().navigate(R.id.orderFragment)
+                }
+                else -> {
+                    Toast.makeText(requireContext(), "Tanda ni n nane nare n nanu nare narne no", Toast.LENGTH_SHORT).show()
+                }
+            }
+            true
+        }
+
+
+
+        binding.menu.setOnClickListener {
+            binding.drawerLayout?.open()
+        }
+
+
 
         binding.cartBtn.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_cartFragment)

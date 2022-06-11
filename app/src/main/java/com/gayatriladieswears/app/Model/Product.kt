@@ -13,7 +13,7 @@ class Product (
     val mrp:Int = 0,
     val deal:String = "",
     val id:String = "",
-    val stock:Int = 0,
+    var stock:Int = 0,
     val tag:ArrayList<String> = ArrayList(),
     val size:ArrayList<String> = ArrayList()
 

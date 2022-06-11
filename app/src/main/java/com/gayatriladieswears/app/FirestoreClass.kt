@@ -49,6 +49,31 @@ open  class FirestoreClass {
 
     }
 
+
+
+
+    fun getOrderedProducts(fragment: Fragment){
+        val productList:ArrayList<Order> = ArrayList()
+        mFirestore.collection("Orders")
+            .whereEqualTo("userId",FirebaseAuth.getInstance().currentUser!!.uid)
+            .get()
+            .addOnSuccessListener {doucument ->
+                for (i in doucument.documents){
+                    val iteam = i.toObject(Order::class.java)!!
+                    productList.add(iteam)
+                }
+                    when(fragment){
+                        is OrderFragment -> {
+                            fragment.getProducts(productList)
+                        }
+                    }
+
+            }
+    }
+
+
+
+
     fun addAddress(fragment: Fragment,addressInfo:Address){
         mFirestore.collection("Address")
             .document()
@@ -147,7 +172,7 @@ open  class FirestoreClass {
             }
     }
 
-    fun removeCartProduct(fragment: CartFragment,productId: String,userId: String){
+    fun removeCartProduct(fragment: Fragment,productId: String,userId: String){
         mFirestore.collection("Cart")
             .document(userId+productId)
             .delete()
@@ -1006,6 +1031,7 @@ open  class FirestoreClass {
 
     fun getTopCategories(fragment: HomeFragment) {
         mFirestore.collection("Top Categories")
+            .orderBy("name",Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { document ->
                 Log.i(TAG, "getTopCategories: ${document.documents.toString()}")
