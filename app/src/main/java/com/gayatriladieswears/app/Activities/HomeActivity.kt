@@ -140,6 +140,16 @@ class HomeActivity : AppCompatActivity(),PaymentResultListener{
                 )
 
             }
+
+            else if(destination.label == "fragment_search_fragment"){
+                val handler = Handler()
+                handler.postDelayed(
+                    Runnable {
+                        binding.bottomNav.visibility = View.GONE
+                    },100
+                )
+
+            }
         }
 
     }

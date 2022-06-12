@@ -38,6 +38,10 @@ class OrderFragment : Fragment() {
             }
         }
 
+        binding.shopBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_orderFragment_to_homeFragment)
+        }
+
         return binding.root
     }
 

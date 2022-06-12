@@ -43,7 +43,8 @@ import com.google.firebase.firestore.Query
 
 class ShopingFragment : Fragment() {
 
-
+    private var fromSearch:Boolean = false
+    private var searchQuery:String = ""
     private lateinit var from:String
     private lateinit var title:String
     private lateinit var mAdaptor: ProductsAdaptor
@@ -75,16 +76,38 @@ class ShopingFragment : Fragment() {
         binding.shimmerViewShopping.startShimmer()
 
 
+        fromSearch = arguments?.getBoolean("fromSearch") == true
+        searchQuery = arguments?.getString("searchQuery").toString()
+
+
         from = arguments?.getString("from").toString()
         title = arguments?.getString("title").toString()
-        binding.reasultNameText.text = "${from.capitalize()} - $title"
-        FirestoreClass().getSpecifyProducts(this,from,title)
+
+
+
+        if(fromSearch){
+            binding.reasultNameText.text = "Results for - $searchQuery"
+            FirestoreClass().getSearchReasults(this,searchQuery.lowercase())
+        }else{
+            binding.reasultNameText.text = "${from.capitalize()} - $title"
+            FirestoreClass().getSpecifyProducts(this,from,title)
+        }
+
+        binding.searchBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_shopingFragment_to_searchFrsgment)
+        }
+
+
 
         binding.backBtn.setOnClickListener {
             if (findNavController().currentDestination?.id == R.id.shopingFragment) {
                 activity?.onBackPressed()
             }
 
+        }
+
+        binding.shopMoreBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_shopingFragment_to_homeFragment)
         }
 
         binding.cartBtn.setOnClickListener {

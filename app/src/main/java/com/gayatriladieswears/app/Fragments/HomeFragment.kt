@@ -92,6 +92,17 @@ class HomeFragment : Fragment() {
             binding.drawerLayout?.open()
         }
 
+        binding.editTextTextPersonName.setOnClickListener{
+            findNavController().navigate(R.id.action_homeFragment_to_searchFrsgment)
+
+        }
+
+        binding.button3.setOnClickListener {
+            binding.scrollView2.smoothScrollTo(0,0)
+        }
+
+
+
 
 
         binding.cartBtn.setOnClickListener {

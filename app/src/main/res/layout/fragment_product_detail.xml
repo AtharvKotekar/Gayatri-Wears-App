@@ -653,52 +653,6 @@
                 </androidx.cardview.widget.CardView>
 
                 <View
-                    android:id="@+id/view13"
-                    android:layout_width="0dp"
-                    android:layout_height="10dp"
-                    android:layout_marginTop="16dp"
-                    android:background="@color/white"
-                    android:backgroundTint="@color/white"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/add_to_bag_btn_sticky" />
-
-                <TextView
-                    android:id="@+id/textView52"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="Check Delivery"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view13" />
-
-                <EditText
-                    android:id="@+id/editTextTextPersonName2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/pincode_check_bg"
-                    android:ems="10"
-                    android:hint="Enter Pincode"
-                    android:inputType="number"
-                    android:maxLength="6"
-                    android:padding="12dp"
-                    android:paddingStart="16dp"
-                    android:textColor="@color/offWhite"
-                    android:textColorHint="@color/offWhite2"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.382"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView52" />
-
-                <View
                     android:id="@+id/view14"
                     android:layout_width="0dp"
                     android:layout_height="10dp"
@@ -706,7 +660,7 @@
                     android:background="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
+                    app:layout_constraintTop_toBottomOf="@+id/add_to_bag_btn_sticky" />
 
                 <TextView
                     android:id="@+id/textView53"

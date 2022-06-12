@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
+import com.google.firebase.firestore.ktx.getField
 import com.google.firebase.firestore.ktx.toObject
 
 
@@ -34,9 +35,11 @@ open  class FirestoreClass {
             .addOnSuccessListener {
                 progressBar.visibility = View.GONE
                 fragment.requireActivity().run {
+                    val emptyCache = Cache()
                     val intent = Intent(this, HomeActivity::class.java)
                     startActivity(intent)
                     finish()
+                    addEmptyCache(emptyCache)
                 }
 
 
@@ -47,6 +50,49 @@ open  class FirestoreClass {
 
             }
 
+    }
+
+    fun addEmptyCache(cache: Cache){
+        mFirestore.collection("Cache")
+            .document(FirebaseAuth.getInstance().currentUser!!.uid)
+            .set(cache, SetOptions.merge())
+    }
+
+    fun getRecentSearches(frsgment: SearchFrsgment){
+        var array = ArrayList<String>()
+        mFirestore.collection("Cache")
+            .document(FirebaseAuth.getInstance().currentUser!!.uid)
+            .get()
+            .addOnSuccessListener {
+                array = it.get("recentSearches") as ArrayList<String>
+                frsgment.getRecentSearches(array)
+                }
+            }
+
+
+
+    fun addtorecentSearch(fragment: Fragment,search: String){
+        mFirestore.collection("Cache")
+            .document(FirebaseAuth.getInstance().currentUser!!.uid)
+            .update("recentSearches",FieldValue.arrayUnion(search))
+    }
+
+    fun getSearchReasults(fragment: Fragment,search:String) {
+        mFirestore.collection("Products")
+            .whereArrayContains("keywords", search.trim())
+            .get()
+            .addOnSuccessListener { document ->
+                val iteamList: ArrayList<Product> = ArrayList()
+                for (i in document.documents) {
+                    val iteam = i.toObject(Product::class.java)
+                    iteamList.add(iteam!!)
+                }
+                when (fragment) {
+                    is ShopingFragment -> {
+                        fragment.getProducts(iteamList)
+                    }
+                }
+            }
     }
 
 
@@ -1102,11 +1148,12 @@ open  class FirestoreClass {
                 fragment.getDeals(iteamList)
             }
     }
+    }
 
 
 
 
-}
+
 
 
 

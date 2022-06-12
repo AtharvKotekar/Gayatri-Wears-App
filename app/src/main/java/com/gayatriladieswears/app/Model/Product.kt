@@ -15,7 +15,6 @@ class Product (
     val id:String = "",
     var stock:Int = 0,
     val tag:ArrayList<String> = ArrayList(),
-    val size:ArrayList<String> = ArrayList()
-
-
+    val size:ArrayList<String> = ArrayList(),
+    val keywords:ArrayList<String> = ArrayList()
     )

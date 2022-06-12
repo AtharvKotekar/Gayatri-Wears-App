@@ -60,10 +60,19 @@ class OrderAddressFragment : Fragment() {
     }
 
     fun getAddressList(addressList: ArrayList<Address>) {
-        val adaptor = AddressAdaptor(requireContext(),this@OrderAddressFragment,addressList)
-        binding.recyclerView.adapter = adaptor
-        binding.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
-        dialog.dismiss()
+        if (addressList.isEmpty()){
+            binding.emptyAddressText.visibility = View.VISIBLE
+            binding.recyclerView.visibility = View.INVISIBLE
+            dialog.dismiss()
+        }else{
+            binding.emptyAddressText.visibility = View.GONE
+            binding.recyclerView.visibility = View.VISIBLE
+            val adaptor = AddressAdaptor(requireContext(),this@OrderAddressFragment,addressList)
+            binding.recyclerView.adapter = adaptor
+            binding.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
+            dialog.dismiss()
+        }
+
     }
 
 

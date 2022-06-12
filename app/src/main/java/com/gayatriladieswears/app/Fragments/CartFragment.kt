@@ -46,6 +46,10 @@ class CartFragment : Fragment() {
             binding.ScrollView.smoothScrollBy(10000,10000,1000)
         }
 
+        binding.shopBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_cartFragment_to_homeFragment)
+        }
+
         binding.backBtn.setOnClickListener {
             if (findNavController().currentDestination?.id == R.id.cartFragment) {
                 activity?.onBackPressed()
