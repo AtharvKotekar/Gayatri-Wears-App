@@ -1,4 +1,4 @@
-package com.gayatriladieswears.app
+package com.gayatriladieswears.app.Fragments
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.gayatriladieswears.app.databinding.FragmentCheckOutBinding
+import com.gayatriladieswears.app.R
 import com.gayatriladieswears.app.databinding.FragmentPaymentSuccessBinding
 
 class PaymentSuccessFragment : Fragment() {
@@ -23,7 +23,7 @@ class PaymentSuccessFragment : Fragment() {
             findNavController().navigate(R.id.action_paymentSuccessFragment_to_orderFragment)
         }
 
-        var  mediaPlayer = MediaPlayer.create(requireContext(),R.raw.payment_success_sound)
+        var  mediaPlayer = MediaPlayer.create(requireContext(), R.raw.payment_success_sound)
         mediaPlayer.start()
         return binding.root
     }

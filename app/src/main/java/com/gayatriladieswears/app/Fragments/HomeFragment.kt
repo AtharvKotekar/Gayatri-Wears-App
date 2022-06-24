@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,20 +28,22 @@ import com.gayatriladieswears.app.Model.Deal
 import com.gayatriladieswears.app.Model.Info
 import com.gayatriladieswears.app.Model.Product
 import com.gayatriladieswears.app.Model.Sizes
-import com.gayatriladieswears.app.ViewModel.HomeViewModel
-import com.gayatriladieswears.app.ViewModel.HomeViewModelFactory
 import com.gayatriladieswears.app.databinding.FragmentHomeBinding
 import com.google.firebase.auth.FirebaseAuth
 
 
 class HomeFragment : Fragment() {
     private lateinit var binding:FragmentHomeBinding
-    private lateinit var dialog:Dialog
+    lateinit var dialog:Dialog
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentHomeBinding.inflate(inflater,container,false)
         binding.scrollView2.smoothScrollBy(0,0)
+
+
+
+
 
 
         binding.shimmerViewContainerTopCategory.visibility = View.VISIBLE

@@ -113,23 +113,6 @@ class SearchFrsgment : Fragment() {
 
     }
 
-    fun generateKeywords(name: String): ArrayList<String> {
-        val keywords = ArrayList<String>()
-        for (i in 0 until name.length) {
-            for (j in (i+1)..name.length) {
-                keywords.add(name.slice(i until j))
-            }
-        }
-        return keywords
-    }
-
-
-    fun addKeyword(name:String){
-        FirestoreClass().mFirestore.collection("Products")
-            .document(name)
-            .update("keywords",generateKeywords(name.lowercase()))
-    }
-
 
     fun AutoCompleteTextView.afterTextChangedDelayed(afterTextChanged: (String) -> Unit) {
         this.addTextChangedListener(object : TextWatcher {

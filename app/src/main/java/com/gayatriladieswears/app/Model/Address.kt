@@ -8,5 +8,7 @@ data class Address(
     val landMark:String = "",
     val tag:String = "",
     val userId:String = "",
+    var emailID:String = "",
     var id:String = ""
+
 )

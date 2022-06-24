@@ -1,7 +1,11 @@
 package com.gayatriladieswears.app.Model
 
+import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 
+@Parcelize
 class Order(
     var name: String,
     var tag: String,
@@ -15,13 +19,20 @@ class Order(
     var transactionId:String,
     var amout:Int,
     var orderId:String,
-    var orderStatus:String,
     var date:String,
     var courierId:String,
-    var totalQuantity:String
-){
+    var totalQuantity:String,
+    var email:String,
+): Parcelable {
     constructor():this("","","","","","","","",
         ArrayList(),"",-1,"","","","","")
 }
+
+
+data class CancelOrder(
+    @SerializedName("ids")var ids:ArrayList<Int>
+)
+
+
 
 

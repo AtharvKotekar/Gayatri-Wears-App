@@ -15,6 +15,7 @@ import com.gayatriladieswears.app.Model.User
 import com.gayatriladieswears.app.R
 import com.gayatriladieswears.app.databinding.FragmentSignupOtpBinding
 import com.gayatriladieswears.app.vibratePhone
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.*
 
 
@@ -107,7 +108,11 @@ class SignupOtpFragment : Fragment() {
 
                         binding.imageView4.visibility = View.VISIBLE
                         binding.progressBarLinear.visibility = View.GONE
-                        Toast.makeText(context,"Invalid OTP", Toast.LENGTH_SHORT).show()
+                        val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Invalid OTP", Snackbar.LENGTH_LONG)
+                        snackBar.setBackgroundTint(resources.getColor(R.color.red))
+                        snackBar.setTextColor(resources.getColor(R.color.white))
+                        snackBar.show()
+                        vibratePhone()
                     }
                 }
             }

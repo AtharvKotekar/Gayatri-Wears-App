@@ -26,6 +26,7 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:usesCleartextTraffic="true"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.GayatriLadiesWears"
@@ -80,7 +81,7 @@
 
         <meta-data
             android:name="com.razorpay.ApiKey"
-            android:value="rzp_test_DHlYWw0aTc4Usu" />
+            android:value="rzp_test_UycbPQ6jdLTJtd" />
 
 
 

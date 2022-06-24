@@ -205,7 +205,7 @@
     </fragment>
     <fragment
         android:id="@+id/checkOutFragment"
-        android:name="com.gayatriladieswears.app.CheckOutFragment"
+        android:name="com.gayatriladieswears.app.Fragments.CheckOutFragment"
         android:label="fragment_check_out"
         tools:layout="@layout/fragment_check_out" >
         <action
@@ -228,7 +228,7 @@
     </fragment>
     <fragment
         android:id="@+id/paymentSuccessFragment"
-        android:name="com.gayatriladieswears.app.PaymentSuccessFragment"
+        android:name="com.gayatriladieswears.app.Fragments.PaymentSuccessFragment"
         android:label="fragment_payment_success"
         tools:layout="@layout/fragment_payment_success" >
         <action
@@ -242,7 +242,7 @@
     </fragment>
     <fragment
         android:id="@+id/orderFragment"
-        android:name="com.gayatriladieswears.app.OrderFragment"
+        android:name="com.gayatriladieswears.app.Fragments.OrderFragment"
         android:label="fragment_order"
         tools:layout="@layout/fragment_order" >
         <action
@@ -254,6 +254,13 @@
             app:popExitAnim="@anim/slide_out"
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_orderFragment_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/slide_out"
+            app:popEnterAnim="@anim/slide_in"
+            app:popExitAnim="@anim/slide_out" />
     </fragment>
     <fragment
         android:id="@+id/searchFrsgment"
@@ -267,5 +274,20 @@
             app:exitAnim="@anim/slide_out"
             app:popEnterAnim="@anim/slide_in"
             app:popExitAnim="@anim/slide_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderDetailFragment"
+        android:name="com.gayatriladieswears.app.Adaptors.OrderDetailFragment"
+        android:label="fragment_order_detail"
+        tools:layout="@layout/fragment_order_detail" >
+        <action
+            android:id="@+id/action_orderDetailFragment_to_orderFragment"
+            app:destination="@id/orderFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/slide_out"
+            app:popEnterAnim="@anim/slide_in"
+            app:popExitAnim="@anim/slide_out"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

@@ -1,33 +1,25 @@
 package com.gayatriladieswears.app.Adaptors
 
-import android.app.Dialog
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.graphics.Paint
-import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.gayatriladieswears.app.CheckOutFragment
+import com.gayatriladieswears.app.Fragments.CheckOutFragment
 import com.gayatriladieswears.app.FirestoreClass
 import com.gayatriladieswears.app.Fragments.CartFragment
 import com.gayatriladieswears.app.Model.CartItem
-import com.gayatriladieswears.app.Model.Info
 import com.gayatriladieswears.app.Model.Product
 import com.gayatriladieswears.app.R
 import com.gayatriladieswears.app.vibratePhone
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import kotlin.math.log
 
 class CartAdaptor(private val context: Context,private var fragment: Fragment,private var list: ArrayList<CartItem>) : RecyclerView.Adapter<CartAdaptor.myViewHolder>() {
 
@@ -157,6 +149,15 @@ class CartAdaptor(private val context: Context,private var fragment: Fragment,pr
             }
 
             is CheckOutFragment -> {
+                holder.add.visibility = View.GONE
+                holder.sub.visibility = View.GONE
+                holder.delete.visibility = View.GONE
+                holder.quality.visibility = View.GONE
+                holder.quantity_text.text = "Quantity  -  ${model.cartQuantity}"
+                holder.quantity_text.visibility = View.VISIBLE
+            }
+
+            is OrderDetailFragment -> {
                 holder.add.visibility = View.GONE
                 holder.sub.visibility = View.GONE
                 holder.delete.visibility = View.GONE

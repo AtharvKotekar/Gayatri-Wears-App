@@ -60,14 +60,21 @@ class OrderAddAdressFragment : Fragment() {
                                 binding.landMark.setHintTextColor(resources.getColor(R.color.red))
                                 vibratePhone()
                             }else{
+                                if(binding.email.text.toString() == ""){
+                                    binding.email.hint = "Please enter Email"
+                                    binding.email.setHintTextColor(resources.getColor(R.color.red))
+                                    vibratePhone()
 
-                                val tag = binding.radioGroup.findViewById<RadioButton>(binding.radioGroup.checkedRadioButtonId).text.toString()
+                                }else{
+                                    val tag = binding.radioGroup.findViewById<RadioButton>(binding.radioGroup.checkedRadioButtonId).text.toString()
 
-                                val addressModel = Address(
-                                    binding.fullName.text.toString(),binding.phoneNumber.text.toString(),
-                                    binding.pincode.text.toString(),binding.address.text.toString(),binding.landMark.text.toString(),tag,FirebaseAuth.getInstance().currentUser!!.uid.toString())
-                                FirestoreClass().addAddress(this,addressModel)
-                                findNavController().navigate(R.id.action_orderAddAdressFragment_to_orderAddressFragment)
+                                    val addressModel = Address(
+                                        binding.fullName.text.toString(),binding.phoneNumber.text.toString(),
+                                        binding.pincode.text.toString(),binding.address.text.toString(),binding.landMark.text.toString(),tag,FirebaseAuth.getInstance().currentUser!!.uid.toString(),binding.email.text.toString())
+                                    FirestoreClass().addAddress(this,addressModel)
+                                    findNavController().navigate(R.id.action_orderAddAdressFragment_to_orderAddressFragment)
+                                }
+
 
                             }
                         }

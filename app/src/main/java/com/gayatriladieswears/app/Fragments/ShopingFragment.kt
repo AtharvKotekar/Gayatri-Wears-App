@@ -56,7 +56,7 @@ class ShopingFragment : Fragment() {
     private lateinit var listChipOccasion:ArrayList<Chip>
     private lateinit var filterListColor:MutableList<String>
     private lateinit var binding:FragmentShopingBinding
-    private lateinit var mDialog:Dialog
+    lateinit var mDialog:Dialog
     private lateinit var alc:ArrayList<CheckBox>
     private var filterListSize:String = ""
     private var filterPrice:Int = 0

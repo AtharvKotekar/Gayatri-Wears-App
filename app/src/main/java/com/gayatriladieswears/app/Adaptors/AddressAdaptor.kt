@@ -69,6 +69,7 @@ class AddressAdaptor(private val context: Context, private var fragment: OrderAd
                 bundle.putString("phone",model.phoneNumber)
                 bundle.putString("addressId",model.id)
                 bundle.putString("addressTag",model.tag)
+                bundle.putString("email",model.emailID)
                 holder.itemView.findNavController().navigate(R.id.action_orderAddressFragment_to_checkOutFragment,bundle)
             }
             }

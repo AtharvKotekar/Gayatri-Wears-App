@@ -1,5 +1,9 @@
 package com.gayatriladieswears.app.Model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class CartItem(
     val productId:String = "",
     val userId:String = "",
@@ -11,4 +15,4 @@ data class CartItem(
     val cartQuantity:String = "",
     val name:String = "",
     val dis:String = ""
-)
+): Parcelable

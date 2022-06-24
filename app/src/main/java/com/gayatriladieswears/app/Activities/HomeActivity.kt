@@ -9,14 +9,12 @@ import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupWithNavController
-import com.gayatriladieswears.app.CheckOutFragment
+import com.gayatriladieswears.app.Fragments.CheckOutFragment
 import com.gayatriladieswears.app.currentNavigationFragment
 import com.gayatriladieswears.app.databinding.ActivityHomeBinding
 import com.google.firebase.auth.FirebaseAuth

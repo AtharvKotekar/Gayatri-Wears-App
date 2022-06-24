@@ -82,8 +82,6 @@ class LoginOtpFragment : Fragment() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(LoginActivity()) { task ->
                 if (task.isSuccessful) {
-
-
                     binding.progressBarLinear.visibility = View.GONE
 
                         requireActivity().run {
@@ -92,12 +90,9 @@ class LoginOtpFragment : Fragment() {
                             finish()
                         }
 
-// ...
                 } else {
 
-// Sign in failed, display a message and update the UI
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
-// The verification code entered was invalid
                         binding.progressBarLinear.visibility = View.GONE
                         binding.imageView4.visibility = View.VISIBLE
                         removePhoneKeypad()

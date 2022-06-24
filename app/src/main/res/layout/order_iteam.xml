@@ -41,23 +41,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Order Id  -  "
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/order_date_text" />
 
             <TextView
                 android:id="@+id/order_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
-                android:text="9jomkNrq7gYFRCq6rDd5NHW3vJ83_2022-06-10_15:10:20"
+                android:text="228792020"
                 android:textColor="@color/black"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@+id/textView56"
-                app:layout_constraintTop_toBottomOf="@+id/textView56" />
+                android:textSize="18sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/textView56"
+                app:layout_constraintStart_toEndOf="@+id/textView56" />
 
             <TextView
                 android:id="@+id/textView58"
@@ -127,7 +127,7 @@
                 android:fontFamily="@font/roboto_medium"
                 android:text="pay_JfkICJXRLxW1IC"
                 android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textSize="16sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView62"
                 app:layout_constraintStart_toEndOf="@+id/textView62" />
 
@@ -136,8 +136,8 @@
                 android:id="@+id/order_track_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/black_btn_bg"
                 android:paddingStart="30dp"
@@ -147,19 +147,10 @@
                 android:textColor="@color/offWhite"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView62"
                 tools:ignore="TouchTargetSizeCheck" />
 
-            <TextView
-                android:id="@+id/order_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
-                android:text="TextView"
-                android:textColor="@color/green"
-                app:layout_constraintBaseline_toBaselineOf="@+id/order_track_btn"
-                app:layout_constraintEnd_toEndOf="@+id/order_date_text" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

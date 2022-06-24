@@ -1,23 +1,18 @@
 package com.gayatriladieswears.app
-import android.annotation.SuppressLint
-import android.app.Dialog
 import android.content.ContentValues.TAG
 import android.content.Intent
-import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import com.gayatriladieswears.app.Activities.HomeActivity
 import com.gayatriladieswears.app.Adaptors.CartAdaptor
+import com.gayatriladieswears.app.Adaptors.OrderDetailFragment
 import com.gayatriladieswears.app.Fragments.*
 import com.gayatriladieswears.app.Model.*
-import com.google.android.gms.tasks.Task
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
-import com.google.firebase.firestore.ktx.getField
-import com.google.firebase.firestore.ktx.toObject
 
 
 open  class FirestoreClass {
@@ -46,11 +41,33 @@ open  class FirestoreClass {
             }
             .addOnFailureListener {
                 progressBar.visibility = View.GONE
-                Log.i(TAG, "register: Failed")
-
+                val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Register Failed : ${it.localizedMessage}", Snackbar.LENGTH_LONG)
+                snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                snackBar.show()
+                fragment.vibratePhone()
             }
 
     }
+
+    fun getOrderDetailProducts(fragment: Fragment,orderId:String){
+        mFirestore.collection("Orders").
+                whereEqualTo("orderId",orderId)
+            .get()
+            .addOnSuccessListener {document ->
+                val iteamList: ArrayList<Order> = ArrayList()
+                for (i in document.documents) {
+                    val iteam = i.toObject(Order::class.java)
+                    iteamList.add(iteam!!)
+                }
+                when (fragment){
+                    is OrderDetailFragment -> {
+                        fragment.getOrderedProducts(iteamList)
+                    }
+                }
+            }
+    }
+
 
     fun addEmptyCache(cache: Cache){
         mFirestore.collection("Cache")
@@ -58,15 +75,23 @@ open  class FirestoreClass {
             .set(cache, SetOptions.merge())
     }
 
-    fun getRecentSearches(frsgment: SearchFrsgment){
+    fun getRecentSearches(fragment: SearchFrsgment){
         var array = ArrayList<String>()
         mFirestore.collection("Cache")
             .document(FirebaseAuth.getInstance().currentUser!!.uid)
             .get()
             .addOnSuccessListener {
                 array = it.get("recentSearches") as ArrayList<String>
-                frsgment.getRecentSearches(array)
+                fragment.getRecentSearches(array)
                 }
+            .addOnFailureListener {
+                        val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                        snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                        snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                        snackBar.show()
+                        fragment.vibratePhone()
+
+            }
             }
 
 
@@ -75,6 +100,7 @@ open  class FirestoreClass {
         mFirestore.collection("Cache")
             .document(FirebaseAuth.getInstance().currentUser!!.uid)
             .update("recentSearches",FieldValue.arrayUnion(search))
+
     }
 
     fun getSearchReasults(fragment: Fragment,search:String) {
@@ -93,6 +119,17 @@ open  class FirestoreClass {
                     }
                 }
             }
+            .addOnFailureListener {
+                when(fragment){
+                    is SearchFrsgment -> {
+                        val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                        snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                        snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                        snackBar.show()
+                        fragment.vibratePhone()
+                    }
+                }
+            }
     }
 
 
@@ -101,6 +138,7 @@ open  class FirestoreClass {
     fun getOrderedProducts(fragment: Fragment){
         val productList:ArrayList<Order> = ArrayList()
         mFirestore.collection("Orders")
+            .orderBy("orderId",Query.Direction.DESCENDING)
             .whereEqualTo("userId",FirebaseAuth.getInstance().currentUser!!.uid)
             .get()
             .addOnSuccessListener {doucument ->
@@ -113,7 +151,18 @@ open  class FirestoreClass {
                             fragment.getProducts(productList)
                         }
                     }
-
+            }
+            .addOnFailureListener {
+                when(fragment){
+                    is OrderFragment -> {
+                        val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                        snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                        snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                        snackBar.show()
+                        fragment.vibratePhone()
+                        fragment.dialog.dismiss()
+                    }
+                }
             }
     }
 
@@ -126,7 +175,17 @@ open  class FirestoreClass {
             .set(addressInfo, SetOptions.merge())
             .addOnSuccessListener { document ->
                 mFirestore.collection("Address")
-
+            }
+            .addOnFailureListener {
+                when(fragment){
+                    is OrderAddAdressFragment -> {
+                        val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                        snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                        snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                        snackBar.show()
+                        fragment.vibratePhone()
+                    }
+                }
             }
     }
 
@@ -145,16 +204,36 @@ open  class FirestoreClass {
                     addressList.add(address)
                     mFirestore.collection("Address").document(address.id).update("id",address.id.toString())
                 }
-
                 fragment.getAddressList(addressList)
             }
-    }
+            .addOnFailureListener {
+                        val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                        snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                        snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                        snackBar.show()
+                        fragment.vibratePhone()
+                        fragment.dialog.dismiss()
+
+                }
+            }
 
     fun deleteAddress(fragment: Fragment,userId: String,id: String){
         mFirestore.collection("Address")
             .document(id)
             .delete()
             .addOnSuccessListener {
+            }
+            .addOnFailureListener {
+                when(fragment){
+                    is OrderAddressFragment -> {
+                        val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                        snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                        snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                        snackBar.show()
+                        fragment.vibratePhone()
+                        fragment.dialog.dismiss()
+                    }
+                }
             }
     }
 
@@ -164,6 +243,19 @@ open  class FirestoreClass {
         mFirestore.collection("Cart")
             .document(userId+productId)
             .update("cartQuantity",quantity)
+            .addOnFailureListener {
+                when(fragment){
+                    is CartFragment -> {
+                        val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                        snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                        snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                        snackBar.show()
+                        fragment.vibratePhone()
+                        fragment.dialog.dismiss()
+                    }
+                }
+
+            }
 
     }
 
@@ -177,6 +269,17 @@ open  class FirestoreClass {
             }
             .addOnFailureListener {
                 Log.i(TAG, "addToCart On Failed:${it.localizedMessage} ")
+            }
+            .addOnFailureListener {
+                when(fragment){
+                    is ProductDetailFragment -> {
+                        val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                        snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                        snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                        snackBar.show()
+                        fragment.vibratePhone()
+                    }
+                }
             }
     }
 
@@ -193,8 +296,16 @@ open  class FirestoreClass {
                         fragment.addToCart()
                     }
                 }
+            .addOnFailureListener {
+                val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                snackBar.show()
+                fragment.vibratePhone()
+            }
 
             }
+
 
     fun getCartProducts(fragment: Fragment,userId: String){
         val iteamList:ArrayList<CartItem> = ArrayList()
@@ -216,12 +327,47 @@ open  class FirestoreClass {
                     }
                 }
             }
+            .addOnFailureListener {
+                when(fragment){
+                    is CartFragment -> {
+                        val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                        snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                        snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                        snackBar.show()
+                        fragment.vibratePhone()
+                        fragment.dialog.dismiss()
+                    }
+                    is CheckOutFragment -> {
+                        val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                        snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                        snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                        snackBar.show()
+                        fragment.vibratePhone()
+                        fragment.dialog.dismiss()
+                    }
+                }
+
+            }
     }
 
     fun removeCartProduct(fragment: Fragment,productId: String,userId: String){
         mFirestore.collection("Cart")
             .document(userId+productId)
             .delete()
+            .addOnFailureListener {
+                when(fragment){
+                    is CartFragment -> {
+                        val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                        snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                        snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                        snackBar.show()
+                        fragment.vibratePhone()
+                        fragment.dialog.dismiss()
+                    }
+                }
+
+
+            }
     }
 
 
@@ -288,6 +434,14 @@ open  class FirestoreClass {
                                     }
                                     fragment.getProducts(iteamList)
                                     Log.i(TAG, "getFilterDialogProducts: $iteamList")
+                                }
+                                .addOnFailureListener {
+                                    val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                                    snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                                    snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                                    snackBar.show()
+                                    fragment.vibratePhone()
+                                    fragment.mDialog.dismiss()
                                 }
                         }
                         else{
@@ -936,6 +1090,19 @@ open  class FirestoreClass {
                         }
                     }
                 }
+                .addOnFailureListener {
+                    when(fragment){
+                        is ShopingFragment -> {
+                            val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                            snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                            snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                            snackBar.show()
+                            fragment.vibratePhone()
+                            fragment.mDialog.dismiss()
+                        }
+
+                    }
+                }
         } else {
             mFirestore.collection("Products")
                 .whereEqualTo(field, filter)
@@ -950,6 +1117,18 @@ open  class FirestoreClass {
                     when (fragment) {
                         is ShopingFragment -> {
                             fragment.getProducts(iteamList)
+                        }
+                    }
+                }
+                .addOnFailureListener {
+                    when(fragment){
+                        is ShopingFragment -> {
+                            val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                            snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                            snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                            snackBar.show()
+                            fragment.vibratePhone()
+                            fragment.mDialog.dismiss()
                         }
                     }
                 }
@@ -982,6 +1161,18 @@ open  class FirestoreClass {
                         }
                     }
                 }
+                .addOnFailureListener {
+                    when(fragment){
+                        is ShopingFragment -> {
+                            val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                            snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                            snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                            snackBar.show()
+                            fragment.vibratePhone()
+                            fragment.mDialog.dismiss()
+                        }
+                    }
+                }
         } else {
             mFirestore.collection("Products")
                 .orderBy(filterBy, order)
@@ -999,8 +1190,20 @@ open  class FirestoreClass {
                             fragment.getProducts(iteamList)
                         }
                     }
-                }
 
+                }
+                .addOnFailureListener {
+                    when(fragment){
+                        is ShopingFragment -> {
+                            val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                            snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                            snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                            snackBar.show()
+                            fragment.vibratePhone()
+                            fragment.mDialog.dismiss()
+                        }
+                    }
+                }
         }
     }
 
@@ -1029,6 +1232,18 @@ open  class FirestoreClass {
                     }
                 }
             }
+            .addOnFailureListener {
+                when(fragment){
+                    is HomeFragment -> {
+                        val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                        snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                        snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                        snackBar.show()
+                        fragment.vibratePhone()
+                        fragment.dialog.dismiss()
+                    }
+                }
+            }
     }
 
     fun getCategorizeProduct(fragment:Fragment,field:String,filter:String,id:String){
@@ -1046,6 +1261,17 @@ open  class FirestoreClass {
                 when(fragment){
                     is ProductDetailFragment -> {
                         fragment.getCategorizedProduct(iteamList)
+                    }
+                }
+            }
+            .addOnFailureListener {
+                when(fragment){
+                    is ProductDetailFragment -> {
+                        val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                        snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                        snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                        snackBar.show()
+                        fragment.vibratePhone()
                     }
                 }
             }
@@ -1068,6 +1294,19 @@ open  class FirestoreClass {
 
                 }
             }
+            .addOnFailureListener {
+                when(fragment){
+                    is CartFragment -> {
+                        val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                        snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                        snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                        snackBar.show()
+                        fragment.vibratePhone()
+                        fragment.dialog.dismiss()
+                    }
+                }
+
+            }
     }
 
 
@@ -1088,6 +1327,14 @@ open  class FirestoreClass {
                 }
                 fragment.infoGet(iteamList)
             }
+            .addOnFailureListener {
+                val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                snackBar.show()
+                fragment.vibratePhone()
+                fragment.dialog.dismiss()
+            }
     }
 
     fun getFabrics(fragment: HomeFragment) {
@@ -1103,6 +1350,14 @@ open  class FirestoreClass {
                 }
                 fragment.infoGetFabric(iteamList)
             }
+            .addOnFailureListener {
+                val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                snackBar.show()
+                fragment.vibratePhone()
+                fragment.dialog.dismiss()
+            }
     }
 
     fun getColors(fragment: HomeFragment) {
@@ -1116,6 +1371,14 @@ open  class FirestoreClass {
                     iteamList.add(iteam!!)
                 }
                 fragment.infoGetColor(iteamList)
+            }
+            .addOnFailureListener {
+                val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                snackBar.show()
+                fragment.vibratePhone()
+                fragment.dialog.dismiss()
             }
     }
 
@@ -1132,6 +1395,14 @@ open  class FirestoreClass {
                 }
                 fragment.getSizes(iteamList)
             }
+            .addOnFailureListener {
+                val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                snackBar.show()
+                fragment.vibratePhone()
+                fragment.dialog.dismiss()
+            }
     }
 
     fun getDeals(fragment: HomeFragment) {
@@ -1146,6 +1417,14 @@ open  class FirestoreClass {
                     iteamList.add(iteam!!)
                 }
                 fragment.getDeals(iteamList)
+            }
+            .addOnFailureListener {
+                val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                snackBar.show()
+                fragment.vibratePhone()
+                fragment.dialog.dismiss()
             }
     }
     }

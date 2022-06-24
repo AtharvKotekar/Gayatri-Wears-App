@@ -1,4 +1,4 @@
-package com.gayatriladieswears.app
+package com.gayatriladieswears.app.Fragments
 
 import android.app.Dialog
 import android.os.Bundle
@@ -8,9 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gayatriladieswears.app.Adaptors.AddressAdaptor
 import com.gayatriladieswears.app.Adaptors.OrderAdaptor
+import com.gayatriladieswears.app.FirestoreClass
 import com.gayatriladieswears.app.Model.Order
+import com.gayatriladieswears.app.R
 import com.gayatriladieswears.app.databinding.FragmentOrderBinding
 
 
@@ -24,7 +25,7 @@ class OrderFragment : Fragment() {
         binding = FragmentOrderBinding.inflate(inflater,container,false)
 
         dialog = Dialog(requireContext())
-        dialog.setContentView(com.gayatriladieswears.app.R.layout.laoding_dialog)
+        dialog.setContentView(R.layout.laoding_dialog)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.setCancelable(false)
         dialog.show()
