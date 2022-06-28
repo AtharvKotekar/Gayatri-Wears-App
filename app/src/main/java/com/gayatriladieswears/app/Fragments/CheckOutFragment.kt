@@ -28,10 +28,10 @@ import com.gayatriladieswears.app.databinding.FragmentCheckOutBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.SetOptions
-import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.razorpay.Checkout
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import org.json.JSONException
@@ -41,11 +41,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Headers
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -234,7 +231,7 @@ class CheckOutFragment : Fragment() {
             mPrice = mPrice + (i.price * i.cartQuantity.toInt())
             mMrp = mMrp + (i.mrp * i. cartQuantity.toInt())
         }
-        if((mMrp - (mMrp - mPrice)) < 699){
+        if((mMrp - (mMrp - mPrice)) < 799){
             mShippingCharges = 99
         }else{
             mShippingCharges = 0
@@ -358,83 +355,37 @@ class CheckOutFragment : Fragment() {
                                     Log.e(TAG, "onResponse: ${response.body()?.order_id}", )
                                     Log.e(TAG, "onResponse: ${response.body()?.status}", )
 
-                                    val order = Order(
-                                        name,
-                                        addressTag,
-                                        address,
-                                        pincode,
-                                        landmark,
-                                        phone,
-                                        FirebaseAuth.getInstance().currentUser!!.uid,
-                                        addressId,
-                                        productList,
-                                        transactionId.toString(),
-                                        totalAmount,
-                                        orderID,
-                                        formattedDate,
-                                        "",
-                                        totalquantiyt.toString(),
-                                        emailId
-                                    )
 
 
-                                    val genrator = GenrateAWB(shipmentid,"","")
-
-                                    CoroutineScope(IO).launch {
-                                        val genrateAWBCall =
-                                            orderServices.assignAWB(headerMap, genrator)
-                                        genrateAWBCall.enqueue(object : Callback<AWBResult> {
+                                    if(response.body()?.status == "CANCELED"){
+                                        Toast.makeText(requireContext(), "Please Wait Getting Done", Toast.LENGTH_LONG).show()
+                                        orderCall.enqueue(object :Callback<OrderShipResult>{
                                             override fun onResponse(
-                                                call: Call<AWBResult>,
-                                                response: Response<AWBResult>) {
-
-                                                if(response.isSuccessful) {
-
-                                                    Log.e(TAG, "onResponse AWB : ${response.body()}")
-
-                                                    val couriourId =
-                                                        response.body()?.response?.data?.awb_code.toString()
-
-
-                                                    FirestoreClass().mFirestore.collection("Orders")
-                                                        .document(orderId)
-                                                        .update("courierId",couriourId)
-
-                                                    dialog.dismiss()
-                                                    findNavController().navigate(R.id.action_checkOutFragment_to_paymentSuccessFragment)
+                                                call: Call<OrderShipResult>,
+                                                response2: Response<OrderShipResult>
+                                            ) {
+                                                if(response2.isSuccessful){
+                                                    createOrder(transactionId.toString(),orderID,shipmentid,response2)
                                                 }else{
+                                                    Log.e(TAG, "onResponse: ${response2.code()}")
+                                                    Log.e(TAG, "onResponse: ${response2.message()}")
+                                                    Log.e(TAG, "onResponse: ${response2.raw()}")
+                                                    Log.e(TAG, "onResponse: ${response2.headers()}")
                                                     dialog.dismiss()
-
-                                                    Log.e(TAG, "onResponse AWB : ${response.code()}")
-                                                    Log.e(TAG, "onResponse AWB : ${response.message()}")
-                                                    val snackBar = Snackbar.make(
-                                                        requireActivity().findViewById(android.R.id.content),
-                                                        "Something Wents Wrong.",
-                                                        Snackbar.LENGTH_LONG
-                                                    )
+                                                    val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Something Wents Wrong.E - Order Failed", Snackbar.LENGTH_LONG)
                                                     snackBar.setBackgroundTint(resources.getColor(R.color.red))
                                                     snackBar.setTextColor(resources.getColor(R.color.white))
                                                     snackBar.show()
                                                     vibratePhone()
                                                 }
-
-
                                             }
 
                                             override fun onFailure(
-                                                call: Call<AWBResult>,
+                                                call: Call<OrderShipResult>,
                                                 t: Throwable
                                             ) {
-
-                                                Log.e(TAG, "onResponse AWB : ${response.code()}")
-                                                Log.e(TAG, "onResponse AWB : ${response.message()}")
-                                                Log.e(TAG, "onResponse AWB : ${t.localizedMessage}")
                                                 dialog.dismiss()
-                                                val snackBar = Snackbar.make(
-                                                    requireActivity().findViewById(android.R.id.content),
-                                                    "Something Wents Wrong.E - Failed",
-                                                    Snackbar.LENGTH_LONG
-                                                )
+                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Something Wents Wrong.E - Order Failed", Snackbar.LENGTH_LONG)
                                                 snackBar.setBackgroundTint(resources.getColor(R.color.red))
                                                 snackBar.setTextColor(resources.getColor(R.color.white))
                                                 snackBar.show()
@@ -442,41 +393,49 @@ class CheckOutFragment : Fragment() {
                                             }
 
                                         })
+                                    }else if(response.body()?.status == "CANCELLATION REQUESTED"){
+                                        Toast.makeText(requireContext(), "Please Wait Getting Done", Toast.LENGTH_LONG).show()
+                                        orderCall.enqueue(object :Callback<OrderShipResult>{
+                                            override fun onResponse(
+                                                call: Call<OrderShipResult>,
+                                                response2: Response<OrderShipResult>
+                                            ) {
+                                                if(response2.isSuccessful){
+                                                    createOrder(transactionId.toString(),orderID,shipmentid,response2)
+                                                }else{
+                                                    Log.e(TAG, "onResponse: ${response2.code()}")
+                                                    Log.e(TAG, "onResponse: ${response2.message()}")
+                                                    Log.e(TAG, "onResponse: ${response2.raw()}")
+                                                    Log.e(TAG, "onResponse: ${response2.headers()}")
+                                                    dialog.dismiss()
+                                                    val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Something Wents Wrong.E - Order Failed", Snackbar.LENGTH_LONG)
+                                                    snackBar.setBackgroundTint(resources.getColor(R.color.red))
+                                                    snackBar.setTextColor(resources.getColor(R.color.white))
+                                                    snackBar.show()
+                                                    vibratePhone()
+                                                }
+                                            }
+
+                                            override fun onFailure(
+                                                call: Call<OrderShipResult>,
+                                                t: Throwable
+                                            ) {
+                                                dialog.dismiss()
+                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Something Wents Wrong.E - Order Failed", Snackbar.LENGTH_LONG)
+                                                snackBar.setBackgroundTint(resources.getColor(R.color.red))
+                                                snackBar.setTextColor(resources.getColor(R.color.white))
+                                                snackBar.show()
+                                                vibratePhone()
+                                            }
+
+                                        })
+                                    }else{
+                                        createOrder(transactionId.toString(),orderID,shipmentid,response)
                                     }
 
 
-                                    FirestoreClass().mFirestore.collection("Orders")
-                                        .document(orderID)
-                                        .set(order, SetOptions.merge())
-                                        .addOnSuccessListener {
-                                            for (i in productList) {
-                                                var stock = 0
-                                                FirestoreClass().removeCartProduct(
-                                                    this@CheckOutFragment,
-                                                    i.productId,
-                                                    i.userId
-                                                )
-                                                FirestoreClass().mFirestore.collection("Products")
-                                                    .whereEqualTo("id", i.productId)
-                                                    .get()
-                                                    .addOnSuccessListener { document ->
-                                                        val products: ArrayList<Product> =
-                                                            ArrayList()
-                                                        for (j in document.documents) {
-                                                            val iteam =
-                                                                j.toObject(Product::class.java)!!
-                                                            stock =
-                                                                (iteam.stock.toInt() - i.cartQuantity.toInt())
-                                                            products.add(iteam)
-                                                        }
-                                                        FirestoreClass().mFirestore.collection(
-                                                            "Products"
-                                                        ).document(i.name)
-                                                            .update("stock", stock)
-                                                    }
 
-                                            }
-                                        }
+
 
 
 
@@ -534,6 +493,264 @@ class CheckOutFragment : Fragment() {
 
     }
 
+    fun createOrder(transactionId:String,orderID:String,shipmentid:String,response:Response<OrderShipResult>){
+
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val formattedDate = current.format(formatter)
+
+        val headerMap:HashMap<String,String> = HashMap<String,String>()
+        headerMap["Content-Encoding"] = "gzip, deflate, b"
+        headerMap["Connection"] = "keep-alive"
+        headerMap["Accept"] = "*/*"
+        headerMap["Content-Type"] = "application/json;charset=UTF-8"
+        headerMap["Cache-Control"] = "private, must-revalidate"
+        headerMap["ETag"] = "b6f88565113db5cce836da75fe716815d8fde80c"
+        headerMap["Server"] = "nginx"
+        headerMap["Vary"] = "Accept-Encoding"
+        headerMap["Authorization"] = token
+
+        val order = Order(
+            name,
+            addressTag,
+            address,
+            pincode,
+            landmark,
+            phone,
+            FirebaseAuth.getInstance().currentUser!!.uid,
+            addressId,
+            productList,
+            transactionId.toString(),
+            totalAmount,
+            orderID,
+            formattedDate,
+            "",
+            totalquantiyt.toString(),
+            emailId
+        )
+
+        val retrofitBuilder = Retrofit.Builder()
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(BASE_URL)
+            .build()
+
+        val orderServices = retrofitBuilder.create(OrderServices::class.java)
+
+
+
+
+        val genrator = GenrateAWB(shipmentid, "", "")
+        val genrateAWBCall =
+            orderServices.assignAWB(headerMap, genrator)
+        genrateAWBCall.enqueue(object :
+            Callback<AWBResult> {
+            override fun onResponse(
+                call: Call<AWBResult>,
+                response: Response<AWBResult>
+            ) {
+
+                if (response.isSuccessful) {
+
+                    dialog.dismiss()
+                    findNavController().navigate(R.id.action_checkOutFragment_to_paymentSuccessFragment)
+
+                    val retrofitBuilder2 =
+                        Retrofit.Builder()
+                            .addConverterFactory(
+                                GsonConverterFactory.create()
+                            )
+                            .baseUrl(BASE_URL_RZP)
+                            .build()
+
+                    val orderServices2 =
+                        retrofitBuilder2.create(
+                            OrderServices::class.java
+                        )
+
+                    val captureCall =
+                        orderServices2.capturePayment(
+                            transactionId.toString(),
+                            amount.toString().toInt(),
+                            "INR"
+                        )
+
+                    CoroutineScope(IO).launch {
+                        captureCall.enqueue(object :
+                            Callback<JsonObject> {
+                            override fun onResponse(
+                                call: Call<JsonObject>,
+                                response: Response<JsonObject>
+                            ) {
+                                if (response.isSuccessful) {
+
+                                } else {
+                                    Log.e(
+                                        TAG,
+                                        "onResponse: ${response.raw()}",
+                                    )
+                                    Log.e(
+                                        TAG,
+                                        "onResponse: ${
+                                            response.errorBody()
+                                                .toString()
+                                        }",
+                                    )
+                                }
+
+
+                            }
+
+                            override fun onFailure(
+                                call: Call<JsonObject>,
+                                t: Throwable
+                            ) {
+                                val snackBar =
+                                    Snackbar.make(
+                                        requireActivity().findViewById(
+                                            android.R.id.content
+                                        ),
+                                        "Something Wents Wrong.",
+                                        Snackbar.LENGTH_LONG
+                                    )
+                                snackBar.setBackgroundTint(
+                                    resources.getColor(R.color.red)
+                                )
+                                snackBar.setTextColor(
+                                    resources.getColor(R.color.white)
+                                )
+                                snackBar.show()
+                                vibratePhone()
+                            }
+
+                        })
+
+                        FirestoreClass().mFirestore.collection(
+                            "Orders"
+                        )
+                            .document(orderID)
+                            .set(order, SetOptions.merge())
+                            .addOnSuccessListener {
+                                for (i in productList) {
+                                    var stock = 0
+                                    FirestoreClass().removeCartProduct(
+                                        this@CheckOutFragment,
+                                        i.productId,
+                                        i.userId
+                                    )
+                                    FirestoreClass().mFirestore.collection(
+                                        "Products"
+                                    )
+                                        .whereEqualTo(
+                                            "id",
+                                            i.productId
+                                        )
+                                        .get()
+                                        .addOnSuccessListener { document ->
+                                            val products: ArrayList<Product> =
+                                                ArrayList()
+                                            for (j in document.documents) {
+                                                val iteam =
+                                                    j.toObject(
+                                                        Product::class.java
+                                                    )!!
+                                                stock =
+                                                    (iteam.stock.toInt() - i.cartQuantity.toInt())
+                                                products.add(
+                                                    iteam
+                                                )
+                                            }
+                                            FirestoreClass().mFirestore.collection(
+                                                "Products"
+                                            )
+                                                .document(i.name)
+                                                .update(
+                                                    "stock",
+                                                    stock
+                                                )
+                                        }
+
+                                }
+                            }
+                    }
+
+
+                } else {
+                    dialog.dismiss()
+
+                    Log.e(
+                        TAG,
+                        "onResponse AWB : ${response.code()}"
+                    )
+                    Log.e(
+                        TAG,
+                        "onResponse AWB : ${response.message()}"
+                    )
+                    val snackBar = Snackbar.make(
+                        requireActivity().findViewById(
+                            android.R.id.content
+                        ),
+                        "Something Wents Wrong.",
+                        Snackbar.LENGTH_LONG
+                    )
+                    snackBar.setBackgroundTint(
+                        resources.getColor(
+                            R.color.red
+                        )
+                    )
+                    snackBar.setTextColor(
+                        resources.getColor(
+                            R.color.white
+                        )
+                    )
+                    snackBar.show()
+                    vibratePhone()
+                }
+
+
+            }
+
+            override fun onFailure(
+                call: Call<AWBResult>,
+                t: Throwable
+            ) {
+
+                Log.e(
+                    TAG,
+                    "onResponse AWB : ${response.code()}"
+                )
+                Log.e(
+                    TAG,
+                    "onResponse AWB : ${response.message()}"
+                )
+                Log.e(
+                    TAG,
+                    "onResponse AWB : ${t.localizedMessage}"
+                )
+                dialog.dismiss()
+                val snackBar = Snackbar.make(
+                    requireActivity().findViewById(
+                        android.R.id.content
+                    ),
+                    "Something Wents Wrong.E - Failed",
+                    Snackbar.LENGTH_LONG
+                )
+                snackBar.setBackgroundTint(
+                    resources.getColor(
+                        R.color.red
+                    )
+                )
+                snackBar.setTextColor(
+                    resources.getColor(
+                        R.color.white
+                    )
+                )
+                snackBar.show()
+                vibratePhone()
+            }
+
+        })
+
+    }
 
 
 

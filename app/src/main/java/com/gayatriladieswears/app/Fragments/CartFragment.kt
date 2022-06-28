@@ -104,7 +104,7 @@ class CartFragment : Fragment() {
                 mPrice = mPrice + (i.price * i.cartQuantity.toInt())
                 mMrp = mMrp + (i.mrp * i. cartQuantity.toInt())
             }
-            if((mMrp - (mMrp - mPrice)) < 699){
+            if((mMrp - (mMrp - mPrice)) < 799){
                 mShippingCharges = 99
             }else{
                 mShippingCharges = 0

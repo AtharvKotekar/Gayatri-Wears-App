@@ -14,6 +14,7 @@ data class OrderShipItem(
     @SerializedName("hsn")val hsn: String? = null
          )
 
+
 @Parcelize
 data class OrderReturnIteam(
     @SerializedName("name")val name:String? = null,
@@ -27,4 +28,4 @@ data class OrderReturnIteam(
     @SerializedName("qc_product_image")val qc_product_image: String? = null,
     @SerializedName("hsn")val hsn: String? = null
 
-): Parcelable
+):Parcelable

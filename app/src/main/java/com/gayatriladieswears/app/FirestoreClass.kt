@@ -7,7 +7,7 @@ import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import com.gayatriladieswears.app.Activities.HomeActivity
 import com.gayatriladieswears.app.Adaptors.CartAdaptor
-import com.gayatriladieswears.app.Adaptors.OrderDetailFragment
+import com.gayatriladieswears.app.Fragments.OrderDetailFragment
 import com.gayatriladieswears.app.Fragments.*
 import com.gayatriladieswears.app.Model.*
 import com.google.android.material.snackbar.Snackbar

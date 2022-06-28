@@ -13,6 +13,8 @@ import com.bumptech.glide.Glide
 import com.gayatriladieswears.app.Fragments.CheckOutFragment
 import com.gayatriladieswears.app.FirestoreClass
 import com.gayatriladieswears.app.Fragments.CartFragment
+import com.gayatriladieswears.app.Fragments.OrderDetailFragment
+import com.gayatriladieswears.app.Fragments.OrderReturnFragment
 import com.gayatriladieswears.app.Model.CartItem
 import com.gayatriladieswears.app.Model.Product
 import com.gayatriladieswears.app.R
@@ -158,6 +160,15 @@ class CartAdaptor(private val context: Context,private var fragment: Fragment,pr
             }
 
             is OrderDetailFragment -> {
+                holder.add.visibility = View.GONE
+                holder.sub.visibility = View.GONE
+                holder.delete.visibility = View.GONE
+                holder.quality.visibility = View.GONE
+                holder.quantity_text.text = "Quantity  -  ${model.cartQuantity}"
+                holder.quantity_text.visibility = View.VISIBLE
+            }
+
+            is OrderReturnFragment -> {
                 holder.add.visibility = View.GONE
                 holder.sub.visibility = View.GONE
                 holder.delete.visibility = View.GONE

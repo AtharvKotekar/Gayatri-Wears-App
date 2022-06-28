@@ -120,6 +120,10 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        dialog.dismiss()
+    }
 
 
     fun infoGet(iteamList: ArrayList<Info>){

@@ -12,7 +12,7 @@ data class CartItem(
     val color:String = "",
     val size:String = "",
     val image:String = "",
-    val cartQuantity:String = "",
+    var cartQuantity:String = "",
     val name:String = "",
     val dis:String = ""
 ): Parcelable

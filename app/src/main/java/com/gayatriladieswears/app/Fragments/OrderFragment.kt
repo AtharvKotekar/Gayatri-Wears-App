@@ -52,7 +52,6 @@ class OrderFragment : Fragment() {
             binding.emptyCartText.visibility = View.VISIBLE
             binding.shopBtn.visibility = View.VISIBLE
             binding.recyclerViewOrder.visibility = View.GONE
-            dialog.dismiss()
         }else{
             binding.emtyCartImage.visibility = View.GONE
             binding.emptyCartText.visibility = View.GONE
@@ -61,9 +60,14 @@ class OrderFragment : Fragment() {
             val adaptor = OrderAdaptor(requireContext(),this,iteamList)
             binding.recyclerViewOrder.adapter = adaptor
             binding.recyclerViewOrder.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
-            dialog.dismiss()
         }
 
     }
 
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        dialog.dismiss()
+    }
 }

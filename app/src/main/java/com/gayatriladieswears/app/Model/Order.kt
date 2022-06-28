@@ -20,7 +20,7 @@ class Order(
     var amout:Int,
     var orderId:String,
     var date:String,
-    var courierId:String,
+    var courierId: String?,
     var totalQuantity:String,
     var email:String,
 ): Parcelable {
