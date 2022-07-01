@@ -5,7 +5,7 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/offWhite2"
+    android:background="@color/offWhite"
     tools:context=".Fragments.ShopingFragment">
 
 
@@ -28,7 +28,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/black"
+                android:background="@color/black_card"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -47,13 +47,14 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/component_36__1" />
+                app:srcCompat="@drawable/component_36__1"
+                app:tint="@color/drakwhite" />
 
             <ImageView
                 android:id="@+id/back_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:visibility="visible"
@@ -67,26 +68,27 @@
                 style="@style/TextAppearance.Material3.BodyLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Catergory - "
                 android:textColor="@color/pink"
+                android:textSize="14sp"
                 android:visibility="visible"
                 app:layout_constraintStart_toEndOf="@+id/back_btn"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/result_size_text"
+                style="@style/TextAppearance.Material3.BodyLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="4dp"
                 android:fontFamily="@font/roboto_light"
                 android:text="Total 0 Results"
-                style="@style/TextAppearance.Material3.BodyLarge"
-                android:textColor="@color/offWhite"
-                android:textSize="12sp"
+                android:textColor="@color/drakwhite"
+                android:textSize="10sp"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/reasult_name_text"
@@ -102,7 +104,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/cart_btn"
                 app:layout_constraintEnd_toStartOf="@+id/cart_btn"
                 app:layout_constraintTop_toTopOf="@+id/cart_btn"
-                app:tint="@color/offWhite" />
+                app:tint="@color/drakwhite" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -213,7 +215,7 @@
         android:id="@+id/filter_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/black"
+        android:background="@color/black_card"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -237,8 +239,9 @@
             android:paddingStart="40dp"
             android:paddingEnd="40dp"
             android:text="SORT"
-            android:textColor="@color/offWhite"
+            android:textColor="@color/drakwhite"
             app:drawableLeftCompat="@drawable/baseline_filter_list_18"
+            app:drawableTint="@color/drakwhite"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
@@ -250,7 +253,7 @@
             android:layout_height="24dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:background="@color/offWhite"
+            android:background="@color/drakwhite"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -266,16 +269,15 @@
             android:paddingStart="40dp"
             android:paddingEnd="40dp"
             android:text="FILTER"
-            android:textColor="@color/offWhite"
+            android:textColor="@color/drakwhite"
             app:drawableLeftCompat="@drawable/ic_baseline_filter_alt_24"
+            app:drawableTint="@color/drakwhite"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

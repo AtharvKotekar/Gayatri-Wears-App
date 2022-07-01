@@ -13,6 +13,9 @@ import com.gayatriladieswears.app.Model.*
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 
 
 open  class FirestoreClass {
@@ -22,13 +25,12 @@ open  class FirestoreClass {
     val phone = auth.currentUser?.phoneNumber.toString()
 
 
-    fun register(fragment: SignupOtpFragment, userInfo: User, progressBar: ProgressBar) {
+    fun register(fragment: TermsAndContionsFragment, userInfo: User) {
 
         mFirestore.collection("users")
             .document(userInfo.phone)
             .set(userInfo, SetOptions.merge())
             .addOnSuccessListener {
-                progressBar.visibility = View.GONE
                 fragment.requireActivity().run {
                     val emptyCache = Cache()
                     val intent = Intent(this, HomeActivity::class.java)
@@ -40,7 +42,6 @@ open  class FirestoreClass {
 
             }
             .addOnFailureListener {
-                progressBar.visibility = View.GONE
                 val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Register Failed : ${it.localizedMessage}", Snackbar.LENGTH_LONG)
                 snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
                 snackBar.setTextColor(fragment.resources.getColor(R.color.white))
@@ -135,7 +136,7 @@ open  class FirestoreClass {
 
 
 
-    fun getOrderedProducts(fragment: Fragment){
+    suspend fun getOrderedProducts(fragment: Fragment){
         val productList:ArrayList<Order> = ArrayList()
         mFirestore.collection("Orders")
             .orderBy("orderId",Query.Direction.DESCENDING)
@@ -1208,7 +1209,7 @@ open  class FirestoreClass {
     }
 
 
-    fun getProducts(fragment: Fragment, field: String, filter: String) {
+    suspend fun getProducts(fragment: Fragment, field: String, filter: String) {
         mFirestore.collection("Products")
             .whereArrayContains(field, filter)
             .get()
@@ -1277,67 +1278,31 @@ open  class FirestoreClass {
             }
     }
 
-    fun getProductById(fragment: Fragment,productId: String,holder: CartAdaptor.myViewHolder){
-        val iteamList: ArrayList<Product> = ArrayList()
-        mFirestore.collection("Products")
-            .whereEqualTo("id",productId)
-            .get()
-            .addOnSuccessListener { document ->
-                for (i in document.documents){
-                    val iteam = i.toObject(Product::class.java)
-                    iteamList.add(iteam!!)
-                    when(fragment){
-                        is CartFragment -> {
-                            fragment.getProductById(iteamList,holder)
-                        }
-                }
 
-                }
-            }
-            .addOnFailureListener {
-                when(fragment){
-                    is CartFragment -> {
-                        val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
-                        snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
-                        snackBar.setTextColor(fragment.resources.getColor(R.color.white))
-                        snackBar.show()
-                        fragment.vibratePhone()
-                        fragment.dialog.dismiss()
+    suspend fun getTopCategories(fragment: HomeFragment) {
+            mFirestore.collection("Top Categories")
+                .orderBy("name",Query.Direction.DESCENDING)
+                .get()
+                .addOnSuccessListener { document ->
+                    Log.i(TAG, "getTopCategories: ${document.documents.toString()}")
+                    val iteamList: ArrayList<Info> = ArrayList()
+                    for (i in document.documents) {
+                        val iteam = i.toObject(Info::class.java)
+                        iteamList.add(iteam!!)
                     }
+                    fragment.infoGet(iteamList)
                 }
-
-            }
+                .addOnFailureListener {
+                    val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
+                    snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                    snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                    snackBar.show()
+                    fragment.vibratePhone()
+                    fragment.dialog.dismiss()
+                }
     }
 
-
-
-
-
-
-    fun getTopCategories(fragment: HomeFragment) {
-        mFirestore.collection("Top Categories")
-            .orderBy("name",Query.Direction.DESCENDING)
-            .get()
-            .addOnSuccessListener { document ->
-                Log.i(TAG, "getTopCategories: ${document.documents.toString()}")
-                val iteamList: ArrayList<Info> = ArrayList()
-                for (i in document.documents) {
-                    val iteam = i.toObject(Info::class.java)
-                    iteamList.add(iteam!!)
-                }
-                fragment.infoGet(iteamList)
-            }
-            .addOnFailureListener {
-                val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Please Check Your Network Connection.", Snackbar.LENGTH_LONG)
-                snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
-                snackBar.setTextColor(fragment.resources.getColor(R.color.white))
-                snackBar.show()
-                fragment.vibratePhone()
-                fragment.dialog.dismiss()
-            }
-    }
-
-    fun getFabrics(fragment: HomeFragment) {
+    suspend fun getFabrics(fragment: HomeFragment) {
         mFirestore.collection("Fabric")
             .orderBy("name")
             .get()
@@ -1360,7 +1325,7 @@ open  class FirestoreClass {
             }
     }
 
-    fun getColors(fragment: HomeFragment) {
+    suspend fun getColors(fragment: HomeFragment) {
         mFirestore.collection("Color")
             .get()
             .addOnSuccessListener { document ->
@@ -1382,7 +1347,7 @@ open  class FirestoreClass {
             }
     }
 
-    fun getSizes(fragment: HomeFragment) {
+    suspend fun getSizes(fragment: HomeFragment) {
         mFirestore.collection("Size")
             .orderBy("no")
             .get()
@@ -1405,7 +1370,7 @@ open  class FirestoreClass {
             }
     }
 
-    fun getDeals(fragment: HomeFragment) {
+    suspend fun getDeals(fragment: HomeFragment) {
         mFirestore.collection("Deals")
             .orderBy("prefix")
             .get()

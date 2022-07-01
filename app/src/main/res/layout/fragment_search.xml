@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/offWhite"
+    android:backgroundTint="@color/bg"
     tools:context=".SearchFrsgment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black"
+        android:background="@color/black_card"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -25,42 +25,37 @@
                 android:id="@+id/textField"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
                 android:background="@color/transparent"
-                android:textColorHint="@color/gray2"
+                android:hint=" "
+                android:textColorHint="@color/drakwhite"
                 app:endIconDrawable="@drawable/ic_baseline_close_24"
                 app:endIconMode="clear_text"
-                app:endIconTint="@color/gray2"
-                android:hint=" "
+                app:endIconTint="@color/drakwhite"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:startIconDrawable="@drawable/ic_baseline_search_24"
-                app:startIconTint="@color/gray2">
+                app:startIconTint="@color/drakwhite">
 
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/editText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
                     android:background="@color/transparent"
-                    android:hint="Search Products, Category and More"
-                    android:textColorHint="@color/gray2"
+                    android:hint="Search Products Here"
                     android:imeActionLabel="Search"
                     android:imeOptions="actionSearch"
-                    android:layout_margin="4dp"
                     android:inputType="textAutoCorrect|text|textAutoComplete"
                     android:singleLine="true"
-                    android:textColor="@color/offWhite"
-                    android:textColorHighlight="@color/offWhite"/>
+                    android:textColor="@color/drakwhite"
+                    android:textColorHighlight="@color/drakwhite"
+                    android:textColorHint="@color/drakwhite" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
-
-
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -70,8 +65,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />

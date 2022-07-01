@@ -22,7 +22,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@color/black"
+            android:background="@color/black_card"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -37,6 +37,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
+            android:tint="@color/drakwhite"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -1287,7 +1288,7 @@
         android:id="@+id/filter_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/black"
+        android:background="@color/black_card"
         android:elevation="@dimen/cardview_default_elevation"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -1313,7 +1314,7 @@
             android:gravity="center|center_horizontal|center_vertical"
             android:text="Close"
             android:textAlignment="center"
-            android:textColor="@color/offWhite"
+            android:textColor="@color/drakwhite"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
@@ -1325,7 +1326,7 @@
             android:layout_height="24dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:background="@color/offWhite"
+            android:background="@color/drakwhite"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -1344,7 +1345,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="parent" />
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

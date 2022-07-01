@@ -34,7 +34,7 @@ class SearchHistory(private val context: Context, private var fragment: SearchFr
         val model = list[position]
         holder.name.text = model.toString()
         holder.itemView.setOnClickListener {
-            fragment.binding.editText.setText(model)
+            fragment.search(model)
         }
         holder.remove.setOnClickListener {
             val dialog = MaterialAlertDialogBuilder(context,R.style.AppCompatAlertDialogStyle)

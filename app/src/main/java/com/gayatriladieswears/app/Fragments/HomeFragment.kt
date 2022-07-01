@@ -1,27 +1,20 @@
 package com.gayatriladieswears.app.Fragments
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
-import android.view.Gravity
-import androidx.fragment.app.Fragment
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.view.GravityCompat
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.facebook.shimmer.ShimmerFrameLayout
 import com.gayatriladieswears.app.*
 import com.gayatriladieswears.app.Adaptors.*
 import com.gayatriladieswears.app.Model.Deal
@@ -30,10 +23,13 @@ import com.gayatriladieswears.app.Model.Product
 import com.gayatriladieswears.app.Model.Sizes
 import com.gayatriladieswears.app.databinding.FragmentHomeBinding
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
-    private lateinit var binding:FragmentHomeBinding
+    lateinit var binding:FragmentHomeBinding
     lateinit var dialog:Dialog
 
 
@@ -61,7 +57,9 @@ class HomeFragment : Fragment() {
         dialog.setCancelable(false)
         dialog.show()
 
-        getData(this)
+        CoroutineScope(Dispatchers.Main).launch {
+            getData(this@HomeFragment)
+        }
         FirestoreClass().mFirestore.collection("users").whereEqualTo("id",FirebaseAuth.getInstance().currentUser?.uid).get()
             .addOnSuccessListener {
                 for (i in it.documents){
@@ -117,6 +115,10 @@ class HomeFragment : Fragment() {
 
 
 
+
+
+
+
         return binding.root
     }
 
@@ -127,9 +129,13 @@ class HomeFragment : Fragment() {
 
 
     fun infoGet(iteamList: ArrayList<Info>){
-        val adaptor = TopCategoriesAdaptor(requireContext(),iteamList)
+        val adaptor = TopCategoriesAdaptor(this,requireContext(),iteamList)
         binding.recyclerView.adapter = adaptor
         binding.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
+
+
+
+
     }
 
     fun infoGetFabric(iteamList: ArrayList<Info>){
@@ -185,24 +191,7 @@ class HomeFragment : Fragment() {
                 dialog.dismiss()
             },800
         )
-
-
-
-
-
-
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 

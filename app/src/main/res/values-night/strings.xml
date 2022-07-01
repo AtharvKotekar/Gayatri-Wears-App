@@ -1,6 +1,49 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Gayatri Ladies Wears</string>
     <string name="login_text">Login</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="signup_text">Signup</string>
     <string name="phonenumber_hint">Phone number</string>
+    <string name="get_otp_text">Get OTP</string>
+    <string name="dont_have_an_account">Don\'t have any account?</string>
+    <string name="otp_hint">OTP</string>
+    <string name="submit_btn">Submit</string>
+    <string name="lets_go_btn">Let\'s go...</string>
+    <string name="passward_hint">Passward</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="full_name_hint">Full Name</string>
+    <string name="create_passward_hint">Create Passward</string>
+    <string name="confirm_passward_hint">Confirm Passward</string>
+    <string name="address_hint">Address</string>
+    <string name="pincode_hint">Pin Code</string>
+    <string name="district_hint">District</string>
+    <string name="state_hint">State</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="discover">Discover</string>
+    <string name="explore_our_top_categories"><font color='#6E6E73'>Explore Our Top</font> <font color='#F5F5F7'>Categories</font></string>
+    <string name="search_bar_hint">Search for products</string>
+    <string name="spolight_title"><font color='#F5F5F7'>Spotlight On.</font>\nTake a look at what\'s new right now.</string>
+    <string name="shop_size">Shop by <font color='#F5F5F7'>Size</font></string>
+    <string name="tradition_thought">Art Without  <font color='#F5F5F7'>Tradition,</font>\nLooks Like A Boat Without Beam.</string>
+    <string name="tradition"><font color='#1D1D1F'>Traditional</font> Wears</string>
+    <string name="fabric_thought">Only an excellent <font color='#F5F5F7'>fabric</font> can originate an excellent fashion.</string>
+    <string name="shop_fabric">Shop By <font color='#F5F5F7'> Fabric</font></string>
+    <string name="new_collection"><font color='#1D1D1F'>New</font> Collections</string>
+    <string name="shop_color">Shop By <font color='#F5F5F7'>Colors</font></string>
+    <string name="color_thought"><font color='#F5F5F7'>Color</font> possesses a language without words.</string>
+    <string name="shop_more">Shop More</string>
+    <string name="deal_thought">The real <font color='#F5F5F7'>deal</font> is always going to win in the end.</string>
+    <string name="fashion_thought"><font color='#1D1D1F'>Fashion </font>is like eating you shouldn\'t stick to same menu.</string>
+    <string name="deal_shop">Best <font color='#1D1D1F'>Deals</font></string>
+    <string name="price_high_to_low">Price - High to Low</string>
+    <string name="price_low_to_high">Price - Low to High</string>
+    <string name="discount">Discount</string>
 </resources>

@@ -91,15 +91,13 @@
         android:name="com.gayatriladieswears.app.Fragments.SignupOtpFragment"
         android:label="SignupOtpFragment" >
         <action
-            android:id="@+id/action_signupOtpFragment_to_signupAddressFragment"
-            app:destination="@id/signupAddressFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
+            android:id="@+id/action_signupOtpFragment_to_termsAndContionsFragment"
+            app:destination="@id/termsAndContionsFragment"
+            app:popUpTo="@id/login" />
     </fragment>
     <fragment
-        android:id="@+id/signupAddressFragment"
-        android:name="com.gayatriladieswears.app.Fragments.SignupAddressFragment"
-        android:label="SignupAddressFragment" />
+        android:id="@+id/termsAndContionsFragment"
+        android:name="com.gayatriladieswears.app.Fragments.TermsAndContionsFragment"
+        android:label="fragment_terms_and_contions"
+        tools:layout="@layout/fragment_terms_and_contions" />
 </navigation>

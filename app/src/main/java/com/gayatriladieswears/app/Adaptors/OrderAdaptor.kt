@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.gayatriladieswears.app.*
@@ -46,6 +47,8 @@ class OrderAdaptor(private val context: Context, private var fragment: OrderFrag
         val model = list[position]
         Log.e(TAG, "onBindViewHolder: $model")
 
+        var awb:String = ""
+
         holder.itemView.order_id.text = model.orderId
         holder.itemView.order_transactionId.text = model.transactionId
         holder.itemView.order_quantity.text = model.totalQuantity
@@ -57,25 +60,97 @@ class OrderAdaptor(private val context: Context, private var fragment: OrderFrag
 
 
         if("R" in model.orderId){
-            holder.itemView.findViewById<Button>(R.id.order_track_btn).visibility = View.GONE
+            holder.itemView.findViewById<Button>(R.id.order_track_btn).visibility= View.GONE
             holder.itemView.findViewById<TextView>(R.id.textView19).text = "Returned"
-            holder.itemView.findViewById<TextView>(R.id.textView19).setTextColor(fragment.resources.getColor(R.color.gray))
+            holder.itemView.findViewById<TextView>(R.id.textView19).setTextColor(context.resources.getColor(R.color.gray))
             holder.itemView.findViewById<TextView>(R.id.textView19).visibility = View.VISIBLE
             fragment.dialog.dismiss()
+
+            holder.itemView.setOnClickListener {
+                var totaAmount = 0
+                var shippingCharges = "0"
+
+                for ( i in model.orderedProducts){
+                    totaAmount = totaAmount + i.price
+                }
+
+                if(totaAmount < 799){
+                    shippingCharges = "99"
+                }else{
+                    shippingCharges = "0"
+
+                }
+
+                val bundle = Bundle()
+                bundle.putString("orderId",model.orderId)
+                bundle.putString("transactionId",model.transactionId)
+                bundle.putString("date",model.date)
+                bundle.putString("name",model.name)
+                bundle.putString("address",model.address)
+                bundle.putString("landmark",model.landMark)
+                bundle.putString("contact",model.contact)
+                bundle.putString("tag",model.tag)
+                bundle.putParcelableArrayList("products",model.orderedProducts)
+                bundle.putString("amount",model.amout.toString())
+                bundle.putString("awb","")
+                bundle.putString("pincode",model.pincode)
+                bundle.putString("email",model.email)
+                bundle.putString("shippingCharges",shippingCharges)
+
+                holder.itemView.findNavController().navigate(R.id.action_orderFragment_to_orderDetailFragment,bundle)
+            }
 
         }else if("C" in model.orderId){
             holder.itemView.findViewById<Button>(R.id.order_track_btn).visibility = View.GONE
             holder.itemView.findViewById<TextView>(R.id.textView19).text = "Canceled"
-            holder.itemView.findViewById<TextView>(R.id.textView19).setTextColor(fragment.resources.getColor(R.color.red))
+            holder.itemView.findViewById<TextView>(R.id.textView19).setTextColor(context.resources.getColor(R.color.red))
             holder.itemView.findViewById<TextView>(R.id.textView19).visibility = View.VISIBLE
             fragment.dialog.dismiss()
+
+            holder.itemView.setOnClickListener {
+                var totaAmount = 0
+                var shippingCharges = "0"
+
+                for ( i in model.orderedProducts){
+                    totaAmount = totaAmount + i.price
+                }
+
+                if(totaAmount < 799){
+                    shippingCharges = "99"
+                }else{
+                    shippingCharges = "0"
+
+                }
+
+                val bundle = Bundle()
+                bundle.putString("orderId",model.orderId)
+                bundle.putString("transactionId",model.transactionId)
+                bundle.putString("date",model.date)
+                bundle.putString("name",model.name)
+                bundle.putString("address",model.address)
+                bundle.putString("landmark",model.landMark)
+                bundle.putString("contact",model.contact)
+                bundle.putString("tag",model.tag)
+                bundle.putParcelableArrayList("products",model.orderedProducts)
+                bundle.putString("amount",model.amout.toString())
+                bundle.putString("awb",model.courierId)
+                bundle.putString("pincode",model.pincode)
+                bundle.putString("email",model.email)
+                bundle.putString("shippingCharges",shippingCharges)
+
+                holder.itemView.findNavController().navigate(R.id.action_orderFragment_to_orderDetailFragment,bundle)
+            }
+
         }else if(model.courierId.toString() == ""){
             holder.itemView.order_track_btn.visibility = View.GONE
             holder.itemView.textView19.text = "Packing"
-            holder.itemView.textView19.setTextColor(fragment.resources.getColor(R.color.green))
+            holder.itemView.textView19.setTextColor(context.resources.getColor(R.color.green))
             holder.itemView.textView19.visibility = View.VISIBLE
 
 
+
+
+            CoroutineScope(IO).launch {
                 val retrofitBuilder = Retrofit.Builder()
                     .addConverterFactory(GsonConverterFactory.create())
                     .baseUrl(BASE_URL)
@@ -103,24 +178,112 @@ class OrderAdaptor(private val context: Context, private var fragment: OrderFrag
                                 if(response.isSuccessful){
                                     val data = response2.body()?.getAsJsonObject("data")?.getAsJsonObject("awb_data")
                                     Log.e(TAG, "onResponse: $data", )
-                                    val awb = data?.get("awb").toString()
+                                    awb = data?.get("awb").toString()
                                     if(awb.replace("\"", "") == ""){
                                         holder.itemView.order_track_btn.visibility = View.GONE
                                         holder.itemView.textView19.text = "Packing"
-                                        holder.itemView.textView19.setTextColor(fragment.resources.getColor(R.color.green))
+                                        holder.itemView.textView19.setTextColor(context.resources.getColor(R.color.green))
                                         holder.itemView.textView19.visibility = View.VISIBLE
+
+
+                                        holder.itemView.setOnClickListener {
+                                            var totaAmount = 0
+                                            var shippingCharges = "0"
+
+                                            for ( i in model.orderedProducts){
+                                                totaAmount = totaAmount + i.price
+                                            }
+
+                                            if(totaAmount < 799){
+                                                shippingCharges = "99"
+                                            }else{
+                                                shippingCharges = "0"
+
+                                            }
+
+                                            val bundle = Bundle()
+                                            bundle.putString("orderId",model.orderId)
+                                            bundle.putString("transactionId",model.transactionId)
+                                            bundle.putString("date",model.date)
+                                            bundle.putString("name",model.name)
+                                            bundle.putString("address",model.address)
+                                            bundle.putString("landmark",model.landMark)
+                                            bundle.putString("contact",model.contact)
+                                            bundle.putString("tag",model.tag)
+                                            bundle.putParcelableArrayList("products",model.orderedProducts)
+                                            bundle.putString("amount",model.amout.toString())
+                                            bundle.putString("awb","")
+                                            bundle.putString("pincode",model.pincode)
+                                            bundle.putString("email",model.email)
+                                            bundle.putString("shippingCharges",shippingCharges)
+
+                                            holder.itemView.findNavController().navigate(R.id.action_orderFragment_to_orderDetailFragment,bundle)
+                                        }
                                         fragment.dialog.dismiss()
+
                                     }else{
 
-
-                                        model.courierId = awb
+                                        model.courierId = awb.replace("\"", "")
 
                                         holder.itemView.order_track_btn.visibility = View.VISIBLE
                                         holder.itemView.textView19.visibility = View.GONE
                                         fragment.dialog.dismiss()
                                         FirestoreClass().mFirestore.collection("Orders")
                                             .document(model.orderId.replace("R","").replace("C",""))
-                                            .update("courierId",awb)
+                                            .update("courierId",awb.replace("\"", ""))
+
+
+
+                                        holder.itemView.order_track_btn.setOnClickListener {
+                                            val url = "https://shiprocket.co/tracking/$awb"
+                                            val builder = CustomTabsIntent.Builder()
+                                            builder.setToolbarColor(context.resources!!.getColor(R.color.black))
+                                            builder.addDefaultShareMenuItem()
+
+                                            val anotherCustomTab = CustomTabsIntent.Builder().build()
+
+                                            val intent = anotherCustomTab.intent
+                                            intent.data = Uri.parse("https://shiprocket.co/tracking/$awb")
+
+                                            builder.setShowTitle(true)
+
+                                            val customTabsIntent = builder.build()
+                                            customTabsIntent.launchUrl(context, Uri.parse(url))
+                                        }
+
+                                        holder.itemView.setOnClickListener {
+                                            var totaAmount = 0
+                                            var shippingCharges = "0"
+
+                                            for ( i in model.orderedProducts){
+                                                totaAmount = totaAmount + i.price
+                                            }
+
+                                            if(totaAmount < 799){
+                                                shippingCharges = "99"
+                                            }else{
+                                                shippingCharges = "0"
+
+                                            }
+
+                                            val bundle = Bundle()
+                                            bundle.putString("orderId",model.orderId)
+                                            bundle.putString("transactionId",model.transactionId)
+                                            bundle.putString("date",model.date)
+                                            bundle.putString("name",model.name)
+                                            bundle.putString("address",model.address)
+                                            bundle.putString("landmark",model.landMark)
+                                            bundle.putString("contact",model.contact)
+                                            bundle.putString("tag",model.tag)
+                                            bundle.putParcelableArrayList("products",model.orderedProducts)
+                                            bundle.putString("amount",model.amout.toString())
+                                            bundle.putString("awb",model.courierId)
+                                            bundle.putString("pincode",model.pincode)
+                                            bundle.putString("email",model.email)
+                                            bundle.putString("shippingCharges",shippingCharges)
+
+                                            holder.itemView.findNavController().navigate(R.id.action_orderFragment_to_orderDetailFragment,bundle)
+                                        }
 
                                         fragment.dialog.dismiss()
 
@@ -133,10 +296,12 @@ class OrderAdaptor(private val context: Context, private var fragment: OrderFrag
                                         "Something Went Wrong",
                                         Snackbar.LENGTH_LONG
                                     )
-                                    snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
-                                    snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                                    snackBar.setBackgroundTint(context.resources.getColor(R.color.red))
+                                    snackBar.setTextColor(context.resources.getColor(R.color.white))
                                     snackBar.show()
                                     fragment.vibratePhone()
+
+
                                 }
                             }
 
@@ -147,8 +312,8 @@ class OrderAdaptor(private val context: Context, private var fragment: OrderFrag
                                     "Something Went Wrong",
                                     Snackbar.LENGTH_LONG
                                 )
-                                snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
-                                snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                                snackBar.setBackgroundTint(context.resources.getColor(R.color.red))
+                                snackBar.setTextColor(context.resources.getColor(R.color.white))
                                 snackBar.show()
                                 fragment.vibratePhone()
                             }
@@ -164,31 +329,19 @@ class OrderAdaptor(private val context: Context, private var fragment: OrderFrag
                             "Something Went Wrong",
                             Snackbar.LENGTH_LONG
                         )
-                        snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
-                        snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                        snackBar.setBackgroundTint(context.resources.getColor(R.color.red))
+                        snackBar.setTextColor(context.resources.getColor(R.color.white))
                         snackBar.show()
                         fragment.vibratePhone()
                     }
 
                 })
-
-
-
-
-
-
-
-
-
-
-
-
-
+            }
 
 
         }
         else{
-            fragment.dialog.dismiss()
+
             holder.itemView.findViewById<Button>(R.id.order_track_btn).setOnClickListener {
 
                 val url = "https://shiprocket.co/tracking/${model.courierId}"
@@ -207,47 +360,53 @@ class OrderAdaptor(private val context: Context, private var fragment: OrderFrag
                 customTabsIntent.launchUrl(context, Uri.parse(url))
             }
 
-        }
+            holder.itemView.setOnClickListener {
+                var totaAmount = 0
+                var shippingCharges = "0"
 
+                for ( i in model.orderedProducts){
+                    totaAmount = totaAmount + i.price
+                }
 
-        holder.itemView.setOnClickListener {
-            var totaAmount = 0
-            var shippingCharges = "0"
+                if(totaAmount < 799){
+                    shippingCharges = "99"
+                }else{
+                    shippingCharges = "0"
 
-            for ( i in model.orderedProducts){
-                totaAmount = totaAmount + i.price
+                }
+
+                val bundle = Bundle()
+                bundle.putString("orderId",model.orderId)
+                bundle.putString("transactionId",model.transactionId)
+                bundle.putString("date",model.date)
+                bundle.putString("name",model.name)
+                bundle.putString("address",model.address)
+                bundle.putString("landmark",model.landMark)
+                bundle.putString("contact",model.contact)
+                bundle.putString("tag",model.tag)
+                bundle.putParcelableArrayList("products",model.orderedProducts)
+                bundle.putString("amount",model.amout.toString())
+                bundle.putString("awb",model.courierId)
+                bundle.putString("pincode",model.pincode)
+                bundle.putString("email",model.email)
+                bundle.putString("shippingCharges",shippingCharges)
+
+                holder.itemView.findNavController().navigate(R.id.action_orderFragment_to_orderDetailFragment,bundle)
             }
 
-            if(totaAmount < 799){
-                shippingCharges = "99"
-            }else{
-                shippingCharges = "0"
+            fragment.dialog.dismiss()
 
-            }
 
-            val bundle = Bundle()
-            bundle.putString("orderId",model.orderId)
-            bundle.putString("transactionId",model.transactionId)
-            bundle.putString("date",model.date)
-            bundle.putString("name",model.name)
-            bundle.putString("address",model.address)
-            bundle.putString("landmark",model.landMark)
-            bundle.putString("contact",model.contact)
-            bundle.putString("tag",model.tag)
-            bundle.putParcelableArrayList("products",model.orderedProducts)
-            bundle.putString("amount",model.amout.toString())
-            bundle.putString("awb",model.courierId)
-            bundle.putString("pincode",model.pincode)
-            bundle.putString("email",model.email)
-            bundle.putString("shippingCharges",shippingCharges)
 
-            holder.itemView.findNavController().navigate(R.id.action_orderFragment_to_orderDetailFragment,bundle)
         }
+
     }
 
     override fun getItemCount(): Int {
         return list.size
     }
+
+
 
     class myViewHolder(view: View) : RecyclerView.ViewHolder(view){
 

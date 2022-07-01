@@ -3,6 +3,7 @@ package com.gayatriladieswears.app.Fragments
 import android.app.Dialog
 import android.content.ContentValues
 import android.content.ContentValues.TAG
+import android.graphics.Color.red
 import android.net.Uri
 import android.os.Bundle
 import android.os.StrictMode
@@ -95,6 +96,11 @@ class OrderDetailFragment : Fragment() {
         email = arguments?.getString("email").toString()
         landmark = arguments?.getString("landmark").toString()
         shippingCharges = arguments?.getString("shippingCharges").toString()
+
+        Log.e(TAG, "onCreateView: $awb")
+        
+        
+
         
 
         FirestoreClass().getOrderDetailProducts(this,orderId)
@@ -192,18 +198,18 @@ class OrderDetailFragment : Fragment() {
                         if(awb == ""){
                             edd = date
                             if("R" in orderId){
-                                binding.cancelBtn.visibility = View.INVISIBLE
+                                binding.cancelBtn.visibility = View.GONE
                                 binding.cancelBtn.isClickable = false
-                                binding.trackBtn.visibility = View.INVISIBLE
+                                binding.trackBtn.visibility = View.GONE
                                 binding.cancelBtn.isClickable = false
                                 binding.orderStatusText.text = "Returned"
                                 binding.orderStatusText.setTextColor(resources.getColor( R.color.gray))
                                 binding.view18.visibility = View.INVISIBLE
                                 mdialog.dismiss()
                             }else if("C" in orderId){
-                                binding.cancelBtn.visibility = View.INVISIBLE
+                                binding.cancelBtn.visibility = View.GONE
                                 binding.cancelBtn.isClickable = false
-                                binding.trackBtn.visibility = View.INVISIBLE
+                                binding.trackBtn.visibility = View.GONE
                                 binding.cancelBtn.isClickable = false
                                 binding.orderStatusText.text = "Canceled"
                                 binding.orderStatusText.setTextColor(resources.getColor( R.color.red))
@@ -231,7 +237,7 @@ class OrderDetailFragment : Fragment() {
                                         Log.e(TAG, "onResponse: $todayDate")
                                         Log.e(TAG, "onResponse: $expiryDate")
 
-                                        if(status.toString().replace("\"", "") == "NEW"){
+                                        if(status.toString().replace("\"", "") == "DELIVERED"){
                                             binding.cancelBtn.text = "Return Order"
                                             if(todayDate.before(expiryDate)){
                                                 binding.cancelBtn.setOnClickListener {
@@ -297,7 +303,7 @@ class OrderDetailFragment : Fragment() {
                                         else if (status.toString().replace("\"", "") == "CANCELLATION REQUESTED"){
                                             binding.cancelBtn.visibility = View.INVISIBLE
                                             binding.cancelBtn.isClickable = false
-                                        }else if(status.toString().replace("\"", "") == "READY TO SHIP"){
+                                        }else if(status.toString().replace("\"", "") == "NEW"){
                                             binding.orderStatusText.text = "Packing"
                                             binding.trackBtn.setOnClickListener {
                                                 val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Please wait the order will be tracked soon.", 3000)
@@ -840,75 +846,120 @@ class OrderDetailFragment : Fragment() {
                                 .build()
 
                             val orderServices2 = retrofitBuilder2.create(OrderServices::class.java)
-                            val trackingCall = orderServices2.getTrackingData(headerMap,awb.toString().toLong())
+
+                            val trackingCall = orderServices2.getTrackingData(headerMap,awb)
                             trackingCall.enqueue(object :Callback<JsonObject>{
                                 override fun onResponse(
                                     call: Call<JsonObject>,
                                     response2: Response<JsonObject>
                                 ) {
-                                    if(response.isSuccessful){
+                                    if(response.isSuccessful) {
 
-                                        Log.e(TAG, "onResponse: ${response2.body()?.getAsJsonObject("tracking_data")?.get("etd").toString().replace("\"", "").replaceAfter(" ","").trim()}", )
+                                        Log.e(
+                                            TAG,
+                                            "onResponse: ${
+                                                response2.body()?.getAsJsonObject("tracking_data")
+                                                    ?.get("etd").toString().replace("\"", "")
+                                                    .replaceAfter(" ", "").trim()
+                                            }",
+                                        )
 
-                                        if(response2.body()?.getAsJsonObject("tracking_data")?.get("etd").toString().replace("\"", "") != ""){
-                                            edd = response2.body()?.getAsJsonObject("tracking_data")?.get("etd").toString().replace("\"", "").replaceAfter(" ","").trim()
-                                            if("R" in orderId){
+                                        if (response2.body()?.getAsJsonObject("tracking_data")
+                                                ?.get("etd").toString().replace("\"", "") == ""
+                                        ) {
+                                            edd = date
+                                            if ("R" in orderId) {
                                                 binding.cancelBtn.visibility = View.INVISIBLE
                                                 binding.cancelBtn.isClickable = false
                                                 binding.trackBtn.visibility = View.INVISIBLE
                                                 binding.cancelBtn.isClickable = false
                                                 binding.orderStatusText.text = "Returned"
-                                                binding.orderStatusText.setTextColor(resources.getColor( R.color.gray))
+                                                binding.orderStatusText.setTextColor(
+                                                    resources.getColor(
+                                                        R.color.gray
+                                                    )
+                                                )
                                                 binding.view18.visibility = View.INVISIBLE
                                                 mdialog.dismiss()
-                                            }else if("C" in orderId){
+                                            } else if ("C" in orderId) {
                                                 binding.cancelBtn.visibility = View.INVISIBLE
                                                 binding.cancelBtn.isClickable = false
                                                 binding.trackBtn.visibility = View.INVISIBLE
                                                 binding.cancelBtn.isClickable = false
                                                 binding.orderStatusText.text = "Canceled"
-                                                binding.orderStatusText.setTextColor(resources.getColor( R.color.red))
+                                                binding.orderStatusText.setTextColor(
+                                                    resources.getColor(
+                                                        R.color.red
+                                                    )
+                                                )
                                                 binding.view18.visibility = View.INVISIBLE
                                                 mdialog.dismiss()
-                                            }else{
-                                                val ordercall = orderServices.getOrderDetail(headerMap,orderId)
-                                                ordercall.enqueue(object :Callback<JsonObject>{
+                                            } else {
+                                                val ordercall =
+                                                    orderServices.getOrderDetail(headerMap, orderId)
+                                                ordercall.enqueue(object : Callback<JsonObject> {
                                                     override fun onResponse(
                                                         call: Call<JsonObject>,
-                                                        response: Response<JsonObject>) = if(response.isSuccessful){
+                                                        response: Response<JsonObject>
+                                                    ) = if (response.isSuccessful) {
 
-                                                        val data = response.body()?.getAsJsonObject("data")
+                                                        val data =
+                                                            response.body()?.getAsJsonObject("data")
                                                         val status = data?.get("status")
                                                         orderID = data?.get("id").toString()
                                                         Log.e(TAG, "onResponse: $orderID")
-                                                        binding.orderStatusText.text = status.toString().replace("\"", "").lowercase().capitalize()
+                                                        binding.orderStatusText.text =
+                                                            status.toString().replace("\"", "")
+                                                                .lowercase().capitalize()
                                                         mdialog.dismiss()
                                                         val current = LocalDateTime.now()
-                                                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-                                                        val formattedDate = current.format(formatter).toString()
+                                                        val formatter =
+                                                            DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                                                        val formattedDate =
+                                                            current.format(formatter).toString()
 
-                                                        val todayDate = SimpleDateFormat("yyyy-MM-dd").parse(formattedDate)
-                                                        val expiryDate = SimpleDateFormat("yyyy-MM-dd").parse(getCalculatedDate(edd, "yyyy-MM-dd",6))
+                                                        val todayDate =
+                                                            SimpleDateFormat("yyyy-MM-dd").parse(
+                                                                formattedDate
+                                                            )
+                                                        val expiryDate =
+                                                            SimpleDateFormat("yyyy-MM-dd").parse(
+                                                                getCalculatedDate(
+                                                                    edd,
+                                                                    "yyyy-MM-dd",
+                                                                    6
+                                                                )
+                                                            )
                                                         Log.e(TAG, "onResponse: $todayDate")
                                                         Log.e(TAG, "onResponse: $expiryDate")
 
-                                                        if(status.toString().replace("\"", "") == "NEW"){
+                                                        if (status.toString()
+                                                                .replace("\"", "") == "NEW"
+                                                        ) {
                                                             binding.cancelBtn.text = "Return Order"
-                                                            if(todayDate.before(expiryDate)){
+                                                            if (todayDate.before(expiryDate)) {
                                                                 binding.cancelBtn.setOnClickListener {
 
-                                                                    val dialog = MaterialAlertDialogBuilder(requireContext(),R.style.AppCompatAlertDialogStyle)
+                                                                    val dialog =
+                                                                        MaterialAlertDialogBuilder(
+                                                                            requireContext(),
+                                                                            R.style.AppCompatAlertDialogStyle
+                                                                        )
                                                                     dialog.setTitle("Return Order")
                                                                     dialog.setMessage("Do you really want to Return the order?")
-                                                                    dialog.background = context?.resources!!.getDrawable(R.drawable.black_btn_bg)
+                                                                    dialog.background =
+                                                                        context?.resources!!.getDrawable(
+                                                                            R.drawable.black_btn_bg
+                                                                        )
                                                                     dialog.setNegativeButton("Cancel") { dialog, which ->
                                                                         dialog.dismiss()
                                                                     }
                                                                     dialog.setPositiveButton("Sure") { dialog, which ->
-                                                                        val dialog2 = MaterialAlertDialogBuilder(
-                                                                            requireContext(),
-                                                                            R.style.AppCompatAlertDialogStyle
-                                                                        )
+                                                                        val dialog2 =
+                                                                            MaterialAlertDialogBuilder(
+                                                                                requireContext(),
+                                                                                R.style.AppCompatAlertDialogStyle
+                                                                            )
                                                                         dialog2.setTitle("Remember")
                                                                         dialog2.setMessage("As our policy your money will be refund in 5-10 Business Days. Remember that your shipping charges will 'not' be refund.")
                                                                         dialog2.background =
@@ -921,66 +972,156 @@ class OrderDetailFragment : Fragment() {
                                                                         dialog2.setPositiveButton("Agree") { dialog2, which ->
 
                                                                             val bundle = Bundle()
-                                                                            bundle.putString("orderID",orderID)
-                                                                            bundle.putString("transactionID",transactionId)
-                                                                            bundle.putString("name",name)
-                                                                            bundle.putString("address",address)
-                                                                            bundle.putString("city",city)
-                                                                            bundle.putString("state",state)
-                                                                            bundle.putString("country",country)
-                                                                            bundle.putString("pincode",pincode)
-                                                                            bundle.putString("email",email)
-                                                                            bundle.putString("phone",contact)
-                                                                            bundle.putString("amount",amount)
-                                                                            bundle.putString("shippingCharges",shippingCharges)
-                                                                            bundle.putParcelableArrayList("products", products as java.util.ArrayList<CartItem>)
-                                                                            findNavController().navigate(R.id.action_orderDetailFragment_to_orderReturnFragment,bundle)
+                                                                            bundle.putString(
+                                                                                "orderID",
+                                                                                orderID
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "transactionID",
+                                                                                transactionId
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "name",
+                                                                                name
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "address",
+                                                                                address
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "city",
+                                                                                city
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "state",
+                                                                                state
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "country",
+                                                                                country
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "pincode",
+                                                                                pincode
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "email",
+                                                                                email
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "phone",
+                                                                                contact
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "amount",
+                                                                                amount
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "shippingCharges",
+                                                                                shippingCharges
+                                                                            )
+                                                                            bundle.putParcelableArrayList(
+                                                                                "products",
+                                                                                products as java.util.ArrayList<CartItem>
+                                                                            )
+                                                                            findNavController().navigate(
+                                                                                R.id.action_orderDetailFragment_to_orderReturnFragment,
+                                                                                bundle
+                                                                            )
                                                                         }
                                                                         dialog2.show()
                                                                     }
                                                                     dialog.show()
 
                                                                 }
-                                                            }else{
+                                                            } else {
                                                                 binding.cancelBtn.setOnClickListener {
-                                                                    val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "The Order Can be Only Return Within 5 Days after Order.", 3000)
-                                                                    snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                    snackBar.setTextColor(resources.getColor(R.color.white))
+                                                                    val snackBar = Snackbar.make(
+                                                                        requireActivity().findViewById(
+                                                                            android.R.id.content
+                                                                        ),
+                                                                        "The Order Can be Only Return Within 5 Days after Order.",
+                                                                        3000
+                                                                    )
+                                                                    snackBar.setBackgroundTint(
+                                                                        resources.getColor(R.color.red)
+                                                                    )
+                                                                    snackBar.setTextColor(
+                                                                        resources.getColor(
+                                                                            R.color.white
+                                                                        )
+                                                                    )
                                                                     snackBar.show()
                                                                     vibratePhone()
                                                                 }
                                                             }
-                                                        }
-                                                        else if (status.toString().replace("\"", "") == "CANCELED"){
-                                                            binding.cancelBtn.visibility = View.INVISIBLE
+                                                        } else if (status.toString()
+                                                                .replace("\"", "") == "CANCELED"
+                                                        ) {
+                                                            binding.cancelBtn.visibility =
+                                                                View.INVISIBLE
                                                             binding.cancelBtn.isClickable = false
-                                                        }
-                                                        else if (status.toString().replace("\"", "") == "CANCELLATION REQUESTED"){
-                                                            binding.cancelBtn.visibility = View.INVISIBLE
+                                                        } else if (status.toString().replace(
+                                                                "\"",
+                                                                ""
+                                                            ) == "CANCELLATION REQUESTED"
+                                                        ) {
+                                                            binding.cancelBtn.visibility =
+                                                                View.INVISIBLE
                                                             binding.cancelBtn.isClickable = false
-                                                        }else if(status.toString().replace("\"", "") == "READY TO SHIP"){
+                                                        } else if (status.toString().replace(
+                                                                "\"",
+                                                                ""
+                                                            ) == "READY TO SHIP"
+                                                        ) {
                                                             binding.orderStatusText.text = "Packing"
                                                             binding.trackBtn.setOnClickListener {
-                                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Please wait the order will be tracked soon.", 3000)
-                                                                snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                snackBar.setTextColor(resources.getColor(R.color.white))
+                                                                val snackBar = Snackbar.make(
+                                                                    requireActivity().findViewById(
+                                                                        android.R.id.content
+                                                                    ),
+                                                                    "Please wait the order will be tracked soon.",
+                                                                    3000
+                                                                )
+                                                                snackBar.setBackgroundTint(
+                                                                    resources.getColor(
+                                                                        R.color.red
+                                                                    )
+                                                                )
+                                                                snackBar.setTextColor(
+                                                                    resources.getColor(
+                                                                        R.color.white
+                                                                    )
+                                                                )
                                                                 snackBar.show()
                                                                 vibratePhone()
                                                             }
 
                                                             binding.cancelBtn.setOnClickListener {
-                                                                val dialog = MaterialAlertDialogBuilder(requireContext(),R.style.AppCompatAlertDialogStyle)
+                                                                val dialog =
+                                                                    MaterialAlertDialogBuilder(
+                                                                        requireContext(),
+                                                                        R.style.AppCompatAlertDialogStyle
+                                                                    )
                                                                 dialog.setTitle("Cancel Order")
                                                                 dialog.setMessage("Do you really want to cancel the order?")
-                                                                dialog.background = context?.resources!!.getDrawable(R.drawable.black_btn_bg)
+                                                                dialog.background =
+                                                                    context?.resources!!.getDrawable(
+                                                                        R.drawable.black_btn_bg
+                                                                    )
                                                                 dialog.setNegativeButton("Cancel") { dialog, which ->
                                                                     dialog.dismiss()
                                                                 }
                                                                 dialog.setPositiveButton("Sure") { dialog, which ->
-                                                                    val dialog2 = MaterialAlertDialogBuilder(requireContext(),R.style.AppCompatAlertDialogStyle)
+                                                                    val dialog2 =
+                                                                        MaterialAlertDialogBuilder(
+                                                                            requireContext(),
+                                                                            R.style.AppCompatAlertDialogStyle
+                                                                        )
                                                                     dialog2.setTitle("Remember")
                                                                     dialog2.setMessage("As our policy your money will be refund in 5-10 Business Days. Remember that your shipping charges will 'not' be refund.")
-                                                                    dialog2.background = resources.getDrawable(R.drawable.black_btn_bg)
+                                                                    dialog2.background =
+                                                                        resources.getDrawable(R.drawable.black_btn_bg)
                                                                     dialog2.setNegativeButton("Cancel") { dialog2, which ->
                                                                         dialog.dismiss()
                                                                         dialog2.dismiss()
@@ -988,141 +1129,271 @@ class OrderDetailFragment : Fragment() {
                                                                     }
                                                                     dialog2.setPositiveButton("Agree") { dialog2, which ->
                                                                         mdialog.show()
-                                                                        val idList:ArrayList<Int> = ArrayList()
-                                                                        idList.add(orderId.toString().toInt())
+                                                                        val idList: ArrayList<Int> =
+                                                                            ArrayList()
+                                                                        idList.add(
+                                                                            orderId.toString()
+                                                                                .toInt()
+                                                                        )
 
-                                                                        val cancelOrder = CancelOrder(idList)
+                                                                        val cancelOrder =
+                                                                            CancelOrder(idList)
 
-                                                                        val cancelOrderCall = orderServices.cancelOrder(headerMap,cancelOrder)
-                                                                        cancelOrderCall.enqueue(object :Callback<JsonObject>{
-                                                                            override fun onResponse(
-                                                                                call: Call<JsonObject>,
-                                                                                response: Response<JsonObject>
-                                                                            ) {
-                                                                                if(response.isSuccessful){
-                                                                                    val retrofitBuilder2 = Retrofit.Builder()
-                                                                                        .addConverterFactory(GsonConverterFactory.create())
-                                                                                        .baseUrl(BASE_URL_RZP)
-                                                                                        .build()
-
-                                                                                    val orderServices2 = retrofitBuilder2.create(OrderServices::class.java)
-                                                                                    val refundCall = orderServices2.refundPayment(transactionId,(amount.toString().toInt() - shippingCharges.toString().toInt())*100,"Basic cnpwX3Rlc3RfVXljYlBRNmpkTFRKdGQ6OXFkWU5mSWpCbHJZemc1ckNDVFQzUTdo")
-                                                                                    refundCall.enqueue(object :Callback<JsonObject>{
-                                                                                        override fun onResponse(
-                                                                                            call: Call<JsonObject>,
-                                                                                            response2: Response<JsonObject>
-                                                                                        ) {
-                                                                                            if(response2.isSuccessful){
-
-                                                                                                val refundId = response2.body()?.get("id").toString()
-
-                                                                                                mdialog.dismiss()
-                                                                                                Log.e(TAG, "onResponse: ${response2.body().toString()}")
-                                                                                                findNavController().navigate(R.id.action_orderDetailFragment_to_orderFragment)
-                                                                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Canceled Successfully.", 3000)
-                                                                                                snackBar.setBackgroundTint(resources.getColor(R.color.black))
-                                                                                                snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                                snackBar.show()
-                                                                                                vibratePhone()
-
-                                                                                                FirestoreClass().mFirestore.collection("Orders")
-                                                                                                    .document(orderID)
-                                                                                                    .update("transactionId",refundId)
-
-                                                                                                FirestoreClass().mFirestore.collection("Orders")
-                                                                                                    .document(orderId)
-                                                                                                    .update("orderId",
-                                                                                                        "C$orderID"
-                                                                                                    )
-
-                                                                                            }else{
-                                                                                                Log.e(
-                                                                                                    TAG,
-                                                                                                    "onResponse: ${response2.raw()}"
+                                                                        val cancelOrderCall =
+                                                                            orderServices.cancelOrder(
+                                                                                headerMap,
+                                                                                cancelOrder
+                                                                            )
+                                                                        cancelOrderCall.enqueue(
+                                                                            object :
+                                                                                Callback<JsonObject> {
+                                                                                override fun onResponse(
+                                                                                    call: Call<JsonObject>,
+                                                                                    response: Response<JsonObject>
+                                                                                ) {
+                                                                                    if (response.isSuccessful) {
+                                                                                        val retrofitBuilder2 =
+                                                                                            Retrofit.Builder()
+                                                                                                .addConverterFactory(
+                                                                                                    GsonConverterFactory.create()
                                                                                                 )
-                                                                                                Log.e(
-                                                                                                    TAG,
-                                                                                                    "onResponse: ${
-                                                                                                        response2.errorBody()
-                                                                                                            .toString()
-                                                                                                    }"
+                                                                                                .baseUrl(
+                                                                                                    BASE_URL_RZP
                                                                                                 )
-                                                                                                Log.e(
-                                                                                                    TAG,
-                                                                                                    "onResponse: ${
-                                                                                                        response2.headers()
-                                                                                                            .toString()
-                                                                                                    }"
-                                                                                                )
-                                                                                                mdialog.dismiss()
+                                                                                                .build()
 
-                                                                                                mdialog.dismiss()
-                                                                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Cancellation Failed.", Snackbar.LENGTH_LONG)
-                                                                                                snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                                snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                                snackBar.show()
-                                                                                                vibratePhone()
-                                                                                            }
-                                                                                        }
-
-                                                                                        override fun onFailure(
-                                                                                            call: Call<JsonObject>,
-                                                                                            t: Throwable
-                                                                                        ) {
-                                                                                            mdialog.dismiss()
-                                                                                            Log.e(
-                                                                                                TAG,
-                                                                                                "onFailure: ${t.localizedMessage}"
+                                                                                        val orderServices2 =
+                                                                                            retrofitBuilder2.create(
+                                                                                                OrderServices::class.java
                                                                                             )
-                                                                                            val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Cancellation Failed.", Snackbar.LENGTH_LONG)
-                                                                                            snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                            snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                            snackBar.show()
-                                                                                            vibratePhone()
-                                                                                        }
+                                                                                        val refundCall =
+                                                                                            orderServices2.refundPayment(
+                                                                                                transactionId,
+                                                                                                (amount.toString()
+                                                                                                    .toInt() - shippingCharges.toString()
+                                                                                                    .toInt()) * 100,
+                                                                                                "Basic cnpwX3Rlc3RfVXljYlBRNmpkTFRKdGQ6OXFkWU5mSWpCbHJZemc1ckNDVFQzUTdo"
+                                                                                            )
+                                                                                        refundCall.enqueue(
+                                                                                            object :
+                                                                                                Callback<JsonObject> {
+                                                                                                override fun onResponse(
+                                                                                                    call: Call<JsonObject>,
+                                                                                                    response2: Response<JsonObject>
+                                                                                                ) {
+                                                                                                    if (response2.isSuccessful) {
 
-                                                                                    })
+                                                                                                        val refundId =
+                                                                                                            response2.body()
+                                                                                                                ?.get(
+                                                                                                                    "id"
+                                                                                                                )
+                                                                                                                .toString()
 
-                                                                                }else{
+                                                                                                        mdialog.dismiss()
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.body()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        findNavController().navigate(
+                                                                                                            R.id.action_orderDetailFragment_to_orderFragment
+                                                                                                        )
+                                                                                                        val snackBar =
+                                                                                                            Snackbar.make(
+                                                                                                                requireActivity().findViewById(
+                                                                                                                    android.R.id.content
+                                                                                                                ),
+                                                                                                                "Order Canceled Successfully.",
+                                                                                                                3000
+                                                                                                            )
+                                                                                                        snackBar.setBackgroundTint(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.black
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.setTextColor(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.white
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.show()
+                                                                                                        vibratePhone()
+
+                                                                                                        FirestoreClass().mFirestore.collection(
+                                                                                                            "Orders"
+                                                                                                        )
+                                                                                                            .document(
+                                                                                                                orderID
+                                                                                                            )
+                                                                                                            .update(
+                                                                                                                "transactionId",
+                                                                                                                refundId
+                                                                                                            )
+
+                                                                                                        FirestoreClass().mFirestore.collection(
+                                                                                                            "Orders"
+                                                                                                        )
+                                                                                                            .document(
+                                                                                                                orderId
+                                                                                                            )
+                                                                                                            .update(
+                                                                                                                "orderId",
+                                                                                                                "C$orderID"
+                                                                                                            )
+
+                                                                                                    } else {
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${response2.raw()}"
+                                                                                                        )
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.errorBody()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.headers()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        mdialog.dismiss()
+
+                                                                                                        mdialog.dismiss()
+                                                                                                        val snackBar =
+                                                                                                            Snackbar.make(
+                                                                                                                requireActivity().findViewById(
+                                                                                                                    android.R.id.content
+                                                                                                                ),
+                                                                                                                "Order Cancellation Failed.",
+                                                                                                                Snackbar.LENGTH_LONG
+                                                                                                            )
+                                                                                                        snackBar.setBackgroundTint(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.red
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.setTextColor(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.white
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.show()
+                                                                                                        vibratePhone()
+                                                                                                    }
+                                                                                                }
+
+                                                                                                override fun onFailure(
+                                                                                                    call: Call<JsonObject>,
+                                                                                                    t: Throwable
+                                                                                                ) {
+                                                                                                    mdialog.dismiss()
+                                                                                                    Log.e(
+                                                                                                        TAG,
+                                                                                                        "onFailure: ${t.localizedMessage}"
+                                                                                                    )
+                                                                                                    val snackBar =
+                                                                                                        Snackbar.make(
+                                                                                                            requireActivity().findViewById(
+                                                                                                                android.R.id.content
+                                                                                                            ),
+                                                                                                            "Order Cancellation Failed.",
+                                                                                                            Snackbar.LENGTH_LONG
+                                                                                                        )
+                                                                                                    snackBar.setBackgroundTint(
+                                                                                                        resources.getColor(
+                                                                                                            R.color.red
+                                                                                                        )
+                                                                                                    )
+                                                                                                    snackBar.setTextColor(
+                                                                                                        resources.getColor(
+                                                                                                            R.color.white
+                                                                                                        )
+                                                                                                    )
+                                                                                                    snackBar.show()
+                                                                                                    vibratePhone()
+                                                                                                }
+
+                                                                                            })
+
+                                                                                    } else {
+                                                                                        mdialog.dismiss()
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${response.raw()}"
+                                                                                        )
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${
+                                                                                                response.errorBody()
+                                                                                                    .toString()
+                                                                                            }"
+                                                                                        )
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${
+                                                                                                response.message()
+                                                                                                    .toString()
+                                                                                            }"
+                                                                                        )
+                                                                                        val snackBar =
+                                                                                            Snackbar.make(
+                                                                                                requireActivity().findViewById(
+                                                                                                    android.R.id.content
+                                                                                                ),
+                                                                                                "Something Went Wrong.",
+                                                                                                Snackbar.LENGTH_LONG
+                                                                                            )
+                                                                                        snackBar.setBackgroundTint(
+                                                                                            resources.getColor(
+                                                                                                R.color.red
+                                                                                            )
+                                                                                        )
+                                                                                        snackBar.setTextColor(
+                                                                                            resources.getColor(
+                                                                                                R.color.white
+                                                                                            )
+                                                                                        )
+                                                                                        snackBar.show()
+                                                                                        vibratePhone()
+                                                                                    }
+
+                                                                                }
+
+                                                                                override fun onFailure(
+                                                                                    call: Call<JsonObject>,
+                                                                                    t: Throwable
+                                                                                ) {
                                                                                     mdialog.dismiss()
-                                                                                    Log.e(
-                                                                                        TAG,
-                                                                                        "onResponse: ${response.raw()}"
+                                                                                    val snackBar =
+                                                                                        Snackbar.make(
+                                                                                            requireActivity().findViewById(
+                                                                                                android.R.id.content
+                                                                                            ),
+                                                                                            "Order Cancellation Failed.",
+                                                                                            Snackbar.LENGTH_LONG
+                                                                                        )
+                                                                                    snackBar.setBackgroundTint(
+                                                                                        resources.getColor(
+                                                                                            R.color.red
+                                                                                        )
                                                                                     )
-                                                                                    Log.e(
-                                                                                        TAG,
-                                                                                        "onResponse: ${
-                                                                                            response.errorBody().toString()
-                                                                                        }"
+                                                                                    snackBar.setTextColor(
+                                                                                        resources.getColor(
+                                                                                            R.color.white
+                                                                                        )
                                                                                     )
-                                                                                    Log.e(
-                                                                                        TAG,
-                                                                                        "onResponse: ${
-                                                                                            response.message().toString()
-                                                                                        }"
-                                                                                    )
-                                                                                    val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Something Went Wrong.", Snackbar.LENGTH_LONG)
-                                                                                    snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                    snackBar.setTextColor(resources.getColor(R.color.white))
                                                                                     snackBar.show()
                                                                                     vibratePhone()
                                                                                 }
 
-                                                                            }
-
-                                                                            override fun onFailure(
-                                                                                call: Call<JsonObject>,
-                                                                                t: Throwable
-                                                                            ) {
-                                                                                mdialog.dismiss()
-                                                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Cancellation Failed.", Snackbar.LENGTH_LONG)
-                                                                                snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                snackBar.show()
-                                                                                vibratePhone()
-                                                                            }
-
-                                                                        })
+                                                                            })
 
 
                                                                     }
@@ -1131,28 +1402,56 @@ class OrderDetailFragment : Fragment() {
                                                                 dialog.show()
 
                                                             }
-                                                        }else if(status.toString().replace("\"", "") == "INVOICED"){
+                                                        } else if (status.toString()
+                                                                .replace("\"", "") == "INVOICED"
+                                                        ) {
                                                             binding.orderStatusText.text = "Packing"
                                                             binding.trackBtn.setOnClickListener {
-                                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Please wait the order will be tracked soon.", 3000)
-                                                                snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                snackBar.setTextColor(resources.getColor(R.color.white))
+                                                                val snackBar = Snackbar.make(
+                                                                    requireActivity().findViewById(
+                                                                        android.R.id.content
+                                                                    ),
+                                                                    "Please wait the order will be tracked soon.",
+                                                                    3000
+                                                                )
+                                                                snackBar.setBackgroundTint(
+                                                                    resources.getColor(
+                                                                        R.color.red
+                                                                    )
+                                                                )
+                                                                snackBar.setTextColor(
+                                                                    resources.getColor(
+                                                                        R.color.white
+                                                                    )
+                                                                )
                                                                 snackBar.show()
                                                                 vibratePhone()
                                                             }
                                                             binding.cancelBtn.setOnClickListener {
-                                                                val dialog = MaterialAlertDialogBuilder(requireContext(),R.style.AppCompatAlertDialogStyle)
+                                                                val dialog =
+                                                                    MaterialAlertDialogBuilder(
+                                                                        requireContext(),
+                                                                        R.style.AppCompatAlertDialogStyle
+                                                                    )
                                                                 dialog.setTitle("Cancel Order")
                                                                 dialog.setMessage("Do you really want to cancel the order?")
-                                                                dialog.background = context?.resources!!.getDrawable(R.drawable.black_btn_bg)
+                                                                dialog.background =
+                                                                    context?.resources!!.getDrawable(
+                                                                        R.drawable.black_btn_bg
+                                                                    )
                                                                 dialog.setNegativeButton("Cancel") { dialog, which ->
                                                                     dialog.dismiss()
                                                                 }
                                                                 dialog.setPositiveButton("Sure") { dialog, which ->
-                                                                    val dialog2 = MaterialAlertDialogBuilder(requireContext(),R.style.AppCompatAlertDialogStyle)
+                                                                    val dialog2 =
+                                                                        MaterialAlertDialogBuilder(
+                                                                            requireContext(),
+                                                                            R.style.AppCompatAlertDialogStyle
+                                                                        )
                                                                     dialog2.setTitle("Remember")
                                                                     dialog2.setMessage("As our policy your money will be refund in 5-10 Business Days. Remember that your shipping charges will 'not' be refund.")
-                                                                    dialog2.background = resources.getDrawable(R.drawable.black_btn_bg)
+                                                                    dialog2.background =
+                                                                        resources.getDrawable(R.drawable.black_btn_bg)
                                                                     dialog2.setNegativeButton("Cancel") { dialog2, which ->
                                                                         dialog.dismiss()
                                                                         dialog2.dismiss()
@@ -1160,141 +1459,271 @@ class OrderDetailFragment : Fragment() {
                                                                     }
                                                                     dialog2.setPositiveButton("Agree") { dialog2, which ->
                                                                         mdialog.show()
-                                                                        val idList:ArrayList<Int> = ArrayList()
-                                                                        idList.add(orderId.toString().toInt())
+                                                                        val idList: ArrayList<Int> =
+                                                                            ArrayList()
+                                                                        idList.add(
+                                                                            orderId.toString()
+                                                                                .toInt()
+                                                                        )
 
-                                                                        val cancelOrder = CancelOrder(idList)
+                                                                        val cancelOrder =
+                                                                            CancelOrder(idList)
 
-                                                                        val cancelOrderCall = orderServices.cancelOrder(headerMap,cancelOrder)
-                                                                        cancelOrderCall.enqueue(object :Callback<JsonObject>{
-                                                                            override fun onResponse(
-                                                                                call: Call<JsonObject>,
-                                                                                response: Response<JsonObject>
-                                                                            ) {
-                                                                                if(response.isSuccessful){
-                                                                                    val retrofitBuilder2 = Retrofit.Builder()
-                                                                                        .addConverterFactory(GsonConverterFactory.create())
-                                                                                        .baseUrl(BASE_URL_RZP)
-                                                                                        .build()
-
-                                                                                    val orderServices2 = retrofitBuilder2.create(OrderServices::class.java)
-                                                                                    val refundCall = orderServices2.refundPayment(transactionId,(amount.toString().toInt() - shippingCharges.toString().toInt())*100,"Basic cnpwX3Rlc3RfVXljYlBRNmpkTFRKdGQ6OXFkWU5mSWpCbHJZemc1ckNDVFQzUTdo")
-                                                                                    refundCall.enqueue(object :Callback<JsonObject>{
-                                                                                        override fun onResponse(
-                                                                                            call: Call<JsonObject>,
-                                                                                            response2: Response<JsonObject>
-                                                                                        ) {
-                                                                                            if(response2.isSuccessful){
-
-                                                                                                val refundId = response2.body()?.get("id").toString()
-
-                                                                                                mdialog.dismiss()
-                                                                                                Log.e(TAG, "onResponse: ${response2.body().toString()}")
-                                                                                                findNavController().navigate(R.id.action_orderDetailFragment_to_orderFragment)
-                                                                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Canceled Successfully.", 3000)
-                                                                                                snackBar.setBackgroundTint(resources.getColor(R.color.black))
-                                                                                                snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                                snackBar.show()
-                                                                                                vibratePhone()
-
-                                                                                                FirestoreClass().mFirestore.collection("Orders")
-                                                                                                    .document(orderID)
-                                                                                                    .update("transactionId",refundId)
-
-                                                                                                FirestoreClass().mFirestore.collection("Orders")
-                                                                                                    .document(orderId)
-                                                                                                    .update("orderId",
-                                                                                                        "C$orderID"
-                                                                                                    )
-
-                                                                                            }else{
-                                                                                                Log.e(
-                                                                                                    TAG,
-                                                                                                    "onResponse: ${response2.raw()}"
+                                                                        val cancelOrderCall =
+                                                                            orderServices.cancelOrder(
+                                                                                headerMap,
+                                                                                cancelOrder
+                                                                            )
+                                                                        cancelOrderCall.enqueue(
+                                                                            object :
+                                                                                Callback<JsonObject> {
+                                                                                override fun onResponse(
+                                                                                    call: Call<JsonObject>,
+                                                                                    response: Response<JsonObject>
+                                                                                ) {
+                                                                                    if (response.isSuccessful) {
+                                                                                        val retrofitBuilder2 =
+                                                                                            Retrofit.Builder()
+                                                                                                .addConverterFactory(
+                                                                                                    GsonConverterFactory.create()
                                                                                                 )
-                                                                                                Log.e(
-                                                                                                    TAG,
-                                                                                                    "onResponse: ${
-                                                                                                        response2.errorBody()
-                                                                                                            .toString()
-                                                                                                    }"
+                                                                                                .baseUrl(
+                                                                                                    BASE_URL_RZP
                                                                                                 )
-                                                                                                Log.e(
-                                                                                                    TAG,
-                                                                                                    "onResponse: ${
-                                                                                                        response2.headers()
-                                                                                                            .toString()
-                                                                                                    }"
-                                                                                                )
-                                                                                                mdialog.dismiss()
+                                                                                                .build()
 
-                                                                                                mdialog.dismiss()
-                                                                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Cancellation Failed.", Snackbar.LENGTH_LONG)
-                                                                                                snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                                snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                                snackBar.show()
-                                                                                                vibratePhone()
-                                                                                            }
-                                                                                        }
-
-                                                                                        override fun onFailure(
-                                                                                            call: Call<JsonObject>,
-                                                                                            t: Throwable
-                                                                                        ) {
-                                                                                            mdialog.dismiss()
-                                                                                            Log.e(
-                                                                                                TAG,
-                                                                                                "onFailure: ${t.localizedMessage}"
+                                                                                        val orderServices2 =
+                                                                                            retrofitBuilder2.create(
+                                                                                                OrderServices::class.java
                                                                                             )
-                                                                                            val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Cancellation Failed.", Snackbar.LENGTH_LONG)
-                                                                                            snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                            snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                            snackBar.show()
-                                                                                            vibratePhone()
-                                                                                        }
+                                                                                        val refundCall =
+                                                                                            orderServices2.refundPayment(
+                                                                                                transactionId,
+                                                                                                (amount.toString()
+                                                                                                    .toInt() - shippingCharges.toString()
+                                                                                                    .toInt()) * 100,
+                                                                                                "Basic cnpwX3Rlc3RfVXljYlBRNmpkTFRKdGQ6OXFkWU5mSWpCbHJZemc1ckNDVFQzUTdo"
+                                                                                            )
+                                                                                        refundCall.enqueue(
+                                                                                            object :
+                                                                                                Callback<JsonObject> {
+                                                                                                override fun onResponse(
+                                                                                                    call: Call<JsonObject>,
+                                                                                                    response2: Response<JsonObject>
+                                                                                                ) {
+                                                                                                    if (response2.isSuccessful) {
 
-                                                                                    })
+                                                                                                        val refundId =
+                                                                                                            response2.body()
+                                                                                                                ?.get(
+                                                                                                                    "id"
+                                                                                                                )
+                                                                                                                .toString()
 
-                                                                                }else{
+                                                                                                        mdialog.dismiss()
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.body()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        findNavController().navigate(
+                                                                                                            R.id.action_orderDetailFragment_to_orderFragment
+                                                                                                        )
+                                                                                                        val snackBar =
+                                                                                                            Snackbar.make(
+                                                                                                                requireActivity().findViewById(
+                                                                                                                    android.R.id.content
+                                                                                                                ),
+                                                                                                                "Order Canceled Successfully.",
+                                                                                                                3000
+                                                                                                            )
+                                                                                                        snackBar.setBackgroundTint(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.black
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.setTextColor(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.white
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.show()
+                                                                                                        vibratePhone()
+
+                                                                                                        FirestoreClass().mFirestore.collection(
+                                                                                                            "Orders"
+                                                                                                        )
+                                                                                                            .document(
+                                                                                                                orderID
+                                                                                                            )
+                                                                                                            .update(
+                                                                                                                "transactionId",
+                                                                                                                refundId
+                                                                                                            )
+
+                                                                                                        FirestoreClass().mFirestore.collection(
+                                                                                                            "Orders"
+                                                                                                        )
+                                                                                                            .document(
+                                                                                                                orderId
+                                                                                                            )
+                                                                                                            .update(
+                                                                                                                "orderId",
+                                                                                                                "C$orderID"
+                                                                                                            )
+
+                                                                                                    } else {
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${response2.raw()}"
+                                                                                                        )
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.errorBody()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.headers()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        mdialog.dismiss()
+
+                                                                                                        mdialog.dismiss()
+                                                                                                        val snackBar =
+                                                                                                            Snackbar.make(
+                                                                                                                requireActivity().findViewById(
+                                                                                                                    android.R.id.content
+                                                                                                                ),
+                                                                                                                "Order Cancellation Failed.",
+                                                                                                                Snackbar.LENGTH_LONG
+                                                                                                            )
+                                                                                                        snackBar.setBackgroundTint(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.red
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.setTextColor(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.white
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.show()
+                                                                                                        vibratePhone()
+                                                                                                    }
+                                                                                                }
+
+                                                                                                override fun onFailure(
+                                                                                                    call: Call<JsonObject>,
+                                                                                                    t: Throwable
+                                                                                                ) {
+                                                                                                    mdialog.dismiss()
+                                                                                                    Log.e(
+                                                                                                        TAG,
+                                                                                                        "onFailure: ${t.localizedMessage}"
+                                                                                                    )
+                                                                                                    val snackBar =
+                                                                                                        Snackbar.make(
+                                                                                                            requireActivity().findViewById(
+                                                                                                                android.R.id.content
+                                                                                                            ),
+                                                                                                            "Order Cancellation Failed.",
+                                                                                                            Snackbar.LENGTH_LONG
+                                                                                                        )
+                                                                                                    snackBar.setBackgroundTint(
+                                                                                                        resources.getColor(
+                                                                                                            R.color.red
+                                                                                                        )
+                                                                                                    )
+                                                                                                    snackBar.setTextColor(
+                                                                                                        resources.getColor(
+                                                                                                            R.color.white
+                                                                                                        )
+                                                                                                    )
+                                                                                                    snackBar.show()
+                                                                                                    vibratePhone()
+                                                                                                }
+
+                                                                                            })
+
+                                                                                    } else {
+                                                                                        mdialog.dismiss()
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${response.raw()}"
+                                                                                        )
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${
+                                                                                                response.errorBody()
+                                                                                                    .toString()
+                                                                                            }"
+                                                                                        )
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${
+                                                                                                response.message()
+                                                                                                    .toString()
+                                                                                            }"
+                                                                                        )
+                                                                                        val snackBar =
+                                                                                            Snackbar.make(
+                                                                                                requireActivity().findViewById(
+                                                                                                    android.R.id.content
+                                                                                                ),
+                                                                                                "Something Went Wrong.",
+                                                                                                Snackbar.LENGTH_LONG
+                                                                                            )
+                                                                                        snackBar.setBackgroundTint(
+                                                                                            resources.getColor(
+                                                                                                R.color.red
+                                                                                            )
+                                                                                        )
+                                                                                        snackBar.setTextColor(
+                                                                                            resources.getColor(
+                                                                                                R.color.white
+                                                                                            )
+                                                                                        )
+                                                                                        snackBar.show()
+                                                                                        vibratePhone()
+                                                                                    }
+
+                                                                                }
+
+                                                                                override fun onFailure(
+                                                                                    call: Call<JsonObject>,
+                                                                                    t: Throwable
+                                                                                ) {
                                                                                     mdialog.dismiss()
-                                                                                    Log.e(
-                                                                                        TAG,
-                                                                                        "onResponse: ${response.raw()}"
+                                                                                    val snackBar =
+                                                                                        Snackbar.make(
+                                                                                            requireActivity().findViewById(
+                                                                                                android.R.id.content
+                                                                                            ),
+                                                                                            "Order Cancellation Failed.",
+                                                                                            Snackbar.LENGTH_LONG
+                                                                                        )
+                                                                                    snackBar.setBackgroundTint(
+                                                                                        resources.getColor(
+                                                                                            R.color.red
+                                                                                        )
                                                                                     )
-                                                                                    Log.e(
-                                                                                        TAG,
-                                                                                        "onResponse: ${
-                                                                                            response.errorBody().toString()
-                                                                                        }"
+                                                                                    snackBar.setTextColor(
+                                                                                        resources.getColor(
+                                                                                            R.color.white
+                                                                                        )
                                                                                     )
-                                                                                    Log.e(
-                                                                                        TAG,
-                                                                                        "onResponse: ${
-                                                                                            response.message().toString()
-                                                                                        }"
-                                                                                    )
-                                                                                    val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Something Went Wrong.", Snackbar.LENGTH_LONG)
-                                                                                    snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                    snackBar.setTextColor(resources.getColor(R.color.white))
                                                                                     snackBar.show()
                                                                                     vibratePhone()
                                                                                 }
 
-                                                                            }
-
-                                                                            override fun onFailure(
-                                                                                call: Call<JsonObject>,
-                                                                                t: Throwable
-                                                                            ) {
-                                                                                mdialog.dismiss()
-                                                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Cancellation Failed.", Snackbar.LENGTH_LONG)
-                                                                                snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                snackBar.show()
-                                                                                vibratePhone()
-                                                                            }
-
-                                                                        })
+                                                                            })
 
 
                                                                     }
@@ -1303,21 +1732,33 @@ class OrderDetailFragment : Fragment() {
                                                                 dialog.show()
 
                                                             }
-                                                        }else{
+                                                        } else {
                                                             binding.cancelBtn.text = "Cancel Order"
                                                             binding.cancelBtn.setOnClickListener {
-                                                                val dialog = MaterialAlertDialogBuilder(requireContext(),R.style.AppCompatAlertDialogStyle)
+                                                                val dialog =
+                                                                    MaterialAlertDialogBuilder(
+                                                                        requireContext(),
+                                                                        R.style.AppCompatAlertDialogStyle
+                                                                    )
                                                                 dialog.setTitle("Cancel Order")
                                                                 dialog.setMessage("Do you really want to cancel the order?")
-                                                                dialog.background = context?.resources!!.getDrawable(R.drawable.black_btn_bg)
+                                                                dialog.background =
+                                                                    context?.resources!!.getDrawable(
+                                                                        R.drawable.black_btn_bg
+                                                                    )
                                                                 dialog.setNegativeButton("Cancel") { dialog, which ->
                                                                     dialog.dismiss()
                                                                 }
                                                                 dialog.setPositiveButton("Sure") { dialog, which ->
-                                                                    val dialog2 = MaterialAlertDialogBuilder(requireContext(),R.style.AppCompatAlertDialogStyle)
+                                                                    val dialog2 =
+                                                                        MaterialAlertDialogBuilder(
+                                                                            requireContext(),
+                                                                            R.style.AppCompatAlertDialogStyle
+                                                                        )
                                                                     dialog2.setTitle("Remember")
                                                                     dialog2.setMessage("As our policy your money will be refund in 5-10 Business Days. Remember that your shipping charges will 'not' be refund.")
-                                                                    dialog2.background = resources.getDrawable(R.drawable.black_btn_bg)
+                                                                    dialog2.background =
+                                                                        resources.getDrawable(R.drawable.black_btn_bg)
                                                                     dialog2.setNegativeButton("Cancel") { dialog2, which ->
                                                                         dialog.dismiss()
                                                                         dialog2.dismiss()
@@ -1325,141 +1766,271 @@ class OrderDetailFragment : Fragment() {
                                                                     }
                                                                     dialog2.setPositiveButton("Agree") { dialog2, which ->
                                                                         mdialog.show()
-                                                                        val idList:ArrayList<Int> = ArrayList()
-                                                                        idList.add(orderId.toString().toInt())
+                                                                        val idList: ArrayList<Int> =
+                                                                            ArrayList()
+                                                                        idList.add(
+                                                                            orderId.toString()
+                                                                                .toInt()
+                                                                        )
 
-                                                                        val cancelOrder = CancelOrder(idList)
+                                                                        val cancelOrder =
+                                                                            CancelOrder(idList)
 
-                                                                        val cancelOrderCall = orderServices.cancelOrder(headerMap,cancelOrder)
-                                                                        cancelOrderCall.enqueue(object :Callback<JsonObject>{
-                                                                            override fun onResponse(
-                                                                                call: Call<JsonObject>,
-                                                                                response: Response<JsonObject>
-                                                                            ) {
-                                                                                if(response.isSuccessful){
-                                                                                    val retrofitBuilder2 = Retrofit.Builder()
-                                                                                        .addConverterFactory(GsonConverterFactory.create())
-                                                                                        .baseUrl(BASE_URL_RZP)
-                                                                                        .build()
-
-                                                                                    val orderServices2 = retrofitBuilder2.create(OrderServices::class.java)
-                                                                                    val refundCall = orderServices2.refundPayment(transactionId,(amount.toString().toInt() - shippingCharges.toString().toInt())*100,"Basic cnpwX3Rlc3RfVXljYlBRNmpkTFRKdGQ6OXFkWU5mSWpCbHJZemc1ckNDVFQzUTdo")
-                                                                                    refundCall.enqueue(object :Callback<JsonObject>{
-                                                                                        override fun onResponse(
-                                                                                            call: Call<JsonObject>,
-                                                                                            response2: Response<JsonObject>
-                                                                                        ) {
-                                                                                            if(response2.isSuccessful){
-
-                                                                                                val refundId = response2.body()?.get("id").toString()
-
-                                                                                                mdialog.dismiss()
-                                                                                                Log.e(TAG, "onResponse: ${response2.body().toString()}")
-                                                                                                findNavController().navigate(R.id.action_orderDetailFragment_to_orderFragment)
-                                                                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Canceled Successfully.", 3000)
-                                                                                                snackBar.setBackgroundTint(resources.getColor(R.color.black))
-                                                                                                snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                                snackBar.show()
-                                                                                                vibratePhone()
-
-                                                                                                FirestoreClass().mFirestore.collection("Orders")
-                                                                                                    .document(orderID)
-                                                                                                    .update("transactionId",refundId)
-
-                                                                                                FirestoreClass().mFirestore.collection("Orders")
-                                                                                                    .document(orderId)
-                                                                                                    .update("orderId",
-                                                                                                        "C$orderID"
-                                                                                                    )
-
-                                                                                            }else{
-                                                                                                Log.e(
-                                                                                                    TAG,
-                                                                                                    "onResponse: ${response2.raw()}"
+                                                                        val cancelOrderCall =
+                                                                            orderServices.cancelOrder(
+                                                                                headerMap,
+                                                                                cancelOrder
+                                                                            )
+                                                                        cancelOrderCall.enqueue(
+                                                                            object :
+                                                                                Callback<JsonObject> {
+                                                                                override fun onResponse(
+                                                                                    call: Call<JsonObject>,
+                                                                                    response: Response<JsonObject>
+                                                                                ) {
+                                                                                    if (response.isSuccessful) {
+                                                                                        val retrofitBuilder2 =
+                                                                                            Retrofit.Builder()
+                                                                                                .addConverterFactory(
+                                                                                                    GsonConverterFactory.create()
                                                                                                 )
-                                                                                                Log.e(
-                                                                                                    TAG,
-                                                                                                    "onResponse: ${
-                                                                                                        response2.errorBody()
-                                                                                                            .toString()
-                                                                                                    }"
+                                                                                                .baseUrl(
+                                                                                                    BASE_URL_RZP
                                                                                                 )
-                                                                                                Log.e(
-                                                                                                    TAG,
-                                                                                                    "onResponse: ${
-                                                                                                        response2.headers()
-                                                                                                            .toString()
-                                                                                                    }"
-                                                                                                )
-                                                                                                mdialog.dismiss()
+                                                                                                .build()
 
-                                                                                                mdialog.dismiss()
-                                                                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Cancellation Failed.", Snackbar.LENGTH_LONG)
-                                                                                                snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                                snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                                snackBar.show()
-                                                                                                vibratePhone()
-                                                                                            }
-                                                                                        }
-
-                                                                                        override fun onFailure(
-                                                                                            call: Call<JsonObject>,
-                                                                                            t: Throwable
-                                                                                        ) {
-                                                                                            mdialog.dismiss()
-                                                                                            Log.e(
-                                                                                                TAG,
-                                                                                                "onFailure: ${t.localizedMessage}"
+                                                                                        val orderServices2 =
+                                                                                            retrofitBuilder2.create(
+                                                                                                OrderServices::class.java
                                                                                             )
-                                                                                            val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Cancellation Failed.", Snackbar.LENGTH_LONG)
-                                                                                            snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                            snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                            snackBar.show()
-                                                                                            vibratePhone()
-                                                                                        }
+                                                                                        val refundCall =
+                                                                                            orderServices2.refundPayment(
+                                                                                                transactionId,
+                                                                                                (amount.toString()
+                                                                                                    .toInt() - shippingCharges.toString()
+                                                                                                    .toInt()) * 100,
+                                                                                                "Basic cnpwX3Rlc3RfVXljYlBRNmpkTFRKdGQ6OXFkWU5mSWpCbHJZemc1ckNDVFQzUTdo"
+                                                                                            )
+                                                                                        refundCall.enqueue(
+                                                                                            object :
+                                                                                                Callback<JsonObject> {
+                                                                                                override fun onResponse(
+                                                                                                    call: Call<JsonObject>,
+                                                                                                    response2: Response<JsonObject>
+                                                                                                ) {
+                                                                                                    if (response2.isSuccessful) {
 
-                                                                                    })
+                                                                                                        val refundId =
+                                                                                                            response2.body()
+                                                                                                                ?.get(
+                                                                                                                    "id"
+                                                                                                                )
+                                                                                                                .toString()
 
-                                                                                }else{
+                                                                                                        mdialog.dismiss()
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.body()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        findNavController().navigate(
+                                                                                                            R.id.action_orderDetailFragment_to_orderFragment
+                                                                                                        )
+                                                                                                        val snackBar =
+                                                                                                            Snackbar.make(
+                                                                                                                requireActivity().findViewById(
+                                                                                                                    android.R.id.content
+                                                                                                                ),
+                                                                                                                "Order Canceled Successfully.",
+                                                                                                                3000
+                                                                                                            )
+                                                                                                        snackBar.setBackgroundTint(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.black
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.setTextColor(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.white
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.show()
+                                                                                                        vibratePhone()
+
+                                                                                                        FirestoreClass().mFirestore.collection(
+                                                                                                            "Orders"
+                                                                                                        )
+                                                                                                            .document(
+                                                                                                                orderID
+                                                                                                            )
+                                                                                                            .update(
+                                                                                                                "transactionId",
+                                                                                                                refundId
+                                                                                                            )
+
+                                                                                                        FirestoreClass().mFirestore.collection(
+                                                                                                            "Orders"
+                                                                                                        )
+                                                                                                            .document(
+                                                                                                                orderId
+                                                                                                            )
+                                                                                                            .update(
+                                                                                                                "orderId",
+                                                                                                                "C$orderID"
+                                                                                                            )
+
+                                                                                                    } else {
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${response2.raw()}"
+                                                                                                        )
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.errorBody()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.headers()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        mdialog.dismiss()
+
+                                                                                                        mdialog.dismiss()
+                                                                                                        val snackBar =
+                                                                                                            Snackbar.make(
+                                                                                                                requireActivity().findViewById(
+                                                                                                                    android.R.id.content
+                                                                                                                ),
+                                                                                                                "Order Cancellation Failed.",
+                                                                                                                Snackbar.LENGTH_LONG
+                                                                                                            )
+                                                                                                        snackBar.setBackgroundTint(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.red
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.setTextColor(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.white
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.show()
+                                                                                                        vibratePhone()
+                                                                                                    }
+                                                                                                }
+
+                                                                                                override fun onFailure(
+                                                                                                    call: Call<JsonObject>,
+                                                                                                    t: Throwable
+                                                                                                ) {
+                                                                                                    mdialog.dismiss()
+                                                                                                    Log.e(
+                                                                                                        TAG,
+                                                                                                        "onFailure: ${t.localizedMessage}"
+                                                                                                    )
+                                                                                                    val snackBar =
+                                                                                                        Snackbar.make(
+                                                                                                            requireActivity().findViewById(
+                                                                                                                android.R.id.content
+                                                                                                            ),
+                                                                                                            "Order Cancellation Failed.",
+                                                                                                            Snackbar.LENGTH_LONG
+                                                                                                        )
+                                                                                                    snackBar.setBackgroundTint(
+                                                                                                        resources.getColor(
+                                                                                                            R.color.red
+                                                                                                        )
+                                                                                                    )
+                                                                                                    snackBar.setTextColor(
+                                                                                                        resources.getColor(
+                                                                                                            R.color.white
+                                                                                                        )
+                                                                                                    )
+                                                                                                    snackBar.show()
+                                                                                                    vibratePhone()
+                                                                                                }
+
+                                                                                            })
+
+                                                                                    } else {
+                                                                                        mdialog.dismiss()
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${response.raw()}"
+                                                                                        )
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${
+                                                                                                response.errorBody()
+                                                                                                    .toString()
+                                                                                            }"
+                                                                                        )
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${
+                                                                                                response.message()
+                                                                                                    .toString()
+                                                                                            }"
+                                                                                        )
+                                                                                        val snackBar =
+                                                                                            Snackbar.make(
+                                                                                                requireActivity().findViewById(
+                                                                                                    android.R.id.content
+                                                                                                ),
+                                                                                                "Something Went Wrong.",
+                                                                                                Snackbar.LENGTH_LONG
+                                                                                            )
+                                                                                        snackBar.setBackgroundTint(
+                                                                                            resources.getColor(
+                                                                                                R.color.red
+                                                                                            )
+                                                                                        )
+                                                                                        snackBar.setTextColor(
+                                                                                            resources.getColor(
+                                                                                                R.color.white
+                                                                                            )
+                                                                                        )
+                                                                                        snackBar.show()
+                                                                                        vibratePhone()
+                                                                                    }
+
+                                                                                }
+
+                                                                                override fun onFailure(
+                                                                                    call: Call<JsonObject>,
+                                                                                    t: Throwable
+                                                                                ) {
                                                                                     mdialog.dismiss()
-                                                                                    Log.e(
-                                                                                        TAG,
-                                                                                        "onResponse: ${response.raw()}"
+                                                                                    val snackBar =
+                                                                                        Snackbar.make(
+                                                                                            requireActivity().findViewById(
+                                                                                                android.R.id.content
+                                                                                            ),
+                                                                                            "Order Cancellation Failed.",
+                                                                                            Snackbar.LENGTH_LONG
+                                                                                        )
+                                                                                    snackBar.setBackgroundTint(
+                                                                                        resources.getColor(
+                                                                                            R.color.red
+                                                                                        )
                                                                                     )
-                                                                                    Log.e(
-                                                                                        TAG,
-                                                                                        "onResponse: ${
-                                                                                            response.errorBody().toString()
-                                                                                        }"
+                                                                                    snackBar.setTextColor(
+                                                                                        resources.getColor(
+                                                                                            R.color.white
+                                                                                        )
                                                                                     )
-                                                                                    Log.e(
-                                                                                        TAG,
-                                                                                        "onResponse: ${
-                                                                                            response.message().toString()
-                                                                                        }"
-                                                                                    )
-                                                                                    val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Something Went Wrong.", Snackbar.LENGTH_LONG)
-                                                                                    snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                    snackBar.setTextColor(resources.getColor(R.color.white))
                                                                                     snackBar.show()
                                                                                     vibratePhone()
                                                                                 }
 
-                                                                            }
-
-                                                                            override fun onFailure(
-                                                                                call: Call<JsonObject>,
-                                                                                t: Throwable
-                                                                            ) {
-                                                                                mdialog.dismiss()
-                                                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Cancellation Failed.", Snackbar.LENGTH_LONG)
-                                                                                snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                snackBar.show()
-                                                                                vibratePhone()
-                                                                            }
-
-                                                                        })
+                                                                            })
 
 
                                                                     }
@@ -1470,22 +2041,56 @@ class OrderDetailFragment : Fragment() {
                                                             }
                                                         }
 
-                                                    }else{
+                                                    } else {
                                                         mdialog.dismiss()
-                                                        Log.e(TAG, "onResponse: ${response.code().toString()}")
-                                                        Log.e(TAG, "onResponse: ${response.message().toString()}")
-                                                        Log.e(TAG, "onResponse: ${response.raw().toString()}")
-                                                        val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Something Went Wrong.", Snackbar.LENGTH_LONG)
-                                                        snackBar.setBackgroundTint(resources.getColor(R.color.red))
+                                                        Log.e(
+                                                            TAG,
+                                                            "onResponse: ${
+                                                                response.code().toString()
+                                                            }"
+                                                        )
+                                                        Log.e(
+                                                            TAG,
+                                                            "onResponse: ${
+                                                                response.message().toString()
+                                                            }"
+                                                        )
+                                                        Log.e(
+                                                            TAG,
+                                                            "onResponse: ${
+                                                                response.raw().toString()
+                                                            }"
+                                                        )
+                                                        val snackBar = Snackbar.make(
+                                                            requireActivity().findViewById(android.R.id.content),
+                                                            "Something Went Wrong.",
+                                                            Snackbar.LENGTH_LONG
+                                                        )
+                                                        snackBar.setBackgroundTint(
+                                                            resources.getColor(
+                                                                R.color.red
+                                                            )
+                                                        )
                                                         snackBar.setTextColor(resources.getColor(R.color.white))
                                                         snackBar.show()
                                                         vibratePhone()
                                                     }
 
-                                                    override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                                                    override fun onFailure(
+                                                        call: Call<JsonObject>,
+                                                        t: Throwable
+                                                    ) {
                                                         mdialog.dismiss()
-                                                        val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Something Went Wrong.", Snackbar.LENGTH_LONG)
-                                                        snackBar.setBackgroundTint(resources.getColor(R.color.red))
+                                                        val snackBar = Snackbar.make(
+                                                            requireActivity().findViewById(android.R.id.content),
+                                                            "Something Went Wrong.",
+                                                            Snackbar.LENGTH_LONG
+                                                        )
+                                                        snackBar.setBackgroundTint(
+                                                            resources.getColor(
+                                                                R.color.red
+                                                            )
+                                                        )
                                                         snackBar.setTextColor(resources.getColor(R.color.white))
                                                         snackBar.show()
                                                         vibratePhone()
@@ -1493,65 +2098,103 @@ class OrderDetailFragment : Fragment() {
 
                                                 })
                                             }
-                                        }else{
+                                        } else if (response2.body()
+                                                ?.getAsJsonObject("tracking_data")?.get("etd")
+                                                .toString().replace("\"", "") == "null"
+                                        ) {
                                             edd = date
-                                            if("R" in orderId){
+                                            if ("R" in orderId) {
                                                 binding.cancelBtn.visibility = View.INVISIBLE
                                                 binding.cancelBtn.isClickable = false
                                                 binding.trackBtn.visibility = View.INVISIBLE
                                                 binding.cancelBtn.isClickable = false
                                                 binding.orderStatusText.text = "Returned"
-                                                binding.orderStatusText.setTextColor(resources.getColor( R.color.gray))
+                                                binding.orderStatusText.setTextColor(
+                                                    resources.getColor(
+                                                        R.color.gray
+                                                    )
+                                                )
                                                 binding.view18.visibility = View.INVISIBLE
                                                 mdialog.dismiss()
-                                            }else if("C" in orderId){
+                                            } else if ("C" in orderId) {
                                                 binding.cancelBtn.visibility = View.INVISIBLE
                                                 binding.cancelBtn.isClickable = false
                                                 binding.trackBtn.visibility = View.INVISIBLE
                                                 binding.cancelBtn.isClickable = false
                                                 binding.orderStatusText.text = "Canceled"
-                                                binding.orderStatusText.setTextColor(resources.getColor( R.color.red))
+                                                binding.orderStatusText.setTextColor(
+                                                    resources.getColor(
+                                                        R.color.red
+                                                    )
+                                                )
                                                 binding.view18.visibility = View.INVISIBLE
                                                 mdialog.dismiss()
-                                            }else{
-                                                val ordercall = orderServices.getOrderDetail(headerMap,orderId)
-                                                ordercall.enqueue(object :Callback<JsonObject>{
+                                            } else {
+                                                val ordercall =
+                                                    orderServices.getOrderDetail(headerMap, orderId)
+                                                ordercall.enqueue(object : Callback<JsonObject> {
                                                     override fun onResponse(
                                                         call: Call<JsonObject>,
-                                                        response: Response<JsonObject>) = if(response.isSuccessful){
+                                                        response: Response<JsonObject>
+                                                    ) = if (response.isSuccessful) {
 
-                                                        val data = response.body()?.getAsJsonObject("data")
+                                                        val data =
+                                                            response.body()?.getAsJsonObject("data")
                                                         val status = data?.get("status")
                                                         orderID = data?.get("id").toString()
                                                         Log.e(TAG, "onResponse: $orderID")
-                                                        binding.orderStatusText.text = status.toString().replace("\"", "").lowercase().capitalize()
+                                                        binding.orderStatusText.text =
+                                                            status.toString().replace("\"", "")
+                                                                .lowercase().capitalize()
                                                         mdialog.dismiss()
                                                         val current = LocalDateTime.now()
-                                                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-                                                        val formattedDate = current.format(formatter).toString()
+                                                        val formatter =
+                                                            DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                                                        val formattedDate =
+                                                            current.format(formatter).toString()
 
-                                                        val todayDate = SimpleDateFormat("yyyy-MM-dd").parse(formattedDate)
-                                                        val expiryDate = SimpleDateFormat("yyyy-MM-dd").parse(getCalculatedDate(edd, "yyyy-MM-dd",6))
+                                                        val todayDate =
+                                                            SimpleDateFormat("yyyy-MM-dd").parse(
+                                                                formattedDate
+                                                            )
+                                                        val expiryDate =
+                                                            SimpleDateFormat("yyyy-MM-dd").parse(
+                                                                getCalculatedDate(
+                                                                    edd,
+                                                                    "yyyy-MM-dd",
+                                                                    6
+                                                                )
+                                                            )
                                                         Log.e(TAG, "onResponse: $todayDate")
                                                         Log.e(TAG, "onResponse: $expiryDate")
 
-                                                        if(status.toString().replace("\"", "") == "NEW"){
+                                                        if (status.toString()
+                                                                .replace("\"", "") == "NEW"
+                                                        ) {
                                                             binding.cancelBtn.text = "Return Order"
-                                                            if(todayDate.before(expiryDate)){
+                                                            if (todayDate.before(expiryDate)) {
                                                                 binding.cancelBtn.setOnClickListener {
 
-                                                                    val dialog = MaterialAlertDialogBuilder(requireContext(),R.style.AppCompatAlertDialogStyle)
+                                                                    val dialog =
+                                                                        MaterialAlertDialogBuilder(
+                                                                            requireContext(),
+                                                                            R.style.AppCompatAlertDialogStyle
+                                                                        )
                                                                     dialog.setTitle("Return Order")
                                                                     dialog.setMessage("Do you really want to Return the order?")
-                                                                    dialog.background = context?.resources!!.getDrawable(R.drawable.black_btn_bg)
+                                                                    dialog.background =
+                                                                        context?.resources!!.getDrawable(
+                                                                            R.drawable.black_btn_bg
+                                                                        )
                                                                     dialog.setNegativeButton("Cancel") { dialog, which ->
                                                                         dialog.dismiss()
                                                                     }
                                                                     dialog.setPositiveButton("Sure") { dialog, which ->
-                                                                        val dialog2 = MaterialAlertDialogBuilder(
-                                                                            requireContext(),
-                                                                            R.style.AppCompatAlertDialogStyle
-                                                                        )
+                                                                        val dialog2 =
+                                                                            MaterialAlertDialogBuilder(
+                                                                                requireContext(),
+                                                                                R.style.AppCompatAlertDialogStyle
+                                                                            )
                                                                         dialog2.setTitle("Remember")
                                                                         dialog2.setMessage("As our policy your money will be refund in 5-10 Business Days. Remember that your shipping charges will 'not' be refund.")
                                                                         dialog2.background =
@@ -1564,66 +2207,156 @@ class OrderDetailFragment : Fragment() {
                                                                         dialog2.setPositiveButton("Agree") { dialog2, which ->
 
                                                                             val bundle = Bundle()
-                                                                            bundle.putString("orderID",orderID)
-                                                                            bundle.putString("transactionID",transactionId)
-                                                                            bundle.putString("name",name)
-                                                                            bundle.putString("address",address)
-                                                                            bundle.putString("city",city)
-                                                                            bundle.putString("state",state)
-                                                                            bundle.putString("country",country)
-                                                                            bundle.putString("pincode",pincode)
-                                                                            bundle.putString("email",email)
-                                                                            bundle.putString("phone",contact)
-                                                                            bundle.putString("amount",amount)
-                                                                            bundle.putString("shippingCharges",shippingCharges)
-                                                                            bundle.putParcelableArrayList("products", products as java.util.ArrayList<CartItem>)
-                                                                            findNavController().navigate(R.id.action_orderDetailFragment_to_orderReturnFragment,bundle)
+                                                                            bundle.putString(
+                                                                                "orderID",
+                                                                                orderID
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "transactionID",
+                                                                                transactionId
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "name",
+                                                                                name
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "address",
+                                                                                address
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "city",
+                                                                                city
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "state",
+                                                                                state
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "country",
+                                                                                country
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "pincode",
+                                                                                pincode
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "email",
+                                                                                email
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "phone",
+                                                                                contact
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "amount",
+                                                                                amount
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "shippingCharges",
+                                                                                shippingCharges
+                                                                            )
+                                                                            bundle.putParcelableArrayList(
+                                                                                "products",
+                                                                                products as java.util.ArrayList<CartItem>
+                                                                            )
+                                                                            findNavController().navigate(
+                                                                                R.id.action_orderDetailFragment_to_orderReturnFragment,
+                                                                                bundle
+                                                                            )
                                                                         }
                                                                         dialog2.show()
                                                                     }
                                                                     dialog.show()
 
                                                                 }
-                                                            }else{
+                                                            } else {
                                                                 binding.cancelBtn.setOnClickListener {
-                                                                    val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "The Order Can be Only Return Within 5 Days after Order.", 3000)
-                                                                    snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                    snackBar.setTextColor(resources.getColor(R.color.white))
+                                                                    val snackBar = Snackbar.make(
+                                                                        requireActivity().findViewById(
+                                                                            android.R.id.content
+                                                                        ),
+                                                                        "The Order Can be Only Return Within 5 Days after Order.",
+                                                                        3000
+                                                                    )
+                                                                    snackBar.setBackgroundTint(
+                                                                        resources.getColor(R.color.red)
+                                                                    )
+                                                                    snackBar.setTextColor(
+                                                                        resources.getColor(
+                                                                            R.color.white
+                                                                        )
+                                                                    )
                                                                     snackBar.show()
                                                                     vibratePhone()
                                                                 }
                                                             }
-                                                        }
-                                                        else if (status.toString().replace("\"", "") == "CANCELED"){
-                                                            binding.cancelBtn.visibility = View.INVISIBLE
+                                                        } else if (status.toString()
+                                                                .replace("\"", "") == "CANCELED"
+                                                        ) {
+                                                            binding.cancelBtn.visibility =
+                                                                View.INVISIBLE
                                                             binding.cancelBtn.isClickable = false
-                                                        }
-                                                        else if (status.toString().replace("\"", "") == "CANCELLATION REQUESTED"){
-                                                            binding.cancelBtn.visibility = View.INVISIBLE
+                                                        } else if (status.toString().replace(
+                                                                "\"",
+                                                                ""
+                                                            ) == "CANCELLATION REQUESTED"
+                                                        ) {
+                                                            binding.cancelBtn.visibility =
+                                                                View.INVISIBLE
                                                             binding.cancelBtn.isClickable = false
-                                                        }else if(status.toString().replace("\"", "") == "READY TO SHIP"){
+                                                        } else if (status.toString().replace(
+                                                                "\"",
+                                                                ""
+                                                            ) == "READY TO SHIP"
+                                                        ) {
                                                             binding.orderStatusText.text = "Packing"
                                                             binding.trackBtn.setOnClickListener {
-                                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Please wait the order will be tracked soon.", 3000)
-                                                                snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                snackBar.setTextColor(resources.getColor(R.color.white))
+                                                                val snackBar = Snackbar.make(
+                                                                    requireActivity().findViewById(
+                                                                        android.R.id.content
+                                                                    ),
+                                                                    "Please wait the order will be tracked soon.",
+                                                                    3000
+                                                                )
+                                                                snackBar.setBackgroundTint(
+                                                                    resources.getColor(
+                                                                        R.color.red
+                                                                    )
+                                                                )
+                                                                snackBar.setTextColor(
+                                                                    resources.getColor(
+                                                                        R.color.white
+                                                                    )
+                                                                )
                                                                 snackBar.show()
                                                                 vibratePhone()
                                                             }
 
                                                             binding.cancelBtn.setOnClickListener {
-                                                                val dialog = MaterialAlertDialogBuilder(requireContext(),R.style.AppCompatAlertDialogStyle)
+                                                                val dialog =
+                                                                    MaterialAlertDialogBuilder(
+                                                                        requireContext(),
+                                                                        R.style.AppCompatAlertDialogStyle
+                                                                    )
                                                                 dialog.setTitle("Cancel Order")
                                                                 dialog.setMessage("Do you really want to cancel the order?")
-                                                                dialog.background = context?.resources!!.getDrawable(R.drawable.black_btn_bg)
+                                                                dialog.background =
+                                                                    context?.resources!!.getDrawable(
+                                                                        R.drawable.black_btn_bg
+                                                                    )
                                                                 dialog.setNegativeButton("Cancel") { dialog, which ->
                                                                     dialog.dismiss()
                                                                 }
                                                                 dialog.setPositiveButton("Sure") { dialog, which ->
-                                                                    val dialog2 = MaterialAlertDialogBuilder(requireContext(),R.style.AppCompatAlertDialogStyle)
+                                                                    val dialog2 =
+                                                                        MaterialAlertDialogBuilder(
+                                                                            requireContext(),
+                                                                            R.style.AppCompatAlertDialogStyle
+                                                                        )
                                                                     dialog2.setTitle("Remember")
                                                                     dialog2.setMessage("As our policy your money will be refund in 5-10 Business Days. Remember that your shipping charges will 'not' be refund.")
-                                                                    dialog2.background = resources.getDrawable(R.drawable.black_btn_bg)
+                                                                    dialog2.background =
+                                                                        resources.getDrawable(R.drawable.black_btn_bg)
                                                                     dialog2.setNegativeButton("Cancel") { dialog2, which ->
                                                                         dialog.dismiss()
                                                                         dialog2.dismiss()
@@ -1631,141 +2364,271 @@ class OrderDetailFragment : Fragment() {
                                                                     }
                                                                     dialog2.setPositiveButton("Agree") { dialog2, which ->
                                                                         mdialog.show()
-                                                                        val idList:ArrayList<Int> = ArrayList()
-                                                                        idList.add(orderId.toString().toInt())
+                                                                        val idList: ArrayList<Int> =
+                                                                            ArrayList()
+                                                                        idList.add(
+                                                                            orderId.toString()
+                                                                                .toInt()
+                                                                        )
 
-                                                                        val cancelOrder = CancelOrder(idList)
+                                                                        val cancelOrder =
+                                                                            CancelOrder(idList)
 
-                                                                        val cancelOrderCall = orderServices.cancelOrder(headerMap,cancelOrder)
-                                                                        cancelOrderCall.enqueue(object :Callback<JsonObject>{
-                                                                            override fun onResponse(
-                                                                                call: Call<JsonObject>,
-                                                                                response: Response<JsonObject>
-                                                                            ) {
-                                                                                if(response.isSuccessful){
-                                                                                    val retrofitBuilder2 = Retrofit.Builder()
-                                                                                        .addConverterFactory(GsonConverterFactory.create())
-                                                                                        .baseUrl(BASE_URL_RZP)
-                                                                                        .build()
-
-                                                                                    val orderServices2 = retrofitBuilder2.create(OrderServices::class.java)
-                                                                                    val refundCall = orderServices2.refundPayment(transactionId,(amount.toString().toInt() - shippingCharges.toString().toInt())*100,"Basic cnpwX3Rlc3RfVXljYlBRNmpkTFRKdGQ6OXFkWU5mSWpCbHJZemc1ckNDVFQzUTdo")
-                                                                                    refundCall.enqueue(object :Callback<JsonObject>{
-                                                                                        override fun onResponse(
-                                                                                            call: Call<JsonObject>,
-                                                                                            response2: Response<JsonObject>
-                                                                                        ) {
-                                                                                            if(response2.isSuccessful){
-
-                                                                                                val refundId = response2.body()?.get("id").toString()
-
-                                                                                                mdialog.dismiss()
-                                                                                                Log.e(TAG, "onResponse: ${response2.body().toString()}")
-                                                                                                findNavController().navigate(R.id.action_orderDetailFragment_to_orderFragment)
-                                                                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Canceled Successfully.", 3000)
-                                                                                                snackBar.setBackgroundTint(resources.getColor(R.color.black))
-                                                                                                snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                                snackBar.show()
-                                                                                                vibratePhone()
-
-                                                                                                FirestoreClass().mFirestore.collection("Orders")
-                                                                                                    .document(orderID)
-                                                                                                    .update("transactionId",refundId)
-
-                                                                                                FirestoreClass().mFirestore.collection("Orders")
-                                                                                                    .document(orderId)
-                                                                                                    .update("orderId",
-                                                                                                        "C$orderID"
-                                                                                                    )
-
-                                                                                            }else{
-                                                                                                Log.e(
-                                                                                                    TAG,
-                                                                                                    "onResponse: ${response2.raw()}"
+                                                                        val cancelOrderCall =
+                                                                            orderServices.cancelOrder(
+                                                                                headerMap,
+                                                                                cancelOrder
+                                                                            )
+                                                                        cancelOrderCall.enqueue(
+                                                                            object :
+                                                                                Callback<JsonObject> {
+                                                                                override fun onResponse(
+                                                                                    call: Call<JsonObject>,
+                                                                                    response: Response<JsonObject>
+                                                                                ) {
+                                                                                    if (response.isSuccessful) {
+                                                                                        val retrofitBuilder2 =
+                                                                                            Retrofit.Builder()
+                                                                                                .addConverterFactory(
+                                                                                                    GsonConverterFactory.create()
                                                                                                 )
-                                                                                                Log.e(
-                                                                                                    TAG,
-                                                                                                    "onResponse: ${
-                                                                                                        response2.errorBody()
-                                                                                                            .toString()
-                                                                                                    }"
+                                                                                                .baseUrl(
+                                                                                                    BASE_URL_RZP
                                                                                                 )
-                                                                                                Log.e(
-                                                                                                    TAG,
-                                                                                                    "onResponse: ${
-                                                                                                        response2.headers()
-                                                                                                            .toString()
-                                                                                                    }"
-                                                                                                )
-                                                                                                mdialog.dismiss()
+                                                                                                .build()
 
-                                                                                                mdialog.dismiss()
-                                                                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Cancellation Failed.", Snackbar.LENGTH_LONG)
-                                                                                                snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                                snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                                snackBar.show()
-                                                                                                vibratePhone()
-                                                                                            }
-                                                                                        }
-
-                                                                                        override fun onFailure(
-                                                                                            call: Call<JsonObject>,
-                                                                                            t: Throwable
-                                                                                        ) {
-                                                                                            mdialog.dismiss()
-                                                                                            Log.e(
-                                                                                                TAG,
-                                                                                                "onFailure: ${t.localizedMessage}"
+                                                                                        val orderServices2 =
+                                                                                            retrofitBuilder2.create(
+                                                                                                OrderServices::class.java
                                                                                             )
-                                                                                            val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Cancellation Failed.", Snackbar.LENGTH_LONG)
-                                                                                            snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                            snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                            snackBar.show()
-                                                                                            vibratePhone()
-                                                                                        }
+                                                                                        val refundCall =
+                                                                                            orderServices2.refundPayment(
+                                                                                                transactionId,
+                                                                                                (amount.toString()
+                                                                                                    .toInt() - shippingCharges.toString()
+                                                                                                    .toInt()) * 100,
+                                                                                                "Basic cnpwX3Rlc3RfVXljYlBRNmpkTFRKdGQ6OXFkWU5mSWpCbHJZemc1ckNDVFQzUTdo"
+                                                                                            )
+                                                                                        refundCall.enqueue(
+                                                                                            object :
+                                                                                                Callback<JsonObject> {
+                                                                                                override fun onResponse(
+                                                                                                    call: Call<JsonObject>,
+                                                                                                    response2: Response<JsonObject>
+                                                                                                ) {
+                                                                                                    if (response2.isSuccessful) {
 
-                                                                                    })
+                                                                                                        val refundId =
+                                                                                                            response2.body()
+                                                                                                                ?.get(
+                                                                                                                    "id"
+                                                                                                                )
+                                                                                                                .toString()
 
-                                                                                }else{
+                                                                                                        mdialog.dismiss()
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.body()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        findNavController().navigate(
+                                                                                                            R.id.action_orderDetailFragment_to_orderFragment
+                                                                                                        )
+                                                                                                        val snackBar =
+                                                                                                            Snackbar.make(
+                                                                                                                requireActivity().findViewById(
+                                                                                                                    android.R.id.content
+                                                                                                                ),
+                                                                                                                "Order Canceled Successfully.",
+                                                                                                                3000
+                                                                                                            )
+                                                                                                        snackBar.setBackgroundTint(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.black
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.setTextColor(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.white
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.show()
+                                                                                                        vibratePhone()
+
+                                                                                                        FirestoreClass().mFirestore.collection(
+                                                                                                            "Orders"
+                                                                                                        )
+                                                                                                            .document(
+                                                                                                                orderID
+                                                                                                            )
+                                                                                                            .update(
+                                                                                                                "transactionId",
+                                                                                                                refundId
+                                                                                                            )
+
+                                                                                                        FirestoreClass().mFirestore.collection(
+                                                                                                            "Orders"
+                                                                                                        )
+                                                                                                            .document(
+                                                                                                                orderId
+                                                                                                            )
+                                                                                                            .update(
+                                                                                                                "orderId",
+                                                                                                                "C$orderID"
+                                                                                                            )
+
+                                                                                                    } else {
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${response2.raw()}"
+                                                                                                        )
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.errorBody()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.headers()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        mdialog.dismiss()
+
+                                                                                                        mdialog.dismiss()
+                                                                                                        val snackBar =
+                                                                                                            Snackbar.make(
+                                                                                                                requireActivity().findViewById(
+                                                                                                                    android.R.id.content
+                                                                                                                ),
+                                                                                                                "Order Cancellation Failed.",
+                                                                                                                Snackbar.LENGTH_LONG
+                                                                                                            )
+                                                                                                        snackBar.setBackgroundTint(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.red
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.setTextColor(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.white
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.show()
+                                                                                                        vibratePhone()
+                                                                                                    }
+                                                                                                }
+
+                                                                                                override fun onFailure(
+                                                                                                    call: Call<JsonObject>,
+                                                                                                    t: Throwable
+                                                                                                ) {
+                                                                                                    mdialog.dismiss()
+                                                                                                    Log.e(
+                                                                                                        TAG,
+                                                                                                        "onFailure: ${t.localizedMessage}"
+                                                                                                    )
+                                                                                                    val snackBar =
+                                                                                                        Snackbar.make(
+                                                                                                            requireActivity().findViewById(
+                                                                                                                android.R.id.content
+                                                                                                            ),
+                                                                                                            "Order Cancellation Failed.",
+                                                                                                            Snackbar.LENGTH_LONG
+                                                                                                        )
+                                                                                                    snackBar.setBackgroundTint(
+                                                                                                        resources.getColor(
+                                                                                                            R.color.red
+                                                                                                        )
+                                                                                                    )
+                                                                                                    snackBar.setTextColor(
+                                                                                                        resources.getColor(
+                                                                                                            R.color.white
+                                                                                                        )
+                                                                                                    )
+                                                                                                    snackBar.show()
+                                                                                                    vibratePhone()
+                                                                                                }
+
+                                                                                            })
+
+                                                                                    } else {
+                                                                                        mdialog.dismiss()
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${response.raw()}"
+                                                                                        )
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${
+                                                                                                response.errorBody()
+                                                                                                    .toString()
+                                                                                            }"
+                                                                                        )
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${
+                                                                                                response.message()
+                                                                                                    .toString()
+                                                                                            }"
+                                                                                        )
+                                                                                        val snackBar =
+                                                                                            Snackbar.make(
+                                                                                                requireActivity().findViewById(
+                                                                                                    android.R.id.content
+                                                                                                ),
+                                                                                                "Something Went Wrong.",
+                                                                                                Snackbar.LENGTH_LONG
+                                                                                            )
+                                                                                        snackBar.setBackgroundTint(
+                                                                                            resources.getColor(
+                                                                                                R.color.red
+                                                                                            )
+                                                                                        )
+                                                                                        snackBar.setTextColor(
+                                                                                            resources.getColor(
+                                                                                                R.color.white
+                                                                                            )
+                                                                                        )
+                                                                                        snackBar.show()
+                                                                                        vibratePhone()
+                                                                                    }
+
+                                                                                }
+
+                                                                                override fun onFailure(
+                                                                                    call: Call<JsonObject>,
+                                                                                    t: Throwable
+                                                                                ) {
                                                                                     mdialog.dismiss()
-                                                                                    Log.e(
-                                                                                        TAG,
-                                                                                        "onResponse: ${response.raw()}"
+                                                                                    val snackBar =
+                                                                                        Snackbar.make(
+                                                                                            requireActivity().findViewById(
+                                                                                                android.R.id.content
+                                                                                            ),
+                                                                                            "Order Cancellation Failed.",
+                                                                                            Snackbar.LENGTH_LONG
+                                                                                        )
+                                                                                    snackBar.setBackgroundTint(
+                                                                                        resources.getColor(
+                                                                                            R.color.red
+                                                                                        )
                                                                                     )
-                                                                                    Log.e(
-                                                                                        TAG,
-                                                                                        "onResponse: ${
-                                                                                            response.errorBody().toString()
-                                                                                        }"
+                                                                                    snackBar.setTextColor(
+                                                                                        resources.getColor(
+                                                                                            R.color.white
+                                                                                        )
                                                                                     )
-                                                                                    Log.e(
-                                                                                        TAG,
-                                                                                        "onResponse: ${
-                                                                                            response.message().toString()
-                                                                                        }"
-                                                                                    )
-                                                                                    val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Something Went Wrong.", Snackbar.LENGTH_LONG)
-                                                                                    snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                    snackBar.setTextColor(resources.getColor(R.color.white))
                                                                                     snackBar.show()
                                                                                     vibratePhone()
                                                                                 }
 
-                                                                            }
-
-                                                                            override fun onFailure(
-                                                                                call: Call<JsonObject>,
-                                                                                t: Throwable
-                                                                            ) {
-                                                                                mdialog.dismiss()
-                                                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Cancellation Failed.", Snackbar.LENGTH_LONG)
-                                                                                snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                snackBar.show()
-                                                                                vibratePhone()
-                                                                            }
-
-                                                                        })
+                                                                            })
 
 
                                                                     }
@@ -1774,28 +2637,56 @@ class OrderDetailFragment : Fragment() {
                                                                 dialog.show()
 
                                                             }
-                                                        }else if(status.toString().replace("\"", "") == "INVOICED"){
+                                                        } else if (status.toString()
+                                                                .replace("\"", "") == "INVOICED"
+                                                        ) {
                                                             binding.orderStatusText.text = "Packing"
                                                             binding.trackBtn.setOnClickListener {
-                                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Please wait the order will be tracked soon.", 3000)
-                                                                snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                snackBar.setTextColor(resources.getColor(R.color.white))
+                                                                val snackBar = Snackbar.make(
+                                                                    requireActivity().findViewById(
+                                                                        android.R.id.content
+                                                                    ),
+                                                                    "Please wait the order will be tracked soon.",
+                                                                    3000
+                                                                )
+                                                                snackBar.setBackgroundTint(
+                                                                    resources.getColor(
+                                                                        R.color.red
+                                                                    )
+                                                                )
+                                                                snackBar.setTextColor(
+                                                                    resources.getColor(
+                                                                        R.color.white
+                                                                    )
+                                                                )
                                                                 snackBar.show()
                                                                 vibratePhone()
                                                             }
                                                             binding.cancelBtn.setOnClickListener {
-                                                                val dialog = MaterialAlertDialogBuilder(requireContext(),R.style.AppCompatAlertDialogStyle)
+                                                                val dialog =
+                                                                    MaterialAlertDialogBuilder(
+                                                                        requireContext(),
+                                                                        R.style.AppCompatAlertDialogStyle
+                                                                    )
                                                                 dialog.setTitle("Cancel Order")
                                                                 dialog.setMessage("Do you really want to cancel the order?")
-                                                                dialog.background = context?.resources!!.getDrawable(R.drawable.black_btn_bg)
+                                                                dialog.background =
+                                                                    context?.resources!!.getDrawable(
+                                                                        R.drawable.black_btn_bg
+                                                                    )
                                                                 dialog.setNegativeButton("Cancel") { dialog, which ->
                                                                     dialog.dismiss()
                                                                 }
                                                                 dialog.setPositiveButton("Sure") { dialog, which ->
-                                                                    val dialog2 = MaterialAlertDialogBuilder(requireContext(),R.style.AppCompatAlertDialogStyle)
+                                                                    val dialog2 =
+                                                                        MaterialAlertDialogBuilder(
+                                                                            requireContext(),
+                                                                            R.style.AppCompatAlertDialogStyle
+                                                                        )
                                                                     dialog2.setTitle("Remember")
                                                                     dialog2.setMessage("As our policy your money will be refund in 5-10 Business Days. Remember that your shipping charges will 'not' be refund.")
-                                                                    dialog2.background = resources.getDrawable(R.drawable.black_btn_bg)
+                                                                    dialog2.background =
+                                                                        resources.getDrawable(R.drawable.black_btn_bg)
                                                                     dialog2.setNegativeButton("Cancel") { dialog2, which ->
                                                                         dialog.dismiss()
                                                                         dialog2.dismiss()
@@ -1803,141 +2694,271 @@ class OrderDetailFragment : Fragment() {
                                                                     }
                                                                     dialog2.setPositiveButton("Agree") { dialog2, which ->
                                                                         mdialog.show()
-                                                                        val idList:ArrayList<Int> = ArrayList()
-                                                                        idList.add(orderId.toString().toInt())
+                                                                        val idList: ArrayList<Int> =
+                                                                            ArrayList()
+                                                                        idList.add(
+                                                                            orderId.toString()
+                                                                                .toInt()
+                                                                        )
 
-                                                                        val cancelOrder = CancelOrder(idList)
+                                                                        val cancelOrder =
+                                                                            CancelOrder(idList)
 
-                                                                        val cancelOrderCall = orderServices.cancelOrder(headerMap,cancelOrder)
-                                                                        cancelOrderCall.enqueue(object :Callback<JsonObject>{
-                                                                            override fun onResponse(
-                                                                                call: Call<JsonObject>,
-                                                                                response: Response<JsonObject>
-                                                                            ) {
-                                                                                if(response.isSuccessful){
-                                                                                    val retrofitBuilder2 = Retrofit.Builder()
-                                                                                        .addConverterFactory(GsonConverterFactory.create())
-                                                                                        .baseUrl(BASE_URL_RZP)
-                                                                                        .build()
-
-                                                                                    val orderServices2 = retrofitBuilder2.create(OrderServices::class.java)
-                                                                                    val refundCall = orderServices2.refundPayment(transactionId,(amount.toString().toInt() - shippingCharges.toString().toInt())*100,"Basic cnpwX3Rlc3RfVXljYlBRNmpkTFRKdGQ6OXFkWU5mSWpCbHJZemc1ckNDVFQzUTdo")
-                                                                                    refundCall.enqueue(object :Callback<JsonObject>{
-                                                                                        override fun onResponse(
-                                                                                            call: Call<JsonObject>,
-                                                                                            response2: Response<JsonObject>
-                                                                                        ) {
-                                                                                            if(response2.isSuccessful){
-
-                                                                                                val refundId = response2.body()?.get("id").toString()
-
-                                                                                                mdialog.dismiss()
-                                                                                                Log.e(TAG, "onResponse: ${response2.body().toString()}")
-                                                                                                findNavController().navigate(R.id.action_orderDetailFragment_to_orderFragment)
-                                                                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Canceled Successfully.", 3000)
-                                                                                                snackBar.setBackgroundTint(resources.getColor(R.color.black))
-                                                                                                snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                                snackBar.show()
-                                                                                                vibratePhone()
-
-                                                                                                FirestoreClass().mFirestore.collection("Orders")
-                                                                                                    .document(orderID)
-                                                                                                    .update("transactionId",refundId)
-
-                                                                                                FirestoreClass().mFirestore.collection("Orders")
-                                                                                                    .document(orderId)
-                                                                                                    .update("orderId",
-                                                                                                        "C$orderID"
-                                                                                                    )
-
-                                                                                            }else{
-                                                                                                Log.e(
-                                                                                                    TAG,
-                                                                                                    "onResponse: ${response2.raw()}"
+                                                                        val cancelOrderCall =
+                                                                            orderServices.cancelOrder(
+                                                                                headerMap,
+                                                                                cancelOrder
+                                                                            )
+                                                                        cancelOrderCall.enqueue(
+                                                                            object :
+                                                                                Callback<JsonObject> {
+                                                                                override fun onResponse(
+                                                                                    call: Call<JsonObject>,
+                                                                                    response: Response<JsonObject>
+                                                                                ) {
+                                                                                    if (response.isSuccessful) {
+                                                                                        val retrofitBuilder2 =
+                                                                                            Retrofit.Builder()
+                                                                                                .addConverterFactory(
+                                                                                                    GsonConverterFactory.create()
                                                                                                 )
-                                                                                                Log.e(
-                                                                                                    TAG,
-                                                                                                    "onResponse: ${
-                                                                                                        response2.errorBody()
-                                                                                                            .toString()
-                                                                                                    }"
+                                                                                                .baseUrl(
+                                                                                                    BASE_URL_RZP
                                                                                                 )
-                                                                                                Log.e(
-                                                                                                    TAG,
-                                                                                                    "onResponse: ${
-                                                                                                        response2.headers()
-                                                                                                            .toString()
-                                                                                                    }"
-                                                                                                )
-                                                                                                mdialog.dismiss()
+                                                                                                .build()
 
-                                                                                                mdialog.dismiss()
-                                                                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Cancellation Failed.", Snackbar.LENGTH_LONG)
-                                                                                                snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                                snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                                snackBar.show()
-                                                                                                vibratePhone()
-                                                                                            }
-                                                                                        }
-
-                                                                                        override fun onFailure(
-                                                                                            call: Call<JsonObject>,
-                                                                                            t: Throwable
-                                                                                        ) {
-                                                                                            mdialog.dismiss()
-                                                                                            Log.e(
-                                                                                                TAG,
-                                                                                                "onFailure: ${t.localizedMessage}"
+                                                                                        val orderServices2 =
+                                                                                            retrofitBuilder2.create(
+                                                                                                OrderServices::class.java
                                                                                             )
-                                                                                            val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Cancellation Failed.", Snackbar.LENGTH_LONG)
-                                                                                            snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                            snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                            snackBar.show()
-                                                                                            vibratePhone()
-                                                                                        }
+                                                                                        val refundCall =
+                                                                                            orderServices2.refundPayment(
+                                                                                                transactionId,
+                                                                                                (amount.toString()
+                                                                                                    .toInt() - shippingCharges.toString()
+                                                                                                    .toInt()) * 100,
+                                                                                                "Basic cnpwX3Rlc3RfVXljYlBRNmpkTFRKdGQ6OXFkWU5mSWpCbHJZemc1ckNDVFQzUTdo"
+                                                                                            )
+                                                                                        refundCall.enqueue(
+                                                                                            object :
+                                                                                                Callback<JsonObject> {
+                                                                                                override fun onResponse(
+                                                                                                    call: Call<JsonObject>,
+                                                                                                    response2: Response<JsonObject>
+                                                                                                ) {
+                                                                                                    if (response2.isSuccessful) {
 
-                                                                                    })
+                                                                                                        val refundId =
+                                                                                                            response2.body()
+                                                                                                                ?.get(
+                                                                                                                    "id"
+                                                                                                                )
+                                                                                                                .toString()
 
-                                                                                }else{
+                                                                                                        mdialog.dismiss()
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.body()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        findNavController().navigate(
+                                                                                                            R.id.action_orderDetailFragment_to_orderFragment
+                                                                                                        )
+                                                                                                        val snackBar =
+                                                                                                            Snackbar.make(
+                                                                                                                requireActivity().findViewById(
+                                                                                                                    android.R.id.content
+                                                                                                                ),
+                                                                                                                "Order Canceled Successfully.",
+                                                                                                                3000
+                                                                                                            )
+                                                                                                        snackBar.setBackgroundTint(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.black
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.setTextColor(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.white
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.show()
+                                                                                                        vibratePhone()
+
+                                                                                                        FirestoreClass().mFirestore.collection(
+                                                                                                            "Orders"
+                                                                                                        )
+                                                                                                            .document(
+                                                                                                                orderID
+                                                                                                            )
+                                                                                                            .update(
+                                                                                                                "transactionId",
+                                                                                                                refundId
+                                                                                                            )
+
+                                                                                                        FirestoreClass().mFirestore.collection(
+                                                                                                            "Orders"
+                                                                                                        )
+                                                                                                            .document(
+                                                                                                                orderId
+                                                                                                            )
+                                                                                                            .update(
+                                                                                                                "orderId",
+                                                                                                                "C$orderID"
+                                                                                                            )
+
+                                                                                                    } else {
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${response2.raw()}"
+                                                                                                        )
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.errorBody()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.headers()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        mdialog.dismiss()
+
+                                                                                                        mdialog.dismiss()
+                                                                                                        val snackBar =
+                                                                                                            Snackbar.make(
+                                                                                                                requireActivity().findViewById(
+                                                                                                                    android.R.id.content
+                                                                                                                ),
+                                                                                                                "Order Cancellation Failed.",
+                                                                                                                Snackbar.LENGTH_LONG
+                                                                                                            )
+                                                                                                        snackBar.setBackgroundTint(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.red
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.setTextColor(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.white
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.show()
+                                                                                                        vibratePhone()
+                                                                                                    }
+                                                                                                }
+
+                                                                                                override fun onFailure(
+                                                                                                    call: Call<JsonObject>,
+                                                                                                    t: Throwable
+                                                                                                ) {
+                                                                                                    mdialog.dismiss()
+                                                                                                    Log.e(
+                                                                                                        TAG,
+                                                                                                        "onFailure: ${t.localizedMessage}"
+                                                                                                    )
+                                                                                                    val snackBar =
+                                                                                                        Snackbar.make(
+                                                                                                            requireActivity().findViewById(
+                                                                                                                android.R.id.content
+                                                                                                            ),
+                                                                                                            "Order Cancellation Failed.",
+                                                                                                            Snackbar.LENGTH_LONG
+                                                                                                        )
+                                                                                                    snackBar.setBackgroundTint(
+                                                                                                        resources.getColor(
+                                                                                                            R.color.red
+                                                                                                        )
+                                                                                                    )
+                                                                                                    snackBar.setTextColor(
+                                                                                                        resources.getColor(
+                                                                                                            R.color.white
+                                                                                                        )
+                                                                                                    )
+                                                                                                    snackBar.show()
+                                                                                                    vibratePhone()
+                                                                                                }
+
+                                                                                            })
+
+                                                                                    } else {
+                                                                                        mdialog.dismiss()
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${response.raw()}"
+                                                                                        )
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${
+                                                                                                response.errorBody()
+                                                                                                    .toString()
+                                                                                            }"
+                                                                                        )
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${
+                                                                                                response.message()
+                                                                                                    .toString()
+                                                                                            }"
+                                                                                        )
+                                                                                        val snackBar =
+                                                                                            Snackbar.make(
+                                                                                                requireActivity().findViewById(
+                                                                                                    android.R.id.content
+                                                                                                ),
+                                                                                                "Something Went Wrong.",
+                                                                                                Snackbar.LENGTH_LONG
+                                                                                            )
+                                                                                        snackBar.setBackgroundTint(
+                                                                                            resources.getColor(
+                                                                                                R.color.red
+                                                                                            )
+                                                                                        )
+                                                                                        snackBar.setTextColor(
+                                                                                            resources.getColor(
+                                                                                                R.color.white
+                                                                                            )
+                                                                                        )
+                                                                                        snackBar.show()
+                                                                                        vibratePhone()
+                                                                                    }
+
+                                                                                }
+
+                                                                                override fun onFailure(
+                                                                                    call: Call<JsonObject>,
+                                                                                    t: Throwable
+                                                                                ) {
                                                                                     mdialog.dismiss()
-                                                                                    Log.e(
-                                                                                        TAG,
-                                                                                        "onResponse: ${response.raw()}"
+                                                                                    val snackBar =
+                                                                                        Snackbar.make(
+                                                                                            requireActivity().findViewById(
+                                                                                                android.R.id.content
+                                                                                            ),
+                                                                                            "Order Cancellation Failed.",
+                                                                                            Snackbar.LENGTH_LONG
+                                                                                        )
+                                                                                    snackBar.setBackgroundTint(
+                                                                                        resources.getColor(
+                                                                                            R.color.red
+                                                                                        )
                                                                                     )
-                                                                                    Log.e(
-                                                                                        TAG,
-                                                                                        "onResponse: ${
-                                                                                            response.errorBody().toString()
-                                                                                        }"
+                                                                                    snackBar.setTextColor(
+                                                                                        resources.getColor(
+                                                                                            R.color.white
+                                                                                        )
                                                                                     )
-                                                                                    Log.e(
-                                                                                        TAG,
-                                                                                        "onResponse: ${
-                                                                                            response.message().toString()
-                                                                                        }"
-                                                                                    )
-                                                                                    val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Something Went Wrong.", Snackbar.LENGTH_LONG)
-                                                                                    snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                    snackBar.setTextColor(resources.getColor(R.color.white))
                                                                                     snackBar.show()
                                                                                     vibratePhone()
                                                                                 }
 
-                                                                            }
-
-                                                                            override fun onFailure(
-                                                                                call: Call<JsonObject>,
-                                                                                t: Throwable
-                                                                            ) {
-                                                                                mdialog.dismiss()
-                                                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Cancellation Failed.", Snackbar.LENGTH_LONG)
-                                                                                snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                snackBar.show()
-                                                                                vibratePhone()
-                                                                            }
-
-                                                                        })
+                                                                            })
 
 
                                                                     }
@@ -1946,21 +2967,33 @@ class OrderDetailFragment : Fragment() {
                                                                 dialog.show()
 
                                                             }
-                                                        }else{
+                                                        } else {
                                                             binding.cancelBtn.text = "Cancel Order"
                                                             binding.cancelBtn.setOnClickListener {
-                                                                val dialog = MaterialAlertDialogBuilder(requireContext(),R.style.AppCompatAlertDialogStyle)
+                                                                val dialog =
+                                                                    MaterialAlertDialogBuilder(
+                                                                        requireContext(),
+                                                                        R.style.AppCompatAlertDialogStyle
+                                                                    )
                                                                 dialog.setTitle("Cancel Order")
                                                                 dialog.setMessage("Do you really want to cancel the order?")
-                                                                dialog.background = context?.resources!!.getDrawable(R.drawable.black_btn_bg)
+                                                                dialog.background =
+                                                                    context?.resources!!.getDrawable(
+                                                                        R.drawable.black_btn_bg
+                                                                    )
                                                                 dialog.setNegativeButton("Cancel") { dialog, which ->
                                                                     dialog.dismiss()
                                                                 }
                                                                 dialog.setPositiveButton("Sure") { dialog, which ->
-                                                                    val dialog2 = MaterialAlertDialogBuilder(requireContext(),R.style.AppCompatAlertDialogStyle)
+                                                                    val dialog2 =
+                                                                        MaterialAlertDialogBuilder(
+                                                                            requireContext(),
+                                                                            R.style.AppCompatAlertDialogStyle
+                                                                        )
                                                                     dialog2.setTitle("Remember")
                                                                     dialog2.setMessage("As our policy your money will be refund in 5-10 Business Days. Remember that your shipping charges will 'not' be refund.")
-                                                                    dialog2.background = resources.getDrawable(R.drawable.black_btn_bg)
+                                                                    dialog2.background =
+                                                                        resources.getDrawable(R.drawable.black_btn_bg)
                                                                     dialog2.setNegativeButton("Cancel") { dialog2, which ->
                                                                         dialog.dismiss()
                                                                         dialog2.dismiss()
@@ -1968,141 +3001,271 @@ class OrderDetailFragment : Fragment() {
                                                                     }
                                                                     dialog2.setPositiveButton("Agree") { dialog2, which ->
                                                                         mdialog.show()
-                                                                        val idList:ArrayList<Int> = ArrayList()
-                                                                        idList.add(orderId.toString().toInt())
+                                                                        val idList: ArrayList<Int> =
+                                                                            ArrayList()
+                                                                        idList.add(
+                                                                            orderId.toString()
+                                                                                .toInt()
+                                                                        )
 
-                                                                        val cancelOrder = CancelOrder(idList)
+                                                                        val cancelOrder =
+                                                                            CancelOrder(idList)
 
-                                                                        val cancelOrderCall = orderServices.cancelOrder(headerMap,cancelOrder)
-                                                                        cancelOrderCall.enqueue(object :Callback<JsonObject>{
-                                                                            override fun onResponse(
-                                                                                call: Call<JsonObject>,
-                                                                                response: Response<JsonObject>
-                                                                            ) {
-                                                                                if(response.isSuccessful){
-                                                                                    val retrofitBuilder2 = Retrofit.Builder()
-                                                                                        .addConverterFactory(GsonConverterFactory.create())
-                                                                                        .baseUrl(BASE_URL_RZP)
-                                                                                        .build()
-
-                                                                                    val orderServices2 = retrofitBuilder2.create(OrderServices::class.java)
-                                                                                    val refundCall = orderServices2.refundPayment(transactionId,(amount.toString().toInt() - shippingCharges.toString().toInt())*100,"Basic cnpwX3Rlc3RfVXljYlBRNmpkTFRKdGQ6OXFkWU5mSWpCbHJZemc1ckNDVFQzUTdo")
-                                                                                    refundCall.enqueue(object :Callback<JsonObject>{
-                                                                                        override fun onResponse(
-                                                                                            call: Call<JsonObject>,
-                                                                                            response2: Response<JsonObject>
-                                                                                        ) {
-                                                                                            if(response2.isSuccessful){
-
-                                                                                                val refundId = response2.body()?.get("id").toString()
-
-                                                                                                mdialog.dismiss()
-                                                                                                Log.e(TAG, "onResponse: ${response2.body().toString()}")
-                                                                                                findNavController().navigate(R.id.action_orderDetailFragment_to_orderFragment)
-                                                                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Canceled Successfully.", 3000)
-                                                                                                snackBar.setBackgroundTint(resources.getColor(R.color.black))
-                                                                                                snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                                snackBar.show()
-                                                                                                vibratePhone()
-
-                                                                                                FirestoreClass().mFirestore.collection("Orders")
-                                                                                                    .document(orderID)
-                                                                                                    .update("transactionId",refundId)
-
-                                                                                                FirestoreClass().mFirestore.collection("Orders")
-                                                                                                    .document(orderId)
-                                                                                                    .update("orderId",
-                                                                                                        "C$orderID"
-                                                                                                    )
-
-                                                                                            }else{
-                                                                                                Log.e(
-                                                                                                    TAG,
-                                                                                                    "onResponse: ${response2.raw()}"
+                                                                        val cancelOrderCall =
+                                                                            orderServices.cancelOrder(
+                                                                                headerMap,
+                                                                                cancelOrder
+                                                                            )
+                                                                        cancelOrderCall.enqueue(
+                                                                            object :
+                                                                                Callback<JsonObject> {
+                                                                                override fun onResponse(
+                                                                                    call: Call<JsonObject>,
+                                                                                    response: Response<JsonObject>
+                                                                                ) {
+                                                                                    if (response.isSuccessful) {
+                                                                                        val retrofitBuilder2 =
+                                                                                            Retrofit.Builder()
+                                                                                                .addConverterFactory(
+                                                                                                    GsonConverterFactory.create()
                                                                                                 )
-                                                                                                Log.e(
-                                                                                                    TAG,
-                                                                                                    "onResponse: ${
-                                                                                                        response2.errorBody()
-                                                                                                            .toString()
-                                                                                                    }"
+                                                                                                .baseUrl(
+                                                                                                    BASE_URL_RZP
                                                                                                 )
-                                                                                                Log.e(
-                                                                                                    TAG,
-                                                                                                    "onResponse: ${
-                                                                                                        response2.headers()
-                                                                                                            .toString()
-                                                                                                    }"
-                                                                                                )
-                                                                                                mdialog.dismiss()
+                                                                                                .build()
 
-                                                                                                mdialog.dismiss()
-                                                                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Cancellation Failed.", Snackbar.LENGTH_LONG)
-                                                                                                snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                                snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                                snackBar.show()
-                                                                                                vibratePhone()
-                                                                                            }
-                                                                                        }
-
-                                                                                        override fun onFailure(
-                                                                                            call: Call<JsonObject>,
-                                                                                            t: Throwable
-                                                                                        ) {
-                                                                                            mdialog.dismiss()
-                                                                                            Log.e(
-                                                                                                TAG,
-                                                                                                "onFailure: ${t.localizedMessage}"
+                                                                                        val orderServices2 =
+                                                                                            retrofitBuilder2.create(
+                                                                                                OrderServices::class.java
                                                                                             )
-                                                                                            val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Cancellation Failed.", Snackbar.LENGTH_LONG)
-                                                                                            snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                            snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                            snackBar.show()
-                                                                                            vibratePhone()
-                                                                                        }
+                                                                                        val refundCall =
+                                                                                            orderServices2.refundPayment(
+                                                                                                transactionId,
+                                                                                                (amount.toString()
+                                                                                                    .toInt() - shippingCharges.toString()
+                                                                                                    .toInt()) * 100,
+                                                                                                "Basic cnpwX3Rlc3RfVXljYlBRNmpkTFRKdGQ6OXFkWU5mSWpCbHJZemc1ckNDVFQzUTdo"
+                                                                                            )
+                                                                                        refundCall.enqueue(
+                                                                                            object :
+                                                                                                Callback<JsonObject> {
+                                                                                                override fun onResponse(
+                                                                                                    call: Call<JsonObject>,
+                                                                                                    response2: Response<JsonObject>
+                                                                                                ) {
+                                                                                                    if (response2.isSuccessful) {
 
-                                                                                    })
+                                                                                                        val refundId =
+                                                                                                            response2.body()
+                                                                                                                ?.get(
+                                                                                                                    "id"
+                                                                                                                )
+                                                                                                                .toString()
 
-                                                                                }else{
+                                                                                                        mdialog.dismiss()
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.body()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        findNavController().navigate(
+                                                                                                            R.id.action_orderDetailFragment_to_orderFragment
+                                                                                                        )
+                                                                                                        val snackBar =
+                                                                                                            Snackbar.make(
+                                                                                                                requireActivity().findViewById(
+                                                                                                                    android.R.id.content
+                                                                                                                ),
+                                                                                                                "Order Canceled Successfully.",
+                                                                                                                3000
+                                                                                                            )
+                                                                                                        snackBar.setBackgroundTint(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.black
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.setTextColor(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.white
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.show()
+                                                                                                        vibratePhone()
+
+                                                                                                        FirestoreClass().mFirestore.collection(
+                                                                                                            "Orders"
+                                                                                                        )
+                                                                                                            .document(
+                                                                                                                orderID
+                                                                                                            )
+                                                                                                            .update(
+                                                                                                                "transactionId",
+                                                                                                                refundId
+                                                                                                            )
+
+                                                                                                        FirestoreClass().mFirestore.collection(
+                                                                                                            "Orders"
+                                                                                                        )
+                                                                                                            .document(
+                                                                                                                orderId
+                                                                                                            )
+                                                                                                            .update(
+                                                                                                                "orderId",
+                                                                                                                "C$orderID"
+                                                                                                            )
+
+                                                                                                    } else {
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${response2.raw()}"
+                                                                                                        )
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.errorBody()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.headers()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        mdialog.dismiss()
+
+                                                                                                        mdialog.dismiss()
+                                                                                                        val snackBar =
+                                                                                                            Snackbar.make(
+                                                                                                                requireActivity().findViewById(
+                                                                                                                    android.R.id.content
+                                                                                                                ),
+                                                                                                                "Order Cancellation Failed.",
+                                                                                                                Snackbar.LENGTH_LONG
+                                                                                                            )
+                                                                                                        snackBar.setBackgroundTint(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.red
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.setTextColor(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.white
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.show()
+                                                                                                        vibratePhone()
+                                                                                                    }
+                                                                                                }
+
+                                                                                                override fun onFailure(
+                                                                                                    call: Call<JsonObject>,
+                                                                                                    t: Throwable
+                                                                                                ) {
+                                                                                                    mdialog.dismiss()
+                                                                                                    Log.e(
+                                                                                                        TAG,
+                                                                                                        "onFailure: ${t.localizedMessage}"
+                                                                                                    )
+                                                                                                    val snackBar =
+                                                                                                        Snackbar.make(
+                                                                                                            requireActivity().findViewById(
+                                                                                                                android.R.id.content
+                                                                                                            ),
+                                                                                                            "Order Cancellation Failed.",
+                                                                                                            Snackbar.LENGTH_LONG
+                                                                                                        )
+                                                                                                    snackBar.setBackgroundTint(
+                                                                                                        resources.getColor(
+                                                                                                            R.color.red
+                                                                                                        )
+                                                                                                    )
+                                                                                                    snackBar.setTextColor(
+                                                                                                        resources.getColor(
+                                                                                                            R.color.white
+                                                                                                        )
+                                                                                                    )
+                                                                                                    snackBar.show()
+                                                                                                    vibratePhone()
+                                                                                                }
+
+                                                                                            })
+
+                                                                                    } else {
+                                                                                        mdialog.dismiss()
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${response.raw()}"
+                                                                                        )
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${
+                                                                                                response.errorBody()
+                                                                                                    .toString()
+                                                                                            }"
+                                                                                        )
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${
+                                                                                                response.message()
+                                                                                                    .toString()
+                                                                                            }"
+                                                                                        )
+                                                                                        val snackBar =
+                                                                                            Snackbar.make(
+                                                                                                requireActivity().findViewById(
+                                                                                                    android.R.id.content
+                                                                                                ),
+                                                                                                "Something Went Wrong.",
+                                                                                                Snackbar.LENGTH_LONG
+                                                                                            )
+                                                                                        snackBar.setBackgroundTint(
+                                                                                            resources.getColor(
+                                                                                                R.color.red
+                                                                                            )
+                                                                                        )
+                                                                                        snackBar.setTextColor(
+                                                                                            resources.getColor(
+                                                                                                R.color.white
+                                                                                            )
+                                                                                        )
+                                                                                        snackBar.show()
+                                                                                        vibratePhone()
+                                                                                    }
+
+                                                                                }
+
+                                                                                override fun onFailure(
+                                                                                    call: Call<JsonObject>,
+                                                                                    t: Throwable
+                                                                                ) {
                                                                                     mdialog.dismiss()
-                                                                                    Log.e(
-                                                                                        TAG,
-                                                                                        "onResponse: ${response.raw()}"
+                                                                                    val snackBar =
+                                                                                        Snackbar.make(
+                                                                                            requireActivity().findViewById(
+                                                                                                android.R.id.content
+                                                                                            ),
+                                                                                            "Order Cancellation Failed.",
+                                                                                            Snackbar.LENGTH_LONG
+                                                                                        )
+                                                                                    snackBar.setBackgroundTint(
+                                                                                        resources.getColor(
+                                                                                            R.color.red
+                                                                                        )
                                                                                     )
-                                                                                    Log.e(
-                                                                                        TAG,
-                                                                                        "onResponse: ${
-                                                                                            response.errorBody().toString()
-                                                                                        }"
+                                                                                    snackBar.setTextColor(
+                                                                                        resources.getColor(
+                                                                                            R.color.white
+                                                                                        )
                                                                                     )
-                                                                                    Log.e(
-                                                                                        TAG,
-                                                                                        "onResponse: ${
-                                                                                            response.message().toString()
-                                                                                        }"
-                                                                                    )
-                                                                                    val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Something Went Wrong.", Snackbar.LENGTH_LONG)
-                                                                                    snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                    snackBar.setTextColor(resources.getColor(R.color.white))
                                                                                     snackBar.show()
                                                                                     vibratePhone()
                                                                                 }
 
-                                                                            }
-
-                                                                            override fun onFailure(
-                                                                                call: Call<JsonObject>,
-                                                                                t: Throwable
-                                                                            ) {
-                                                                                mdialog.dismiss()
-                                                                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Order Cancellation Failed.", Snackbar.LENGTH_LONG)
-                                                                                snackBar.setBackgroundTint(resources.getColor(R.color.red))
-                                                                                snackBar.setTextColor(resources.getColor(R.color.white))
-                                                                                snackBar.show()
-                                                                                vibratePhone()
-                                                                            }
-
-                                                                        })
+                                                                            })
 
 
                                                                     }
@@ -2113,23 +3276,1311 @@ class OrderDetailFragment : Fragment() {
                                                             }
                                                         }
 
-                                                    }else{
+                                                    } else {
                                                         mdialog.dismiss()
-                                                        Log.e(TAG, "onResponse: ${response.code().toString()}")
-                                                        Log.e(TAG, "onResponse: ${response.message().toString()}")
-                                                        Log.e(TAG, "onResponse: ${response.raw().toString()}")
-                                                        val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Something Went Wrong.", Snackbar.LENGTH_LONG)
-                                                        snackBar.setBackgroundTint(resources.getColor(R.color.red))
+                                                        Log.e(
+                                                            TAG,
+                                                            "onResponse: ${
+                                                                response.code().toString()
+                                                            }"
+                                                        )
+                                                        Log.e(
+                                                            TAG,
+                                                            "onResponse: ${
+                                                                response.message().toString()
+                                                            }"
+                                                        )
+                                                        Log.e(
+                                                            TAG,
+                                                            "onResponse: ${
+                                                                response.raw().toString()
+                                                            }"
+                                                        )
+                                                        val snackBar = Snackbar.make(
+                                                            requireActivity().findViewById(android.R.id.content),
+                                                            "Something Went Wrong.",
+                                                            Snackbar.LENGTH_LONG
+                                                        )
+                                                        snackBar.setBackgroundTint(
+                                                            resources.getColor(
+                                                                R.color.red
+                                                            )
+                                                        )
                                                         snackBar.setTextColor(resources.getColor(R.color.white))
                                                         snackBar.show()
                                                         vibratePhone()
                                                     }
 
-                                                    override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                                                    override fun onFailure(
+                                                        call: Call<JsonObject>,
+                                                        t: Throwable
+                                                    ) {
                                                         mdialog.dismiss()
-                                                        val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Something Went Wrong.", Snackbar.LENGTH_LONG)
-                                                        snackBar.setBackgroundTint(resources.getColor(R.color.red))
+                                                        val snackBar = Snackbar.make(
+                                                            requireActivity().findViewById(android.R.id.content),
+                                                            "Something Went Wrong.",
+                                                            Snackbar.LENGTH_LONG
+                                                        )
+                                                        snackBar.setBackgroundTint(
+                                                            resources.getColor(
+                                                                R.color.red
+                                                            )
+                                                        )
                                                         snackBar.setTextColor(resources.getColor(R.color.white))
+                                                        snackBar.show()
+                                                        vibratePhone()
+                                                    }
+
+                                                })
+                                            }
+                                        } else {
+
+                                            edd = response2.body()?.getAsJsonObject("tracking_data")
+                                                ?.get("etd").toString().replace("\"", "")
+                                                .replaceAfter(" ", "").trim()
+                                            if ("R" in orderId) {
+                                                binding.cancelBtn.visibility = View.INVISIBLE
+                                                binding.cancelBtn.isClickable = false
+                                                binding.trackBtn.visibility = View.INVISIBLE
+                                                binding.cancelBtn.isClickable = false
+                                                binding.orderStatusText.text = "Returned"
+                                                binding.orderStatusText.setTextColor(
+                                                    resources.getColor(
+                                                        R.color.gray
+                                                    )
+                                                )
+                                                binding.view18.visibility = View.INVISIBLE
+                                                mdialog.dismiss()
+                                            } else if ("C" in orderId) {
+                                                binding.cancelBtn.visibility = View.INVISIBLE
+                                                binding.cancelBtn.isClickable = false
+                                                binding.trackBtn.visibility = View.INVISIBLE
+                                                binding.cancelBtn.isClickable = false
+                                                binding.orderStatusText.text = "Canceled"
+                                                binding.orderStatusText.setTextColor(
+                                                    resources.getColor(
+                                                        R.color.red
+                                                    )
+                                                )
+                                                binding.view18.visibility = View.INVISIBLE
+                                                mdialog.dismiss()
+                                            } else {
+                                                val ordercall =
+                                                    orderServices.getOrderDetail(headerMap, orderId)
+                                                ordercall.enqueue(object : Callback<JsonObject> {
+                                                    override fun onResponse(
+                                                        call: Call<JsonObject>,
+                                                        response: Response<JsonObject>
+                                                    ) = if (response.isSuccessful) {
+
+                                                        val data =
+                                                            response.body()?.getAsJsonObject("data")
+                                                        val status = data?.get("status")
+                                                        orderID = data?.get("id").toString()
+                                                        Log.e(TAG, "onResponse: $orderID")
+                                                        binding.orderStatusText.text =
+                                                            status.toString().replace("\"", "")
+                                                                .lowercase().capitalize()
+                                                        mdialog.dismiss()
+                                                        val current = LocalDateTime.now()
+                                                        val formatter =
+                                                            DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                                                        val formattedDate =
+                                                            current.format(formatter).toString()
+
+                                                        val todayDate =
+                                                            SimpleDateFormat("yyyy-MM-dd").parse(
+                                                                formattedDate
+                                                            )
+                                                        val expiryDate =
+                                                            SimpleDateFormat("yyyy-MM-dd").parse(
+                                                                getCalculatedDate(
+                                                                    edd,
+                                                                    "yyyy-MM-dd",
+                                                                    6
+                                                                )
+                                                            )
+                                                        Log.e(TAG, "onResponse: $todayDate")
+                                                        Log.e(TAG, "onResponse: $expiryDate")
+
+                                                        if (status.toString()
+                                                                .replace("\"", "") == "NEW"
+                                                        ) {
+                                                            binding.cancelBtn.text = "Return Order"
+                                                            if (todayDate.before(expiryDate)) {
+                                                                binding.cancelBtn.setOnClickListener {
+
+                                                                    val dialog =
+                                                                        MaterialAlertDialogBuilder(
+                                                                            requireContext(),
+                                                                            R.style.AppCompatAlertDialogStyle
+                                                                        )
+                                                                    dialog.setTitle("Return Order")
+                                                                    dialog.setMessage("Do you really want to Return the order?")
+                                                                    dialog.background =
+                                                                        context?.resources!!.getDrawable(
+                                                                            R.drawable.black_btn_bg
+                                                                        )
+                                                                    dialog.setNegativeButton("Cancel") { dialog, which ->
+                                                                        dialog.dismiss()
+                                                                    }
+                                                                    dialog.setPositiveButton("Sure") { dialog, which ->
+                                                                        val dialog2 =
+                                                                            MaterialAlertDialogBuilder(
+                                                                                requireContext(),
+                                                                                R.style.AppCompatAlertDialogStyle
+                                                                            )
+                                                                        dialog2.setTitle("Remember")
+                                                                        dialog2.setMessage("As our policy your money will be refund in 5-10 Business Days. Remember that your shipping charges will 'not' be refund.")
+                                                                        dialog2.background =
+                                                                            resources.getDrawable(
+                                                                                R.drawable.black_btn_bg
+                                                                            )
+                                                                        dialog2.setNegativeButton("Cancel") { dialog2, which ->
+                                                                            dialog.dismiss()
+                                                                            dialog2.dismiss()
+
+                                                                        }
+                                                                        dialog2.setPositiveButton("Agree") { dialog2, which ->
+
+                                                                            val bundle = Bundle()
+                                                                            bundle.putString(
+                                                                                "orderID",
+                                                                                orderID
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "transactionID",
+                                                                                transactionId
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "name",
+                                                                                name
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "address",
+                                                                                address
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "city",
+                                                                                city
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "state",
+                                                                                state
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "country",
+                                                                                country
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "pincode",
+                                                                                pincode
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "email",
+                                                                                email
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "phone",
+                                                                                contact
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "amount",
+                                                                                amount
+                                                                            )
+                                                                            bundle.putString(
+                                                                                "shippingCharges",
+                                                                                shippingCharges
+                                                                            )
+                                                                            bundle.putParcelableArrayList(
+                                                                                "products",
+                                                                                products as java.util.ArrayList<CartItem>
+                                                                            )
+                                                                            findNavController().navigate(
+                                                                                R.id.action_orderDetailFragment_to_orderReturnFragment,
+                                                                                bundle
+                                                                            )
+                                                                        }
+                                                                        dialog2.show()
+                                                                    }
+                                                                    dialog.show()
+
+                                                                }
+                                                            } else {
+                                                                binding.cancelBtn.setOnClickListener {
+                                                                    val snackBar = Snackbar.make(
+                                                                        requireActivity().findViewById(
+                                                                            android.R.id.content
+                                                                        ),
+                                                                        "The Order Can be Only Return Within 5 Days after Order.",
+                                                                        3000
+                                                                    )
+                                                                    snackBar.setBackgroundTint(
+                                                                        resources.getColor(
+                                                                            R.color.red
+                                                                        )
+                                                                    )
+                                                                    snackBar.setTextColor(
+                                                                        resources.getColor(
+                                                                            android.R.color.white
+                                                                        )
+                                                                    )
+                                                                    snackBar.show()
+                                                                    vibratePhone()
+                                                                }
+                                                            }
+                                                        } else if (status.toString()
+                                                                .replace("\"", "") == "CANCELED"
+                                                        ) {
+                                                            binding.cancelBtn.visibility =
+                                                                View.INVISIBLE
+                                                            binding.cancelBtn.isClickable = false
+                                                        } else if (status.toString().replace(
+                                                                "\"",
+                                                                ""
+                                                            ) == "CANCELLATION REQUESTED"
+                                                        ) {
+                                                            binding.cancelBtn.visibility =
+                                                                View.INVISIBLE
+                                                            binding.cancelBtn.isClickable = false
+                                                        } else if (status.toString().replace(
+                                                                "\"",
+                                                                ""
+                                                            ) == "READY TO SHIP"
+                                                        ) {
+                                                            binding.orderStatusText.text = "Packing"
+                                                            binding.trackBtn.setOnClickListener {
+                                                                val snackBar = Snackbar.make(
+                                                                    requireActivity().findViewById(
+                                                                        android.R.id.content
+                                                                    ),
+                                                                    "Please wait the order will be tracked soon.",
+                                                                    3000
+                                                                )
+                                                                snackBar.setBackgroundTint(
+                                                                    resources.getColor(
+                                                                        R.color.red
+                                                                    )
+                                                                )
+                                                                snackBar.setTextColor(
+                                                                    resources.getColor(
+                                                                        android.R.color.white
+                                                                    )
+                                                                )
+                                                                snackBar.show()
+                                                                vibratePhone()
+                                                            }
+
+                                                            binding.cancelBtn.setOnClickListener {
+                                                                val dialog =
+                                                                    MaterialAlertDialogBuilder(
+                                                                        requireContext(),
+                                                                        R.style.AppCompatAlertDialogStyle
+                                                                    )
+                                                                dialog.setTitle("Cancel Order")
+                                                                dialog.setMessage("Do you really want to cancel the order?")
+                                                                dialog.background =
+                                                                    context?.resources!!.getDrawable(
+                                                                        R.drawable.black_btn_bg
+                                                                    )
+                                                                dialog.setNegativeButton("Cancel") { dialog, which ->
+                                                                    dialog.dismiss()
+                                                                }
+                                                                dialog.setPositiveButton("Sure") { dialog, which ->
+                                                                    val dialog2 =
+                                                                        MaterialAlertDialogBuilder(
+                                                                            requireContext(),
+                                                                            R.style.AppCompatAlertDialogStyle
+                                                                        )
+                                                                    dialog2.setTitle("Remember")
+                                                                    dialog2.setMessage("As our policy your money will be refund in 5-10 Business Days. Remember that your shipping charges will 'not' be refund.")
+                                                                    dialog2.background =
+                                                                        resources.getDrawable(
+                                                                            R.drawable.black_btn_bg
+                                                                        )
+                                                                    dialog2.setNegativeButton("Cancel") { dialog2, which ->
+                                                                        dialog.dismiss()
+                                                                        dialog2.dismiss()
+
+                                                                    }
+                                                                    dialog2.setPositiveButton("Agree") { dialog2, which ->
+                                                                        mdialog.show()
+                                                                        val idList: java.util.ArrayList<Int> =
+                                                                            java.util.ArrayList()
+                                                                        idList.add(
+                                                                            orderId.toString()
+                                                                                .toInt()
+                                                                        )
+
+                                                                        val cancelOrder =
+                                                                            CancelOrder(idList)
+
+                                                                        val cancelOrderCall =
+                                                                            orderServices.cancelOrder(
+                                                                                headerMap,
+                                                                                cancelOrder
+                                                                            )
+                                                                        cancelOrderCall.enqueue(
+                                                                            object :
+                                                                                Callback<JsonObject> {
+                                                                                override fun onResponse(
+                                                                                    call: Call<JsonObject>,
+                                                                                    response: Response<JsonObject>
+                                                                                ) {
+                                                                                    if (response.isSuccessful) {
+                                                                                        val retrofitBuilder2 =
+                                                                                            Retrofit.Builder()
+                                                                                                .addConverterFactory(
+                                                                                                    GsonConverterFactory.create()
+                                                                                                )
+                                                                                                .baseUrl(
+                                                                                                    BASE_URL_RZP
+                                                                                                )
+                                                                                                .build()
+
+                                                                                        val orderServices2 =
+                                                                                            retrofitBuilder2.create(
+                                                                                                OrderServices::class.java
+                                                                                            )
+                                                                                        val refundCall =
+                                                                                            orderServices2.refundPayment(
+                                                                                                transactionId,
+                                                                                                (amount.toString()
+                                                                                                    .toInt() - shippingCharges.toString()
+                                                                                                    .toInt()) * 100,
+                                                                                                "Basic cnpwX3Rlc3RfVXljYlBRNmpkTFRKdGQ6OXFkWU5mSWpCbHJZemc1ckNDVFQzUTdo"
+                                                                                            )
+                                                                                        refundCall.enqueue(
+                                                                                            object :
+                                                                                                Callback<JsonObject> {
+                                                                                                override fun onResponse(
+                                                                                                    call: Call<JsonObject>,
+                                                                                                    response2: Response<JsonObject>
+                                                                                                ) {
+                                                                                                    if (response2.isSuccessful) {
+
+                                                                                                        val refundId =
+                                                                                                            response2.body()
+                                                                                                                ?.get(
+                                                                                                                    "id"
+                                                                                                                )
+                                                                                                                .toString()
+
+                                                                                                        mdialog.dismiss()
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.body()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        findNavController().navigate(
+                                                                                                            R.id.action_orderDetailFragment_to_orderFragment
+                                                                                                        )
+                                                                                                        val snackBar =
+                                                                                                            Snackbar.make(
+                                                                                                                requireActivity().findViewById(
+                                                                                                                    android.R.id.content
+                                                                                                                ),
+                                                                                                                "Order Canceled Successfully.",
+                                                                                                                3000
+                                                                                                            )
+                                                                                                        snackBar.setBackgroundTint(
+                                                                                                            resources.getColor(
+                                                                                                                android.R.color.black
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.setTextColor(
+                                                                                                            resources.getColor(
+                                                                                                                android.R.color.white
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.show()
+                                                                                                        vibratePhone()
+
+                                                                                                        FirestoreClass().mFirestore.collection(
+                                                                                                            "Orders"
+                                                                                                        )
+                                                                                                            .document(
+                                                                                                                orderID
+                                                                                                            )
+                                                                                                            .update(
+                                                                                                                "transactionId",
+                                                                                                                refundId
+                                                                                                            )
+
+                                                                                                        FirestoreClass().mFirestore.collection(
+                                                                                                            "Orders"
+                                                                                                        )
+                                                                                                            .document(
+                                                                                                                orderId
+                                                                                                            )
+                                                                                                            .update(
+                                                                                                                "orderId",
+                                                                                                                "C$orderID"
+                                                                                                            )
+
+                                                                                                    } else {
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${response2.raw()}"
+                                                                                                        )
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.errorBody()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.headers()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        mdialog.dismiss()
+
+                                                                                                        mdialog.dismiss()
+                                                                                                        val snackBar =
+                                                                                                            Snackbar.make(
+                                                                                                                requireActivity().findViewById(
+                                                                                                                    android.R.id.content
+                                                                                                                ),
+                                                                                                                "Order Cancellation Failed.",
+                                                                                                                Snackbar.LENGTH_LONG
+                                                                                                            )
+                                                                                                        snackBar.setBackgroundTint(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.red
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.setTextColor(
+                                                                                                            resources.getColor(
+                                                                                                                android.R.color.white
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.show()
+                                                                                                        vibratePhone()
+                                                                                                    }
+                                                                                                }
+
+                                                                                                override fun onFailure(
+                                                                                                    call: Call<JsonObject>,
+                                                                                                    t: Throwable
+                                                                                                ) {
+                                                                                                    mdialog.dismiss()
+                                                                                                    Log.e(
+                                                                                                        TAG,
+                                                                                                        "onFailure: ${t.localizedMessage}"
+                                                                                                    )
+                                                                                                    val snackBar =
+                                                                                                        Snackbar.make(
+                                                                                                            requireActivity().findViewById(
+                                                                                                                android.R.id.content
+                                                                                                            ),
+                                                                                                            "Order Cancellation Failed.",
+                                                                                                            Snackbar.LENGTH_LONG
+                                                                                                        )
+                                                                                                    snackBar.setBackgroundTint(
+                                                                                                        resources.getColor(
+                                                                                                            R.color.red
+                                                                                                        )
+                                                                                                    )
+                                                                                                    snackBar.setTextColor(
+                                                                                                        resources.getColor(
+                                                                                                            android.R.color.white
+                                                                                                        )
+                                                                                                    )
+                                                                                                    snackBar.show()
+                                                                                                    vibratePhone()
+                                                                                                }
+
+                                                                                            })
+
+                                                                                    } else {
+                                                                                        mdialog.dismiss()
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${response.raw()}"
+                                                                                        )
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${
+                                                                                                response.errorBody()
+                                                                                                    .toString()
+                                                                                            }"
+                                                                                        )
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${
+                                                                                                response.message()
+                                                                                                    .toString()
+                                                                                            }"
+                                                                                        )
+                                                                                        val snackBar =
+                                                                                            Snackbar.make(
+                                                                                                requireActivity().findViewById(
+                                                                                                    android.R.id.content
+                                                                                                ),
+                                                                                                "Something Went Wrong.",
+                                                                                                Snackbar.LENGTH_LONG
+                                                                                            )
+                                                                                        snackBar.setBackgroundTint(
+                                                                                            resources.getColor(
+                                                                                                R.color.red
+                                                                                            )
+                                                                                        )
+                                                                                        snackBar.setTextColor(
+                                                                                            resources.getColor(
+                                                                                                android.R.color.white
+                                                                                            )
+                                                                                        )
+                                                                                        snackBar.show()
+                                                                                        vibratePhone()
+                                                                                    }
+
+                                                                                }
+
+                                                                                override fun onFailure(
+                                                                                    call: Call<JsonObject>,
+                                                                                    t: Throwable
+                                                                                ) {
+                                                                                    mdialog.dismiss()
+                                                                                    val snackBar =
+                                                                                        Snackbar.make(
+                                                                                            requireActivity().findViewById(
+                                                                                                android.R.id.content
+                                                                                            ),
+                                                                                            "Order Cancellation Failed.",
+                                                                                            Snackbar.LENGTH_LONG
+                                                                                        )
+                                                                                    snackBar.setBackgroundTint(
+                                                                                        resources.getColor(
+                                                                                            R.color.red
+                                                                                        )
+                                                                                    )
+                                                                                    snackBar.setTextColor(
+                                                                                        resources.getColor(
+                                                                                            android.R.color.white
+                                                                                        )
+                                                                                    )
+                                                                                    snackBar.show()
+                                                                                    vibratePhone()
+                                                                                }
+
+                                                                            })
+
+
+                                                                    }
+                                                                    dialog2.show()
+                                                                }
+                                                                dialog.show()
+
+                                                            }
+                                                        } else if (status.toString()
+                                                                .replace("\"", "") == "INVOICED"
+                                                        ) {
+                                                            binding.orderStatusText.text = "Packing"
+                                                            binding.trackBtn.setOnClickListener {
+                                                                val snackBar = Snackbar.make(
+                                                                    requireActivity().findViewById(
+                                                                        android.R.id.content
+                                                                    ),
+                                                                    "Please wait the order will be tracked soon.",
+                                                                    3000
+                                                                )
+                                                                snackBar.setBackgroundTint(
+                                                                    resources.getColor(
+                                                                        R.color.red
+                                                                    )
+                                                                )
+                                                                snackBar.setTextColor(
+                                                                    resources.getColor(
+                                                                        android.R.color.white
+                                                                    )
+                                                                )
+                                                                snackBar.show()
+                                                                vibratePhone()
+                                                            }
+                                                            binding.cancelBtn.setOnClickListener {
+                                                                val dialog =
+                                                                    MaterialAlertDialogBuilder(
+                                                                        requireContext(),
+                                                                        R.style.AppCompatAlertDialogStyle
+                                                                    )
+                                                                dialog.setTitle("Cancel Order")
+                                                                dialog.setMessage("Do you really want to cancel the order?")
+                                                                dialog.background =
+                                                                    context?.resources!!.getDrawable(
+                                                                       R.drawable.black_btn_bg
+                                                                    )
+                                                                dialog.setNegativeButton("Cancel") { dialog, which ->
+                                                                    dialog.dismiss()
+                                                                }
+                                                                dialog.setPositiveButton("Sure") { dialog, which ->
+                                                                    val dialog2 =
+                                                                        MaterialAlertDialogBuilder(
+                                                                            requireContext(),
+                                                                            R.style.AppCompatAlertDialogStyle
+                                                                        )
+                                                                    dialog2.setTitle("Remember")
+                                                                    dialog2.setMessage("As our policy your money will be refund in 5-10 Business Days. Remember that your shipping charges will 'not' be refund.")
+                                                                    dialog2.background =
+                                                                        resources.getDrawable(
+                                                                           R.drawable.black_btn_bg
+                                                                        )
+                                                                    dialog2.setNegativeButton("Cancel") { dialog2, which ->
+                                                                        dialog.dismiss()
+                                                                        dialog2.dismiss()
+
+                                                                    }
+                                                                    dialog2.setPositiveButton("Agree") { dialog2, which ->
+                                                                        mdialog.show()
+                                                                        val idList: java.util.ArrayList<Int> =
+                                                                            java.util.ArrayList()
+                                                                        idList.add(
+                                                                            orderId.toString()
+                                                                                .toInt()
+                                                                        )
+
+                                                                        val cancelOrder =
+                                                                            CancelOrder(idList)
+
+                                                                        val cancelOrderCall =
+                                                                            orderServices.cancelOrder(
+                                                                                headerMap,
+                                                                                cancelOrder
+                                                                            )
+                                                                        cancelOrderCall.enqueue(
+                                                                            object :
+                                                                                Callback<JsonObject> {
+                                                                                override fun onResponse(
+                                                                                    call: Call<JsonObject>,
+                                                                                    response: Response<JsonObject>
+                                                                                ) {
+                                                                                    if (response.isSuccessful) {
+                                                                                        val retrofitBuilder2 =
+                                                                                            Retrofit.Builder()
+                                                                                                .addConverterFactory(
+                                                                                                    GsonConverterFactory.create()
+                                                                                                )
+                                                                                                .baseUrl(
+                                                                                                    BASE_URL_RZP
+                                                                                                )
+                                                                                                .build()
+
+                                                                                        val orderServices2 =
+                                                                                            retrofitBuilder2.create(
+                                                                                                OrderServices::class.java
+                                                                                            )
+                                                                                        val refundCall =
+                                                                                            orderServices2.refundPayment(
+                                                                                                transactionId,
+                                                                                                (amount.toString()
+                                                                                                    .toInt() - shippingCharges.toString()
+                                                                                                    .toInt()) * 100,
+                                                                                                "Basic cnpwX3Rlc3RfVXljYlBRNmpkTFRKdGQ6OXFkWU5mSWpCbHJZemc1ckNDVFQzUTdo"
+                                                                                            )
+                                                                                        refundCall.enqueue(
+                                                                                            object :
+                                                                                                Callback<JsonObject> {
+                                                                                                override fun onResponse(
+                                                                                                    call: Call<JsonObject>,
+                                                                                                    response2: Response<JsonObject>
+                                                                                                ) {
+                                                                                                    if (response2.isSuccessful) {
+
+                                                                                                        val refundId =
+                                                                                                            response2.body()
+                                                                                                                ?.get(
+                                                                                                                    "id"
+                                                                                                                )
+                                                                                                                .toString()
+
+                                                                                                        mdialog.dismiss()
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.body()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        findNavController().navigate(
+                                                                                                            R.id.action_orderDetailFragment_to_orderFragment
+                                                                                                        )
+                                                                                                        val snackBar =
+                                                                                                            Snackbar.make(
+                                                                                                                requireActivity().findViewById(
+                                                                                                                    android.R.id.content
+                                                                                                                ),
+                                                                                                                "Order Canceled Successfully.",
+                                                                                                                3000
+                                                                                                            )
+                                                                                                        snackBar.setBackgroundTint(
+                                                                                                            resources.getColor(
+                                                                                                                android.R.color.black
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.setTextColor(
+                                                                                                            resources.getColor(
+                                                                                                                android.R.color.white
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.show()
+                                                                                                        vibratePhone()
+
+                                                                                                        FirestoreClass().mFirestore.collection(
+                                                                                                            "Orders"
+                                                                                                        )
+                                                                                                            .document(
+                                                                                                                orderID
+                                                                                                            )
+                                                                                                            .update(
+                                                                                                                "transactionId",
+                                                                                                                refundId
+                                                                                                            )
+
+                                                                                                        FirestoreClass().mFirestore.collection(
+                                                                                                            "Orders"
+                                                                                                        )
+                                                                                                            .document(
+                                                                                                                orderId
+                                                                                                            )
+                                                                                                            .update(
+                                                                                                                "orderId",
+                                                                                                                "C$orderID"
+                                                                                                            )
+
+                                                                                                    } else {
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${response2.raw()}"
+                                                                                                        )
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.errorBody()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.headers()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        mdialog.dismiss()
+
+                                                                                                        mdialog.dismiss()
+                                                                                                        val snackBar =
+                                                                                                            Snackbar.make(
+                                                                                                                requireActivity().findViewById(
+                                                                                                                    android.R.id.content
+                                                                                                                ),
+                                                                                                                "Order Cancellation Failed.",
+                                                                                                                Snackbar.LENGTH_LONG
+                                                                                                            )
+                                                                                                        snackBar.setBackgroundTint(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.red
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.setTextColor(
+                                                                                                            resources.getColor(
+                                                                                                                android.R.color.white
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.show()
+                                                                                                        vibratePhone()
+                                                                                                    }
+                                                                                                }
+
+                                                                                                override fun onFailure(
+                                                                                                    call: Call<JsonObject>,
+                                                                                                    t: Throwable
+                                                                                                ) {
+                                                                                                    mdialog.dismiss()
+                                                                                                    Log.e(
+                                                                                                        TAG,
+                                                                                                        "onFailure: ${t.localizedMessage}"
+                                                                                                    )
+                                                                                                    val snackBar =
+                                                                                                        Snackbar.make(
+                                                                                                            requireActivity().findViewById(
+                                                                                                                android.R.id.content
+                                                                                                            ),
+                                                                                                            "Order Cancellation Failed.",
+                                                                                                            Snackbar.LENGTH_LONG
+                                                                                                        )
+                                                                                                    snackBar.setBackgroundTint(
+                                                                                                        resources.getColor(
+                                                                                                            R.color.red
+                                                                                                        )
+                                                                                                    )
+                                                                                                    snackBar.setTextColor(
+                                                                                                        resources.getColor(
+                                                                                                            android.R.color.white
+                                                                                                        )
+                                                                                                    )
+                                                                                                    snackBar.show()
+                                                                                                    vibratePhone()
+                                                                                                }
+
+                                                                                            })
+
+                                                                                    } else {
+                                                                                        mdialog.dismiss()
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${response.raw()}"
+                                                                                        )
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${
+                                                                                                response.errorBody()
+                                                                                                    .toString()
+                                                                                            }"
+                                                                                        )
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${
+                                                                                                response.message()
+                                                                                                    .toString()
+                                                                                            }"
+                                                                                        )
+                                                                                        val snackBar =
+                                                                                            Snackbar.make(
+                                                                                                requireActivity().findViewById(
+                                                                                                    android.R.id.content
+                                                                                                ),
+                                                                                                "Something Went Wrong.",
+                                                                                                Snackbar.LENGTH_LONG
+                                                                                            )
+                                                                                        snackBar.setBackgroundTint(
+                                                                                            resources.getColor(
+                                                                                                R.color.red
+                                                                                            )
+                                                                                        )
+                                                                                        snackBar.setTextColor(
+                                                                                            resources.getColor(
+                                                                                                android.R.color.white
+                                                                                            )
+                                                                                        )
+                                                                                        snackBar.show()
+                                                                                        vibratePhone()
+                                                                                    }
+
+                                                                                }
+
+                                                                                override fun onFailure(
+                                                                                    call: Call<JsonObject>,
+                                                                                    t: Throwable
+                                                                                ) {
+                                                                                    mdialog.dismiss()
+                                                                                    val snackBar =
+                                                                                        Snackbar.make(
+                                                                                            requireActivity().findViewById(
+                                                                                                android.R.id.content
+                                                                                            ),
+                                                                                            "Order Cancellation Failed.",
+                                                                                            Snackbar.LENGTH_LONG
+                                                                                        )
+                                                                                    snackBar.setBackgroundTint(
+                                                                                        resources.getColor(
+                                                                                            R.color.red
+                                                                                        )
+                                                                                    )
+                                                                                    snackBar.setTextColor(
+                                                                                        resources.getColor(
+                                                                                            android.R.color.white
+                                                                                        )
+                                                                                    )
+                                                                                    snackBar.show()
+                                                                                    vibratePhone()
+                                                                                }
+
+                                                                            })
+
+
+                                                                    }
+                                                                    dialog2.show()
+                                                                }
+                                                                dialog.show()
+
+                                                            }
+                                                        } else {
+                                                            binding.cancelBtn.text = "Cancel Order"
+                                                            binding.cancelBtn.setOnClickListener {
+                                                                val dialog =
+                                                                    MaterialAlertDialogBuilder(
+                                                                        requireContext(),
+                                                                        R.style.AppCompatAlertDialogStyle
+                                                                    )
+                                                                dialog.setTitle("Cancel Order")
+                                                                dialog.setMessage("Do you really want to cancel the order?")
+                                                                dialog.background =
+                                                                    context?.resources!!.getDrawable(
+                                                                        R.drawable.black_btn_bg
+                                                                    )
+                                                                dialog.setNegativeButton("Cancel") { dialog, which ->
+                                                                    dialog.dismiss()
+                                                                }
+                                                                dialog.setPositiveButton("Sure") { dialog, which ->
+                                                                    val dialog2 =
+                                                                        MaterialAlertDialogBuilder(
+                                                                            requireContext(),
+                                                                            R.style.AppCompatAlertDialogStyle
+                                                                        )
+                                                                    dialog2.setTitle("Remember")
+                                                                    dialog2.setMessage("As our policy your money will be refund in 5-10 Business Days. Remember that your shipping charges will 'not' be refund.")
+                                                                    dialog2.background =
+                                                                        resources.getDrawable(
+                                                                            R.drawable.black_btn_bg
+                                                                        )
+                                                                    dialog2.setNegativeButton("Cancel") { dialog2, which ->
+                                                                        dialog.dismiss()
+                                                                        dialog2.dismiss()
+
+                                                                    }
+                                                                    dialog2.setPositiveButton("Agree") { dialog2, which ->
+                                                                        mdialog.show()
+                                                                        val idList: java.util.ArrayList<Int> =
+                                                                            java.util.ArrayList()
+                                                                        idList.add(
+                                                                            orderId.toString()
+                                                                                .toInt()
+                                                                        )
+
+                                                                        val cancelOrder =
+                                                                            CancelOrder(idList)
+
+                                                                        val cancelOrderCall =
+                                                                            orderServices.cancelOrder(
+                                                                                headerMap,
+                                                                                cancelOrder
+                                                                            )
+                                                                        cancelOrderCall.enqueue(
+                                                                            object :
+                                                                                Callback<JsonObject> {
+                                                                                override fun onResponse(
+                                                                                    call: Call<JsonObject>,
+                                                                                    response: Response<JsonObject>
+                                                                                ) {
+                                                                                    if (response.isSuccessful) {
+                                                                                        val retrofitBuilder2 =
+                                                                                            Retrofit.Builder()
+                                                                                                .addConverterFactory(
+                                                                                                    GsonConverterFactory.create()
+                                                                                                )
+                                                                                                .baseUrl(
+                                                                                                    BASE_URL_RZP
+                                                                                                )
+                                                                                                .build()
+
+                                                                                        val orderServices2 =
+                                                                                            retrofitBuilder2.create(
+                                                                                                OrderServices::class.java
+                                                                                            )
+                                                                                        val refundCall =
+                                                                                            orderServices2.refundPayment(
+                                                                                                transactionId,
+                                                                                                (amount.toString()
+                                                                                                    .toInt() - shippingCharges.toString()
+                                                                                                    .toInt()) * 100,
+                                                                                                "Basic cnpwX3Rlc3RfVXljYlBRNmpkTFRKdGQ6OXFkWU5mSWpCbHJZemc1ckNDVFQzUTdo"
+                                                                                            )
+                                                                                        refundCall.enqueue(
+                                                                                            object :
+                                                                                                Callback<JsonObject> {
+                                                                                                override fun onResponse(
+                                                                                                    call: Call<JsonObject>,
+                                                                                                    response2: Response<JsonObject>
+                                                                                                ) {
+                                                                                                    if (response2.isSuccessful) {
+
+                                                                                                        val refundId =
+                                                                                                            response2.body()
+                                                                                                                ?.get(
+                                                                                                                    "id"
+                                                                                                                )
+                                                                                                                .toString()
+
+                                                                                                        mdialog.dismiss()
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.body()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        findNavController().navigate(
+                                                                                                            R.id.action_orderDetailFragment_to_orderFragment
+                                                                                                        )
+                                                                                                        val snackBar =
+                                                                                                            Snackbar.make(
+                                                                                                                requireActivity().findViewById(
+                                                                                                                    android.R.id.content
+                                                                                                                ),
+                                                                                                                "Order Canceled Successfully.",
+                                                                                                                3000
+                                                                                                            )
+                                                                                                        snackBar.setBackgroundTint(
+                                                                                                            resources.getColor(
+                                                                                                                android.R.color.black
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.setTextColor(
+                                                                                                            resources.getColor(
+                                                                                                                android.R.color.white
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.show()
+                                                                                                        vibratePhone()
+
+                                                                                                        FirestoreClass().mFirestore.collection(
+                                                                                                            "Orders"
+                                                                                                        )
+                                                                                                            .document(
+                                                                                                                orderID
+                                                                                                            )
+                                                                                                            .update(
+                                                                                                                "transactionId",
+                                                                                                                refundId
+                                                                                                            )
+
+                                                                                                        FirestoreClass().mFirestore.collection(
+                                                                                                            "Orders"
+                                                                                                        )
+                                                                                                            .document(
+                                                                                                                orderId
+                                                                                                            )
+                                                                                                            .update(
+                                                                                                                "orderId",
+                                                                                                                "C$orderID"
+                                                                                                            )
+
+                                                                                                    } else {
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${response2.raw()}"
+                                                                                                        )
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.errorBody()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        Log.e(
+                                                                                                            TAG,
+                                                                                                            "onResponse: ${
+                                                                                                                response2.headers()
+                                                                                                                    .toString()
+                                                                                                            }"
+                                                                                                        )
+                                                                                                        mdialog.dismiss()
+
+                                                                                                        mdialog.dismiss()
+                                                                                                        val snackBar =
+                                                                                                            Snackbar.make(
+                                                                                                                requireActivity().findViewById(
+                                                                                                                    android.R.id.content
+                                                                                                                ),
+                                                                                                                "Order Cancellation Failed.",
+                                                                                                                Snackbar.LENGTH_LONG
+                                                                                                            )
+                                                                                                        snackBar.setBackgroundTint(
+                                                                                                            resources.getColor(
+                                                                                                                R.color.red
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.setTextColor(
+                                                                                                            resources.getColor(
+                                                                                                                android.R.color.white
+                                                                                                            )
+                                                                                                        )
+                                                                                                        snackBar.show()
+                                                                                                        vibratePhone()
+                                                                                                    }
+                                                                                                }
+
+                                                                                                override fun onFailure(
+                                                                                                    call: Call<JsonObject>,
+                                                                                                    t: Throwable
+                                                                                                ) {
+                                                                                                    mdialog.dismiss()
+                                                                                                    Log.e(
+                                                                                                        TAG,
+                                                                                                        "onFailure: ${t.localizedMessage}"
+                                                                                                    )
+                                                                                                    val snackBar =
+                                                                                                        Snackbar.make(
+                                                                                                            requireActivity().findViewById(
+                                                                                                                android.R.id.content
+                                                                                                            ),
+                                                                                                            "Order Cancellation Failed.",
+                                                                                                            Snackbar.LENGTH_LONG
+                                                                                                        )
+                                                                                                    snackBar.setBackgroundTint(
+                                                                                                        resources.getColor(
+                                                                                                            R.color.red
+                                                                                                        )
+                                                                                                    )
+                                                                                                    snackBar.setTextColor(
+                                                                                                        resources.getColor(
+                                                                                                            android.R.color.white
+                                                                                                        )
+                                                                                                    )
+                                                                                                    snackBar.show()
+                                                                                                    vibratePhone()
+                                                                                                }
+
+                                                                                            })
+
+                                                                                    } else {
+                                                                                        mdialog.dismiss()
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${response.raw()}"
+                                                                                        )
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${
+                                                                                                response.errorBody()
+                                                                                                    .toString()
+                                                                                            }"
+                                                                                        )
+                                                                                        Log.e(
+                                                                                            TAG,
+                                                                                            "onResponse: ${
+                                                                                                response.message()
+                                                                                                    .toString()
+                                                                                            }"
+                                                                                        )
+                                                                                        val snackBar =
+                                                                                            Snackbar.make(
+                                                                                                requireActivity().findViewById(
+                                                                                                    android.R.id.content
+                                                                                                ),
+                                                                                                "Something Went Wrong.",
+                                                                                                Snackbar.LENGTH_LONG
+                                                                                            )
+                                                                                        snackBar.setBackgroundTint(
+                                                                                            resources.getColor(
+                                                                                                R.color.red
+                                                                                            )
+                                                                                        )
+                                                                                        snackBar.setTextColor(
+                                                                                            resources.getColor(
+                                                                                                android.R.color.white
+                                                                                            )
+                                                                                        )
+                                                                                        snackBar.show()
+                                                                                        vibratePhone()
+                                                                                    }
+
+                                                                                }
+
+                                                                                override fun onFailure(
+                                                                                    call: Call<JsonObject>,
+                                                                                    t: Throwable
+                                                                                ) {
+                                                                                    mdialog.dismiss()
+                                                                                    val snackBar =
+                                                                                        Snackbar.make(
+                                                                                            requireActivity().findViewById(
+                                                                                                android.R.id.content
+                                                                                            ),
+                                                                                            "Order Cancellation Failed.",
+                                                                                            Snackbar.LENGTH_LONG
+                                                                                        )
+                                                                                    snackBar.setBackgroundTint(
+                                                                                        resources.getColor(
+                                                                                            R.color.red
+                                                                                        )
+                                                                                    )
+                                                                                    snackBar.setTextColor(
+                                                                                        resources.getColor(
+                                                                                            android.R.color.white
+                                                                                        )
+                                                                                    )
+                                                                                    snackBar.show()
+                                                                                    vibratePhone()
+                                                                                }
+
+                                                                            })
+
+
+                                                                    }
+                                                                    dialog2.show()
+                                                                }
+                                                                dialog.show()
+
+                                                            }
+                                                        }
+
+                                                    } else {
+                                                        mdialog.dismiss()
+                                                        Log.e(
+                                                            TAG,
+                                                            "onResponse: ${
+                                                                response.code().toString()
+                                                            }"
+                                                        )
+                                                        Log.e(
+                                                            TAG,
+                                                            "onResponse: ${
+                                                                response.message().toString()
+                                                            }"
+                                                        )
+                                                        Log.e(
+                                                            TAG,
+                                                            "onResponse: ${
+                                                                response.raw().toString()
+                                                            }"
+                                                        )
+                                                        val snackBar = Snackbar.make(
+                                                            requireActivity().findViewById(android.R.id.content),
+                                                            "Something Went Wrong.",
+                                                            Snackbar.LENGTH_LONG
+                                                        )
+                                                        snackBar.setBackgroundTint(
+                                                            resources.getColor(
+                                                                R.color.red
+                                                            )
+                                                        )
+                                                        snackBar.setTextColor(
+                                                            resources.getColor(
+                                                                android.R.color.white
+                                                            )
+                                                        )
+                                                        snackBar.show()
+                                                        vibratePhone()
+                                                        
+                                                    }
+
+                                                    override fun onFailure(
+                                                        call: Call<JsonObject>,
+                                                        t: Throwable
+                                                    ) {
+                                                        mdialog.dismiss()
+                                                        val snackBar = Snackbar.make(
+                                                            requireActivity().findViewById(android.R.id.content),
+                                                            "Something Went Wrong.",
+                                                            Snackbar.LENGTH_LONG
+                                                        )
+                                                        snackBar.setBackgroundTint(
+                                                            resources.getColor(
+                                                                R.color.red
+                                                            )
+                                                        )
+                                                        snackBar.setTextColor(
+                                                            resources.getColor(
+                                                                android.R.color.white
+                                                            )
+                                                        )
                                                         snackBar.show()
                                                         vibratePhone()
                                                     }
@@ -2137,9 +4588,12 @@ class OrderDetailFragment : Fragment() {
                                                 })
                                             }
                                         }
+                                    
                                     }else{
                                         Log.e(TAG, "onResponse************: ${response2.raw()}", )
                                     }
+                                    
+                                    
                                 }
 
                                 override fun onFailure(call: Call<JsonObject>, t: Throwable) {

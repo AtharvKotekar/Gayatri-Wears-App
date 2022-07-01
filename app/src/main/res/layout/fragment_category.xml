@@ -10,7 +10,7 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black"
+        android:background="@color/black_card"
         android:elevation="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +43,7 @@
                 android:layout_marginBottom="16dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Categories"
-                android:textColor="@color/offWhite"
+                android:textColor="@color/drakwhite"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -73,11 +73,10 @@
                 style="@style/TextAppearance.Material3.BodyLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="24dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Categories"
-                android:textColor="@color/gray"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -88,7 +87,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="24dp"
                 android:src="@drawable/salwar_kameez_bg"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -148,7 +147,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginBottom="24dp"
                 android:fontFamily="@font/roboto_medium"
-                android:text="Legins"
+                android:text="Leggings"
                 android:textColor="#FBFBFB"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@+id/legins"
@@ -205,9 +204,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
-                android:layout_marginBottom="100dp"
                 android:src="@drawable/component_60__2"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/cigar_dress"
                 app:layout_constraintStart_toStartOf="@+id/cigar_dress"
                 app:layout_constraintTop_toBottomOf="@+id/cigar_dress" />
@@ -224,6 +221,31 @@
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@+id/dress_material"
                 app:layout_constraintStart_toStartOf="@+id/dress_material" />
+
+            <ImageView
+                android:id="@+id/one_piece"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="32dp"
+                android:src="@drawable/one_peice_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/dress_material"
+                app:layout_constraintStart_toStartOf="@+id/dress_material"
+                app:layout_constraintTop_toBottomOf="@+id/dress_material" />
+
+            <TextView
+                android:id="@+id/textView52"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginBottom="24dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="One Piece"
+                android:textColor="#FF2A4A"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/one_piece"
+                app:layout_constraintStart_toStartOf="@+id/one_piece" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -74,7 +74,7 @@ interface OrderServices {
     @GET("/v1/external/courier/track/awb/{awb_code}")
     fun getTrackingData(
         @HeaderMap headerMap: Map<String, String>,
-        @Path("awb_code") awbcode: Long
+        @Path("awb_code") awbcode: String
     ):Call<JsonObject>
 
 

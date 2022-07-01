@@ -12,10 +12,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.gayatriladieswears.app.Activities.HomeActivity
+import com.gayatriladieswears.app.Fragments.HomeFragment
 import com.gayatriladieswears.app.Model.Info
 import com.gayatriladieswears.app.R
 
-open class TopCategoriesAdaptor(private val context: Context,private var list: ArrayList<Info>) : RecyclerView.Adapter<TopCategoriesAdaptor.myViewHolder>() {
+open class TopCategoriesAdaptor(private val fragment:HomeFragment,private val context: Context,private var list: ArrayList<Info>) : RecyclerView.Adapter<TopCategoriesAdaptor.myViewHolder>() {
 
 
 
@@ -47,6 +48,7 @@ open class TopCategoriesAdaptor(private val context: Context,private var list: A
 
 
         }
+
 
     }
 

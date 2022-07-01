@@ -32,6 +32,13 @@ class OrderAddressFragment : Fragment() {
 
         fromProfile = arguments?.getBoolean("fromProfile") == true
 
+        if(fromProfile){
+            binding.productNameTextTop.text = "Address"
+            binding.bagBtn.visibility = View.GONE
+            binding.textView28.visibility = View.GONE
+            binding.textView36.visibility = View.GONE
+        }
+
 
 
 

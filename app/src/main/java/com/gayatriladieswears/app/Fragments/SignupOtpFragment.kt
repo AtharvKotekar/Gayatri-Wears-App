@@ -97,9 +97,14 @@ class SignupOtpFragment : Fragment() {
                         lastName.trim{it <= ' '},
                     )
 
-                    FirestoreClass().register(this,user,binding.progressBarLinear)
+                    val bundle = Bundle()
+                    bundle.putParcelable("user",user)
+
+                    findNavController().navigate(R.id.action_signupOtpFragment_to_termsAndContionsFragment,bundle)
                     binding.imageView4.visibility = View.VISIBLE
                     binding.progressBarLinear.visibility = View.GONE
+
+
 
 
                 } else {

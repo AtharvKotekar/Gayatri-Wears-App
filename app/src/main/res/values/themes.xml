@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.GayatriLadiesWears" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
@@ -28,20 +28,20 @@
     </style>
 
     <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:textColor">@color/offWhite</item>
-        <item name="android:colorAccent">@color/offWhite</item>
-        <item name="android:textColorPrimary">@color/offWhite</item>
+        <item name="android:textColor">@color/drakwhite</item>
+        <item name="android:colorAccent">@color/drakwhite</item>
+        <item name="android:textColorPrimary">@color/drakwhite</item>
         <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
         <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
         <item name="fontFamily">@font/roboto_medium</item>
     </style>
 
     <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-        <item name="android:textColor">@color/offWhite</item>
+        <item name="android:textColor">@color/drakwhite</item>
     </style>
 
     <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-        <item name="android:textColor">@color/offWhite</item>
+        <item name="android:textColor">@color/drakwhite</item>
     </style>
 
     <style name="DialogAnimation">

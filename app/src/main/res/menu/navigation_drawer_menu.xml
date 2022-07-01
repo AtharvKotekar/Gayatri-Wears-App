@@ -32,11 +32,6 @@
                     android:icon="@drawable/ic_baseline_local_phone_24"
                     android:title="Contact"/>
 
-                <item
-                    android:id="@+id/report"
-                    android:icon="@drawable/ic_baseline_report_problem_24"
-                    android:title="Report"/>
-
             </menu>
 
         </item>

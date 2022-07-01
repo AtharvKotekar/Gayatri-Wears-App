@@ -9,10 +9,14 @@ import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
@@ -55,6 +59,9 @@ class ProductDetailFragment : Fragment() {
     var size:ArrayList<String> = ArrayList()
 
 
+    lateinit var dialog:Dialog
+
+
     private lateinit var binding: FragmentProductDetailBinding
     private lateinit var auth: FirebaseAuth
 
@@ -62,6 +69,13 @@ class ProductDetailFragment : Fragment() {
     @SuppressLint("NewApi", "ResourceAsColor")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentProductDetailBinding.inflate(inflater,container,false)
+
+        dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.laoding_dialog)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.setCancelable(false)
+        dialog.show()
+
         id = arguments?.getString("id").toString()
         checkSizes()
 
@@ -123,6 +137,13 @@ class ProductDetailFragment : Fragment() {
         binding.productPatternText.text = pattern
 
 
+        binding.imageView8.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("image",image)
+            findNavController().navigate(R.id.action_productDetailFragment_to_fullScreenFragment,bundle)
+        }
+
+
 
 
 
@@ -161,7 +182,6 @@ class ProductDetailFragment : Fragment() {
 
         return binding.root
     }
-
     fun getCategorizedProduct(iteamList: ArrayList<Product>){
         binding.nestedSrollView.smoothScrollBy(0,0)
         val adaptor = TraditonalAdaptor(requireContext(),iteamList)
@@ -197,19 +217,6 @@ class ProductDetailFragment : Fragment() {
     }
 
     fun checkSizes(){
-        FirestoreClass().mFirestore.collection("Products")
-            .whereEqualTo("id",id)
-            .whereArrayContains("size","XS")
-            .get()
-            .addOnSuccessListener {
-                if(it.documents.size > 0){
-                    binding.productChipXs.isEnabled = true
-                }else{
-                    binding.productChipXs.isEnabled = false
-                    binding.productChipXs.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(this.requireContext(), R.color.gray2))
-                    binding.productChipXs.setTextColor(resources.getColor(R.color.black))
-                }
-            }
 
         FirestoreClass().mFirestore.collection("Products")
             .whereEqualTo("id",id)
@@ -221,7 +228,7 @@ class ProductDetailFragment : Fragment() {
                 }else{
                     binding.productChipS.isEnabled = false
                     binding.productChipS.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(this.requireContext(), R.color.gray2))
-                    binding.productChipS.setTextColor(resources.getColor(R.color.black))
+                    binding.productChipS.setTextColor(resources.getColor(R.color.gray))
                 }
             }
 
@@ -235,7 +242,7 @@ class ProductDetailFragment : Fragment() {
                 }else{
                     binding.productChipM.isEnabled = false
                     binding.productChipM.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(this.requireContext(), R.color.gray2))
-                    binding.productChipM.setTextColor(resources.getColor(R.color.black))
+                    binding.productChipM.setTextColor(resources.getColor(R.color.gray))
                 }
             }
 
@@ -249,7 +256,7 @@ class ProductDetailFragment : Fragment() {
                 }else{
                     binding.productChipL.isEnabled = false
                     binding.productChipL.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(this.requireContext(), R.color.gray2))
-                    binding.productChipL.setTextColor(resources.getColor(R.color.black))
+                    binding.productChipL.setTextColor(resources.getColor(R.color.gray))
                 }
             }
 
@@ -263,7 +270,7 @@ class ProductDetailFragment : Fragment() {
                 }else{
                     binding.productChipXl.isEnabled = false
                     binding.productChipXl.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(this.requireContext(), R.color.gray2))
-                    binding.productChipXl.setTextColor(resources.getColor(R.color.black))
+                    binding.productChipXl.setTextColor(resources.getColor(R.color.gray))
                 }
             }
 
@@ -274,14 +281,67 @@ class ProductDetailFragment : Fragment() {
             .addOnSuccessListener {
                 if(it.documents.size > 0){
                     binding.productChipXxl.isEnabled = true
-
+                    dialog.dismiss()
                 }else{
                     binding.productChipXxl.isEnabled = false
                     binding.productChipXxl.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(this.requireContext(), R.color.gray2))
-                    binding.productChipXxl.setTextColor(resources.getColor(R.color.black))
+                    binding.productChipXxl.setTextColor(resources.getColor(R.color.gray))
+                    dialog.dismiss()
+                }
+            }
+
+        FirestoreClass().mFirestore.collection("Products")
+            .whereEqualTo("id",id)
+            .whereArrayContains("size","XXXL")
+            .get()
+            .addOnSuccessListener {
+                if(it.documents.size > 0){
+                    binding.productChipXxxl.isEnabled = true
+
+
+                }else{
+                    binding.productChipXxxl.isEnabled = false
+                    binding.productChipXxxl.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(this.requireContext(), R.color.gray2))
+                    binding.productChipXxxl.setTextColor(resources.getColor(R.color.gray))
 
                 }
             }
+
+
+        FirestoreClass().mFirestore.collection("Products")
+            .whereEqualTo("id",id)
+            .whereArrayContains("size","4XL")
+            .get()
+            .addOnSuccessListener {
+                if(it.documents.size > 0){
+                    binding.productChip4xl.isEnabled = true
+
+                }else{
+                    binding.productChip4xl.isEnabled = false
+                    binding.productChip4xl.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(this.requireContext(), R.color.gray2))
+                    binding.productChip4xl.setTextColor(resources.getColor(R.color.gray))
+
+                }
+            }
+
+        FirestoreClass().mFirestore.collection("Products")
+            .whereEqualTo("id",id)
+            .whereArrayContains("size","5XL")
+            .get()
+            .addOnSuccessListener {
+                if(it.documents.size > 0){
+                    binding.productChip5xl.isEnabled = true
+
+                }else{
+                    binding.productChip5xl.isEnabled = false
+                    binding.productChip5xl.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(this.requireContext(), R.color.gray2))
+                    binding.productChip5xl.setTextColor(resources.getColor(R.color.gray))
+
+
+                }
+            }
+
+
 
 
     }

@@ -8,15 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.gayatriladieswears.app.Adaptors.OrderAdaptor
 import com.gayatriladieswears.app.FirestoreClass
 import com.gayatriladieswears.app.Model.Order
 import com.gayatriladieswears.app.R
 import com.gayatriladieswears.app.databinding.FragmentOrderBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 
 
 class OrderFragment : Fragment() {
     lateinit var dialog:Dialog
+    lateinit var adaptor:RecyclerView.Adapter<OrderAdaptor.myViewHolder>
     private lateinit var binding:FragmentOrderBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +35,10 @@ class OrderFragment : Fragment() {
         dialog.setCancelable(false)
         dialog.show()
 
-        FirestoreClass().getOrderedProducts(this)
+        CoroutineScope(IO).launch {
+            FirestoreClass().getOrderedProducts(this@OrderFragment)
+        }
+
 
 
         binding.backBtn.setOnClickListener {
@@ -52,12 +60,14 @@ class OrderFragment : Fragment() {
             binding.emptyCartText.visibility = View.VISIBLE
             binding.shopBtn.visibility = View.VISIBLE
             binding.recyclerViewOrder.visibility = View.GONE
+            dialog.dismiss()
         }else{
+
             binding.emtyCartImage.visibility = View.GONE
             binding.emptyCartText.visibility = View.GONE
             binding.shopBtn.visibility = View.GONE
             binding.recyclerViewOrder.visibility = View.VISIBLE
-            val adaptor = OrderAdaptor(requireContext(),this,iteamList)
+            adaptor = context?.let { OrderAdaptor(it,this,iteamList) }!!
             binding.recyclerViewOrder.adapter = adaptor
             binding.recyclerViewOrder.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
         }

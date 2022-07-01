@@ -39,6 +39,7 @@ class CartAdaptor(private val context: Context,private var fragment: Fragment,pr
         var quality = view.findViewById<TextView>(R.id.cart_quantity)
         var stock = view.findViewById<TextView>(R.id.cart_stock_text)
         var quantity_text = view.findViewById<TextView>(R.id.quantity_text)
+        var productStock = 0
 
     }
 
@@ -61,6 +62,7 @@ class CartAdaptor(private val context: Context,private var fragment: Fragment,pr
                     iteamList.add(iteam!!)
                 }
                 if(iteamList.size == 1){
+                    holder.productStock = iteamList[0].stock
                     if (iteamList[0].stock == 0){
                         holder.stock.visibility = View.VISIBLE
                         holder.stock.text = "Out of Stock"
@@ -71,7 +73,7 @@ class CartAdaptor(private val context: Context,private var fragment: Fragment,pr
                             }
                         }
                         
-                    }else if(iteamList[0].stock < 5){
+                    }else if(iteamList[0].stock <= 2){
                         holder.stock.visibility = View.VISIBLE
                         holder.stock.text = "Limited Stock"
                     }else{
@@ -104,17 +106,21 @@ class CartAdaptor(private val context: Context,private var fragment: Fragment,pr
 
                 holder.quantity_text.visibility = View.GONE
 
-                holder.image.setOnClickListener {
-                    (fragment as CartFragment).dialog.show()
-                    FirestoreClass().getProductById(fragment,model.productId,holder)
-                }
-
                 var quantity:Int = model.cartQuantity.toInt()
                 holder.add.setOnClickListener {
-                    quantity++
-                    FirestoreClass().updateCart(fragment,quantity.toString(),model.userId,model.productId)
-                    FirestoreClass().getCartProducts(fragment,model.userId)
-                    (fragment as CartFragment).dialog.show()
+                    if(quantity < holder.productStock){
+                        quantity++
+                        FirestoreClass().updateCart(fragment,quantity.toString(),model.userId,model.productId)
+                        FirestoreClass().getCartProducts(fragment,model.userId)
+                        (fragment as CartFragment).dialog.show()
+                    }
+                    else{
+                        val snackBar = Snackbar.make(fragment.requireActivity().findViewById(android.R.id.content), "Opps! Stock is over.", Snackbar.LENGTH_SHORT)
+                        snackBar.setBackgroundTint(fragment.resources.getColor(R.color.red))
+                        snackBar.setTextColor(fragment.resources.getColor(R.color.white))
+                        snackBar.show()
+                        fragment.vibratePhone()
+                    }
                 }
 
                 holder.sub.setOnClickListener {
@@ -157,6 +163,7 @@ class CartAdaptor(private val context: Context,private var fragment: Fragment,pr
                 holder.quality.visibility = View.GONE
                 holder.quantity_text.text = "Quantity  -  ${model.cartQuantity}"
                 holder.quantity_text.visibility = View.VISIBLE
+                holder.stock.visibility = View.GONE
             }
 
             is OrderDetailFragment -> {
@@ -166,6 +173,7 @@ class CartAdaptor(private val context: Context,private var fragment: Fragment,pr
                 holder.quality.visibility = View.GONE
                 holder.quantity_text.text = "Quantity  -  ${model.cartQuantity}"
                 holder.quantity_text.visibility = View.VISIBLE
+                holder.stock.visibility = View.GONE
             }
 
             is OrderReturnFragment -> {
@@ -175,6 +183,7 @@ class CartAdaptor(private val context: Context,private var fragment: Fragment,pr
                 holder.quality.visibility = View.GONE
                 holder.quantity_text.text = "Quantity  -  ${model.cartQuantity}"
                 holder.quantity_text.visibility = View.VISIBLE
+                holder.stock.visibility = View.GONE
             }
         }
 

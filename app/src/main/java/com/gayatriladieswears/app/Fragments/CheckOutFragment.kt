@@ -242,6 +242,7 @@ class CheckOutFragment : Fragment() {
         amount = ((mMrp - (mMrp - mPrice) + mShippingCharges) * 100).toString()
         totalAmount = (mMrp - (mMrp - mPrice) + mShippingCharges)
         binding.checkotBottomPrice.text = (mMrp - (mMrp - mPrice) + mShippingCharges).toString()
+        binding.checkoutTotalPrice.text = (mMrp - (mMrp - mPrice) + mShippingCharges).toString()
         dialog.dismiss()
     }
 
@@ -536,21 +537,6 @@ class CheckOutFragment : Fragment() {
 
         val orderServices = retrofitBuilder.create(OrderServices::class.java)
 
-
-
-
-        val genrator = GenrateAWB(shipmentid, "", "")
-        val genrateAWBCall =
-            orderServices.assignAWB(headerMap, genrator)
-        genrateAWBCall.enqueue(object :
-            Callback<AWBResult> {
-            override fun onResponse(
-                call: Call<AWBResult>,
-                response: Response<AWBResult>
-            ) {
-
-                if (response.isSuccessful) {
-
                     dialog.dismiss()
                     findNavController().navigate(R.id.action_checkOutFragment_to_paymentSuccessFragment)
 
@@ -662,7 +648,7 @@ class CheckOutFragment : Fragment() {
                                             FirestoreClass().mFirestore.collection(
                                                 "Products"
                                             )
-                                                .document(i.name)
+                                                .document(orderID)
                                                 .update(
                                                     "stock",
                                                     stock
@@ -674,81 +660,7 @@ class CheckOutFragment : Fragment() {
                     }
 
 
-                } else {
-                    dialog.dismiss()
 
-                    Log.e(
-                        TAG,
-                        "onResponse AWB : ${response.code()}"
-                    )
-                    Log.e(
-                        TAG,
-                        "onResponse AWB : ${response.message()}"
-                    )
-                    val snackBar = Snackbar.make(
-                        requireActivity().findViewById(
-                            android.R.id.content
-                        ),
-                        "Something Wents Wrong.",
-                        Snackbar.LENGTH_LONG
-                    )
-                    snackBar.setBackgroundTint(
-                        resources.getColor(
-                            R.color.red
-                        )
-                    )
-                    snackBar.setTextColor(
-                        resources.getColor(
-                            R.color.white
-                        )
-                    )
-                    snackBar.show()
-                    vibratePhone()
-                }
-
-
-            }
-
-            override fun onFailure(
-                call: Call<AWBResult>,
-                t: Throwable
-            ) {
-
-                Log.e(
-                    TAG,
-                    "onResponse AWB : ${response.code()}"
-                )
-                Log.e(
-                    TAG,
-                    "onResponse AWB : ${response.message()}"
-                )
-                Log.e(
-                    TAG,
-                    "onResponse AWB : ${t.localizedMessage}"
-                )
-                dialog.dismiss()
-                val snackBar = Snackbar.make(
-                    requireActivity().findViewById(
-                        android.R.id.content
-                    ),
-                    "Something Wents Wrong.E - Failed",
-                    Snackbar.LENGTH_LONG
-                )
-                snackBar.setBackgroundTint(
-                    resources.getColor(
-                        R.color.red
-                    )
-                )
-                snackBar.setTextColor(
-                    resources.getColor(
-                        R.color.white
-                    )
-                )
-                snackBar.show()
-                vibratePhone()
-            }
-
-        })
 
     }
 

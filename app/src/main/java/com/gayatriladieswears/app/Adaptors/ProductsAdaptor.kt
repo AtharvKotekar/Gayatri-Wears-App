@@ -64,7 +64,7 @@ class ProductsAdaptor(private val context:Context, private var list: ArrayList<P
         if(model.stock == 0){
             holder.stock.visibility = View.VISIBLE
             holder.stock.text = "Out of Stock"
-        }else if(model.stock < 5){
+        }else if(model.stock <= 2){
             holder.stock.visibility = View.VISIBLE
             holder.stock.text = "Limited Stock"
         }else{

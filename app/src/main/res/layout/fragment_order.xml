@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg"
     tools:context=".Fragments.OrderFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black"
+        android:background="@color/black_card"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -42,7 +43,7 @@
                 android:layout_marginBottom="16dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="My Orders"
-                android:textColor="@color/offWhite"
+                android:textColor="@color/drakwhite"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -63,7 +64,6 @@
         android:layout_marginTop="24dp"
         android:fontFamily="@font/roboto_medium"
         android:text="Your Orders"
-        android:textColor="@color/gray"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -120,7 +120,7 @@
         android:background="@drawable/black_btn_bg"
         android:text="Shop"
         android:textAllCaps="false"
-        android:textColor="@color/offWhite"
+        android:textColor="@color/drakwhite"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

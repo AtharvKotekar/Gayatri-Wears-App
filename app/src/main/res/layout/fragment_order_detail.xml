@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/offWhite"
     tools:context=".Fragments.OrderDetailFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black"
+        android:background="@color/black_card"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -43,7 +42,7 @@
                 android:layout_marginBottom="16dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Order Details"
-                android:textColor="@color/offWhite"
+                android:textColor="@color/drakwhite"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -77,7 +76,6 @@
                 android:layout_marginTop="32dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Ordered ID - "
-                android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -91,7 +89,6 @@
                 android:layout_marginTop="24dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Transaction ID - "
-                android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/order_id_text" />
@@ -105,7 +102,6 @@
                 android:layout_marginTop="24dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Ordered Date  -  "
-                android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/order_transactionId_text" />
@@ -118,6 +114,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"
                 android:elevation="16dp"
+                app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -211,7 +208,6 @@
                 android:layout_marginTop="24dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Ordered Status  -  "
-                android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/order_date_text" />
@@ -237,7 +233,6 @@
                 android:layout_marginTop="32dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Ordered Items"
-                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -252,7 +247,6 @@
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Total Amount Paid  -  "
-                android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view17" />
@@ -265,7 +259,6 @@
                 android:drawableLeft="@drawable/baseline_currency_rupee_28"
                 android:fontFamily="@font/roboto_medium"
                 android:text="1999"
-                android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView29"
                 app:layout_constraintStart_toEndOf="@id/textView29" />
@@ -294,8 +287,9 @@
                 android:fontFamily="@font/roboto_medium"
                 android:text="Track Order"
                 android:textAllCaps="false"
-                android:textColor="@color/offWhite"
+                android:textColor="@color/drakwhite"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view18"
                 tools:ignore="TouchTargetSizeCheck" />
@@ -312,7 +306,6 @@
                 android:fontFamily="@font/roboto_medium"
                 android:text="Cancel Order"
                 android:textAllCaps="false"
-                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -324,7 +317,7 @@
                 android:layout_width="0dp"
                 android:layout_height="10dp"
                 android:layout_marginTop="24dp"
-                android:background="@color/white"
+                android:background="@color/offWhite"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textview" />
@@ -335,11 +328,10 @@
                 android:layout_width="0dp"
                 android:layout_height="10dp"
                 android:layout_marginTop="24dp"
-                android:background="@color/white"
+                android:background="@color/offWhite"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView5" />
-
 
 
             <View
@@ -347,7 +339,7 @@
                 android:layout_width="0dp"
                 android:layout_height="10dp"
                 android:layout_marginTop="24dp"
-                android:background="@color/white"
+                android:background="@color/offWhite"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recyclerView10" />
@@ -357,7 +349,7 @@
                 android:layout_width="0dp"
                 android:layout_height="10dp"
                 android:layout_marginTop="16dp"
-                android:background="@color/white"
+                android:background="@color/offWhite"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView29" />

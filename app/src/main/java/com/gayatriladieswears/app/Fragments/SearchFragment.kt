@@ -33,7 +33,7 @@ class SearchFrsgment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentSearchBinding.inflate(inflater,container,false)
 
         binding.textField.requestFocus()
@@ -42,7 +42,14 @@ class SearchFrsgment : Fragment() {
         FirestoreClass().getRecentSearches(this)
 
         binding.textField.setStartIconOnClickListener {
-            search(binding.editText.text.toString())
+            if(binding.editText.text.toString() == ""){
+                binding.editText.setHint("Please enter product name here.")
+                binding.editText.setHintTextColor(resources.getColor(R.color.red))
+                vibratePhone()
+            }else{
+                search(binding.editText.text.toString())
+            }
+
         }
 
 
@@ -60,8 +67,8 @@ class SearchFrsgment : Fragment() {
                     }
                     Log.i(TAG, "onCreateView: $names")
                     ArrayAdapter<String>(
-                        requireContext(),
-                        com.google.android.material.R.layout.mtrl_auto_complete_simple_item,
+                        context!!,
+                        android.R.layout.simple_dropdown_item_1line,
                         names
                     ).also { adapter ->
                         binding.editText.setAdapter(adapter)
@@ -74,8 +81,14 @@ class SearchFrsgment : Fragment() {
 
         binding.editText.setOnEditorActionListener { textView, i, keyEvent ->
             if(i == EditorInfo.IME_ACTION_SEARCH){
-                search(textView.text.toString())
-                FirestoreClass().addtorecentSearch(this,textView.text.toString())
+                if(textView.text.toString() == ""){
+                    binding.editText.setHint("Please enter product name here.")
+                    binding.editText.setHintTextColor(resources.getColor(R.color.red))
+                    vibratePhone()
+                }else{
+                    search(textView.text.toString())
+                    FirestoreClass().addtorecentSearch(this,textView.text.toString())
+                }
                 return@setOnEditorActionListener true
             }else{
                 return@setOnEditorActionListener false
@@ -124,7 +137,7 @@ class SearchFrsgment : Fragment() {
 
             override fun afterTextChanged(editable: Editable?) {
                 timer?.cancel()
-                timer = object : CountDownTimer(1000, 1500) {
+                timer = object : CountDownTimer(10, 100) {
                     override fun onTick(millisUntilFinished: Long) {}
                     override fun onFinish() {
                         afterTextChanged.invoke(editable.toString())

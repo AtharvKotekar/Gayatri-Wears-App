@@ -40,7 +40,7 @@ class CategoryFragment : Fragment() {
         binding.legins.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("from","category")
-            bundle.putString("title","Legins")
+            bundle.putString("title","Leggings")
             findNavController().navigate(R.id.action_categoryFragment_to_shopingFragment,bundle)
         }
 
@@ -62,6 +62,13 @@ class CategoryFragment : Fragment() {
             val bundle = Bundle()
             bundle.putString("from","category")
             bundle.putString("title", "Kurti")
+            findNavController().navigate(R.id.action_categoryFragment_to_shopingFragment,bundle)
+        }
+
+        binding.onePiece.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("from","category")
+            bundle.putString("title", "One Piece")
             findNavController().navigate(R.id.action_categoryFragment_to_shopingFragment,bundle)
         }
 

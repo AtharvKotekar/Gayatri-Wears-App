@@ -14,15 +14,15 @@
         android:id="@+id/size_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:alpha="0.9"
         android:fontFamily="@font/roboto_medium"
         android:gravity="center"
         android:text="S"
-        android:textColor="@color/offWhite"
+        android:textColor="@color/drakwhite"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:alpha="0.9"/>
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
