@@ -23,6 +23,7 @@ import com.gayatriladieswears.app.Model.Product
 import com.gayatriladieswears.app.Model.Sizes
 import com.gayatriladieswears.app.databinding.FragmentHomeBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.inappmessaging.FirebaseInAppMessaging
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -56,6 +57,9 @@ class HomeFragment : Fragment() {
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.setCancelable(false)
         dialog.show()
+
+
+
 
         CoroutineScope(Dispatchers.Main).launch {
             getData(this@HomeFragment)

@@ -139,7 +139,8 @@ class CheckOutFragment : Fragment() {
                             val postOfficeArray = response?.getJSONArray("PostOffice")
                             if (response?.getString("Status") == "Error") {
                                 dialog.dismiss()
-                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Found Invalid Pincode in Address Please try again after Changeing Address.", Snackbar.LENGTH_LONG)
+                                activity?.onBackPressed()
+                                val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Invalid Pincode of Selected Address.Please Remove and add New Address.", 3500)
                                 snackBar.setBackgroundTint(resources.getColor(R.color.red))
                                 snackBar.setTextColor(resources.getColor(R.color.white))
                                 snackBar.show()
@@ -158,11 +159,13 @@ class CheckOutFragment : Fragment() {
                             }
                         } catch (e: JSONException) {
                             dialog.dismiss()
-                            val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Something Went Wrong.", Snackbar.LENGTH_LONG)
+                            activity?.onBackPressed()
+                            val snackBar = Snackbar.make(requireActivity().findViewById(android.R.id.content), "Invalid Pincode of Selected Address.Please Remove and add New Address.",3500)
                             snackBar.setBackgroundTint(resources.getColor(R.color.red))
                             snackBar.setTextColor(resources.getColor(R.color.white))
                             snackBar.show()
                             vibratePhone()
+
                         }
                     }) {
 

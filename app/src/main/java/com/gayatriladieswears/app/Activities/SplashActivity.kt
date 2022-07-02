@@ -32,7 +32,7 @@ class SplashActivity : AppCompatActivity() {
 
 
         binding.logo.alpha = 0f
-        binding.logo.animate().setDuration(500).alpha(1f).withEndAction{
+        binding.logo.animate().setDuration(300).alpha(1f).withEndAction{
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             overridePendingTransition(R.anim.slide_in,R.anim.slide_out)

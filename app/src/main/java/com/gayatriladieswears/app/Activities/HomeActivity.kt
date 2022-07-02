@@ -21,7 +21,9 @@ import com.gayatriladieswears.app.Fragments.HomeFragment
 import com.gayatriladieswears.app.Fragments.OrderFragment
 import com.gayatriladieswears.app.currentNavigationFragment
 import com.gayatriladieswears.app.databinding.ActivityHomeBinding
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.inappmessaging.FirebaseInAppMessaging
 import com.razorpay.PaymentResultListener
 
 
@@ -35,6 +37,10 @@ class HomeActivity : AppCompatActivity(),PaymentResultListener{
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, com.gayatriladieswears.app.R.layout.activity_home)
         auth= FirebaseAuth.getInstance()
+
+
+        FirebaseAnalytics.getInstance(this).logEvent("app_launch", null)
+        FirebaseInAppMessaging.getInstance().triggerEvent("app_launch")
 
 
 
