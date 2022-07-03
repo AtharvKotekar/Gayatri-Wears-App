@@ -105,7 +105,7 @@
                 android:id="@+id/spotlight_mrp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="4dp"
                 android:drawableLeft="@drawable/baseline_currency_rupee_20_gray"
                 android:fontFamily="@font/roboto_medium"
                 android:text="1999"
@@ -116,14 +116,19 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView_size"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="2dp"
                 android:layout_marginBottom="8dp"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/cardView4"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/spotlight_price"
                 app:layout_constraintTop_toBottomOf="@+id/spotlight_price"
+                app:layout_constraintVertical_bias="0.0"
                 tools:itemCount="4"
                 tools:listitem="@layout/size_iteam" />
 
@@ -134,12 +139,12 @@
                 android:fontFamily="@font/roboto_medium"
                 android:text="Limited Stock"
                 android:textColor="@color/red"
-                android:textSize="10sp"
+                android:textSize="8sp"
                 android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="@+id/recyclerView_size"
+                app:layout_constraintBottom_toBottomOf="@+id/spotlight_price"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/recyclerView_size"
-                app:layout_constraintTop_toTopOf="@+id/recyclerView_size" />
+                app:layout_constraintStart_toEndOf="@+id/spotlight_mrp"
+                app:layout_constraintTop_toTopOf="@+id/spotlight_price" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
