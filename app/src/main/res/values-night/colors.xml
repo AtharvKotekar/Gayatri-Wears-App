@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#F5F5F7</color>
@@ -10,9 +7,7 @@
     <color name="bg">#000000</color>
     <color name="black_card">#333333</color>
     <color name="dark_black">#1D1D1F</color>
-    <color name="black2">#B31D1D1F</color>
     <color name="white">#000000</color>
-    <color name="blue">#354498</color>
     <color name="green">#1BAA22</color>
     <color name="offWhite">#1D1D1F</color>
     <color name="offWhite2">#424141</color>
@@ -20,7 +15,5 @@
     <color name="gray2">#161616</color>
     <color name="pink">#FF0852</color>
     <color name="red">#C60E00</color>
-    <color name="yellow">#CCBC31</color>
     <color name="transparent">#00FFFFFF</color>
-    <color name="transparent_white">#80FFFFFF</color>
 </resources>
