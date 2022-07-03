@@ -7,7 +7,7 @@
 
         <item
             android:id="@+id/home"
-            android:icon="@drawable/ic_baseline_home_24"
+            android:icon="@drawable/ic_fluent_home_24_filled"
             android:title="Home"/>
 
         <item
@@ -17,7 +17,7 @@
 
         <item
             android:id="@+id/orders"
-            android:icon="@drawable/ic_baseline_shopping_cart_24"
+            android:icon="@drawable/ic_fluent_cart_24_filled"
             android:title="My Orders" />
 
         <item
@@ -29,7 +29,7 @@
 
                 <item
                     android:id="@+id/contact"
-                    android:icon="@drawable/ic_baseline_local_phone_24"
+                    android:icon="@drawable/ic_fluent_call_24_filled"
                     android:title="Contact"/>
 
             </menu>

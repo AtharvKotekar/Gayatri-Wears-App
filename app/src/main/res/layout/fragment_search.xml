@@ -35,7 +35,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:startIconDrawable="@drawable/ic_baseline_search_24"
+                app:startIconDrawable="@drawable/ic_fluent_search_24_filled"
                 app:startIconTint="@color/drakwhite">
 
 

@@ -3,15 +3,15 @@
     <item
         android:id="@+id/homeFragment"
         android:title="Home"
-        android:icon="@drawable/ic_baseline_home_24"/>
+        android:icon="@drawable/ic_fluent_home_24_filled"/>
 
     <item
         android:id="@+id/categoryFragment"
         android:title="Category"
-        android:icon="@drawable/ic_baseline_dashboard_24"/>
+        android:icon="@drawable/ic_fluent_board_24_filled"/>
 
     <item
         android:id="@+id/profileFragment"
         android:title="Profile"
-        android:icon="@drawable/ic_baseline_person_24"/>
+        android:icon="@drawable/ic_fluent_person_24_filled"/>
 </menu>

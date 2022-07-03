@@ -56,65 +56,18 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout8"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/black_card"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
-
-        <ImageView
-            android:id="@+id/imageView6"
-            android:layout_width="101dp"
-            android:layout_height="105dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="32dp"
-            android:src="@drawable/ic_baseline_person_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/profile_name_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/roboto_medium"
-            android:text="Gayatri User"
-            android:textColor="@color/drakwhite"
-            android:textSize="24sp"
-            app:layout_constraintStart_toEndOf="@+id/imageView6"
-            app:layout_constraintTop_toTopOf="@+id/imageView6" />
-
-        <TextView
-            android:id="@+id/profile_phone_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/roboto_light"
-            android:text="XXXXXXXXXXXXX"
-            android:textColor="@color/drakwhite"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="@+id/profile_name_text"
-            app:layout_constraintTop_toBottomOf="@+id/profile_name_text" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
     <androidx.cardview.widget.CardView
         android:id="@+id/profile_myBag"
         android:layout_width="0dp"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="24dp"
         android:elevation="16dp"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout8">
+        app:layout_constraintTop_toBottomOf="@+id/profile_phone_text">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -125,6 +78,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:drawableRight="@drawable/ic_baseline_shopping_bag_24"
                 android:drawablePadding="12dp"
                 android:fontFamily="@font/roboto_medium"
@@ -143,12 +98,12 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/profile_myOrders"
         android:layout_width="0dp"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:elevation="16dp"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_myBag">
@@ -162,7 +117,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:drawableRight="@drawable/ic_baseline_shopping_cart_24"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:drawableRight="@drawable/ic_fluent_cart_24_filled"
                 android:drawablePadding="12dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="My Orders"
@@ -172,6 +129,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
@@ -179,12 +137,12 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/profile_addresses"
         android:layout_width="0dp"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:elevation="16dp"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_myOrders">
@@ -198,6 +156,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:drawableRight="@drawable/ic_baseline_home_work_24"
                 android:drawablePadding="12dp"
                 android:fontFamily="@font/roboto_medium"
@@ -215,12 +175,12 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/profile_contactus"
         android:layout_width="0dp"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:elevation="16dp"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_addresses">
@@ -234,7 +194,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:drawableRight="@drawable/ic_baseline_local_phone_24"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:drawableRight="@drawable/ic_fluent_call_24_filled"
                 android:drawablePadding="12dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Contact Us"
@@ -266,6 +228,43 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageView6"
+        android:layout_width="101dp"
+        android:layout_height="105dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/ic_baseline_circle_24"
+        android:backgroundTint="@color/black_card"
+        android:padding="24dp"
+        android:src="@drawable/ic_fluent_person_24_regular"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+
+    <TextView
+        android:id="@+id/profile_name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_medium"
+        android:text="Gayatri User"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/imageView6"
+        app:layout_constraintStart_toStartOf="@+id/imageView6"
+        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+
+    <TextView
+        android:id="@+id/profile_phone_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_light"
+        android:text="XXXXXXXXXXXXX"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/imageView6"
+        app:layout_constraintStart_toStartOf="@+id/imageView6"
+        app:layout_constraintTop_toBottomOf="@+id/profile_name_text" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

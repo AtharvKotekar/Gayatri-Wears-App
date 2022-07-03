@@ -23,9 +23,6 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         super.onNewToken(token)
     }
 
-    fun updateToken(token:String){
-
-    }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         if (remoteMessage.notification != null){
@@ -56,12 +53,16 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
             .setOnlyAlertOnce(true)
             .setContentIntent(pendingIntent)
 
+
         builder = builder.setContent(getRemoteView(title,message))
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
+
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            val notificationChannel = NotificationChannel(channelId, channelName,NotificationManager.IMPORTANCE_HIGH)
+            val notificationChannel = NotificationChannel(channelId, channelName,NotificationManager.IMPORTANCE_HIGH).apply {
+                setShowBadge(false)
+            }
             notificationManager.createNotificationChannel(notificationChannel)
         }
 

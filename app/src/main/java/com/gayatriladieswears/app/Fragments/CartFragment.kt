@@ -84,6 +84,7 @@ class CartFragment : Fragment() {
             binding.priceSummary.visibility = View.GONE
             binding.view15.visibility = View.GONE
             binding.view16.visibility = View.GONE
+            binding.offerText.visibility = View.GONE
             dialog.dismiss()
         }else{
             binding.emtyCartImage.visibility = View.GONE
@@ -106,8 +107,11 @@ class CartFragment : Fragment() {
             }
             if((mMrp - (mMrp - mPrice)) < 799){
                 mShippingCharges = 99
+                binding.offerText.text = "Shop Rs.${799 - (mMrp - (mMrp - mPrice))} More and get FREE Delivery."
+                binding.offerText.visibility = View.VISIBLE
             }else{
                 mShippingCharges = 0
+                binding.offerText.visibility = View.GONE
             }
             binding.iteamSize.text = "Your Cart - ${iteamList.size} Items"
             binding.bagPrice.text = mMrp.toString()
