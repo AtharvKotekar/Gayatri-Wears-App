@@ -61,7 +61,7 @@ class SignupOtpFragment : Fragment() {
 
     fun removePhoneKeypad() {
         val inputManager: InputMethodManager = view
-            ?.getContext()
+            ?.context
             ?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         val binder = requireView().windowToken
         inputManager.hideSoftInputFromWindow(

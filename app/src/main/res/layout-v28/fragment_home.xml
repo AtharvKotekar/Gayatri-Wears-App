@@ -166,6 +166,7 @@
                     android:lineSpacingExtra="6dp"
                     android:text="@string/spolight_title"
                     android:textColor="@color/gray"
+                    android:autoSizeTextType="uniform"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"

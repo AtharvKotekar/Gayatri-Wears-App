@@ -24,7 +24,6 @@ open  class FirestoreClass {
     val auth = FirebaseAuth.getInstance()
     val phone = auth.currentUser?.phoneNumber.toString()
 
-
     fun register(fragment: TermsAndContionsFragment, userInfo: User) {
 
         mFirestore.collection("users")

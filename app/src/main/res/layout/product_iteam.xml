@@ -65,26 +65,28 @@
 
             <TextView
                 android:id="@+id/spotlight_des"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:fontFamily="@font/roboto_light"
                 android:text="Elina red suit"
                 android:textColor="@color/gray"
-                android:textSize="10sp"
+                android:textSize="8sp"
+                app:layout_constraintEnd_toEndOf="@+id/spotlight_title"
                 app:layout_constraintStart_toStartOf="@+id/spotlight_title"
                 app:layout_constraintTop_toBottomOf="@+id/spotlight_title" />
 
             <TextView
                 android:id="@+id/spotlight_title"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="House of Moher"
                 android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="@+id/cardView4"
                 app:layout_constraintStart_toStartOf="@+id/cardView4"
                 app:layout_constraintTop_toBottomOf="@+id/cardView4" />
 
@@ -97,7 +99,7 @@
                 android:fontFamily="@font/roboto_medium"
                 android:text="1999"
                 android:textColor="@color/black"
-                android:textSize="10sp"
+                android:textSize="8sp"
                 app:layout_constraintStart_toStartOf="@+id/spotlight_des"
                 app:layout_constraintTop_toBottomOf="@+id/spotlight_des" />
 
@@ -110,7 +112,7 @@
                 android:fontFamily="@font/roboto_medium"
                 android:text="1999"
                 android:textColor="@color/gray"
-                android:textSize="10sp"
+                android:textSize="8sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/spotlight_price"
                 app:layout_constraintStart_toEndOf="@+id/spotlight_price" />
 

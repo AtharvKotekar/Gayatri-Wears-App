@@ -191,6 +191,7 @@
                     android:id="@+id/product_dis_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
                     android:fontFamily="@font/roboto_medium"
                     android:text="Red Plain Suite"
                     android:textColor="@color/gray"
@@ -207,7 +208,7 @@
                     android:fontFamily="@font/roboto_medium"
                     android:text="1999"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/product_name"
                     app:layout_constraintEnd_toStartOf="@+id/product_mrp_text" />
 
@@ -220,14 +221,14 @@
                     android:fontFamily="@font/roboto_medium"
                     android:text="1999"
                     android:textColor="@color/gray"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/product_price_text"
                     app:layout_constraintEnd_toEndOf="parent" />
 
 
                 <TextView
                     android:id="@+id/textView33"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="3dp"
                     android:text="Price inclusive of all taxes"
@@ -869,13 +870,12 @@
                     android:id="@+id/stock_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
                     android:fontFamily="@font/roboto_medium"
                     android:text="Limited Stock"
                     android:textColor="@color/red"
                     android:textSize="14sp"
-                    android:visibility="gone"
-                    app:layout_constraintStart_toStartOf="@+id/product_dis_text"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="@+id/product_mrp_text"
                     app:layout_constraintTop_toBottomOf="@+id/product_dis_text" />
 
 

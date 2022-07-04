@@ -1069,32 +1069,23 @@ class OrderDetailFragment : Fragment() {
                                                             binding.cancelBtn.visibility =
                                                                 View.INVISIBLE
                                                             binding.cancelBtn.isClickable = false
-                                                        } else if (status.toString().replace(
-                                                                "\"",
-                                                                ""
-                                                            ) == "READY TO SHIP"
-                                                        ) {
-                                                            binding.orderStatusText.text = "Packing"
+                                                        } else if (status.toString().replace("\"", "") == "READY TO SHIP") {
+                                                            binding.orderStatusText.text = status.toString().replace("\"", "")
                                                             binding.trackBtn.setOnClickListener {
-                                                                val snackBar = Snackbar.make(
-                                                                    requireActivity().findViewById(
-                                                                        android.R.id.content
-                                                                    ),
-                                                                    "Please wait the order will be tracked soon.",
-                                                                    3000
-                                                                )
-                                                                snackBar.setBackgroundTint(
-                                                                    resources.getColor(
-                                                                        R.color.red
-                                                                    )
-                                                                )
-                                                                snackBar.setTextColor(
-                                                                    resources.getColor(
-                                                                        R.color.white
-                                                                    )
-                                                                )
-                                                                snackBar.show()
-                                                                vibratePhone()
+                                                                val url = "https://shiprocket.co/tracking/$awb"
+                                                                val builder = CustomTabsIntent.Builder()
+                                                                builder.setToolbarColor(context?.resources!!.getColor(R.color.black))
+                                                                builder.addDefaultShareMenuItem()
+
+                                                                val anotherCustomTab = CustomTabsIntent.Builder().build()
+
+                                                                val intent = anotherCustomTab.intent
+                                                                intent.data = Uri.parse("https://shiprocket.co/tracking/$awb")
+
+                                                                builder.setShowTitle(true)
+
+                                                                val customTabsIntent = builder.build()
+                                                                customTabsIntent.launchUrl(requireContext(), Uri.parse(url))
                                                             }
 
                                                             binding.cancelBtn.setOnClickListener {
@@ -1402,9 +1393,7 @@ class OrderDetailFragment : Fragment() {
                                                                 dialog.show()
 
                                                             }
-                                                        } else if (status.toString()
-                                                                .replace("\"", "") == "INVOICED"
-                                                        ) {
+                                                        } else if (status.toString().replace("\"", "") == "INVOICED") {
                                                             binding.orderStatusText.text = "Packing"
                                                             binding.trackBtn.setOnClickListener {
                                                                 val snackBar = Snackbar.make(
@@ -1732,7 +1721,26 @@ class OrderDetailFragment : Fragment() {
                                                                 dialog.show()
 
                                                             }
-                                                        } else {
+                                                        }else {
+
+                                                            binding.orderStatusText.text = status.toString().replace("\"", "")
+                                                            binding.trackBtn.setOnClickListener {
+                                                                val url = "https://shiprocket.co/tracking/$awb"
+                                                                val builder = CustomTabsIntent.Builder()
+                                                                builder.setToolbarColor(context?.resources!!.getColor(R.color.black))
+                                                                builder.addDefaultShareMenuItem()
+
+                                                                val anotherCustomTab = CustomTabsIntent.Builder().build()
+
+                                                                val intent = anotherCustomTab.intent
+                                                                intent.data = Uri.parse("https://shiprocket.co/tracking/$awb")
+
+                                                                builder.setShowTitle(true)
+
+                                                                val customTabsIntent = builder.build()
+                                                                customTabsIntent.launchUrl(requireContext(), Uri.parse(url))
+                                                            }
+
                                                             binding.cancelBtn.text = "Cancel Order"
                                                             binding.cancelBtn.setOnClickListener {
                                                                 val dialog =
@@ -2304,32 +2312,23 @@ class OrderDetailFragment : Fragment() {
                                                             binding.cancelBtn.visibility =
                                                                 View.INVISIBLE
                                                             binding.cancelBtn.isClickable = false
-                                                        } else if (status.toString().replace(
-                                                                "\"",
-                                                                ""
-                                                            ) == "READY TO SHIP"
-                                                        ) {
-                                                            binding.orderStatusText.text = "Packing"
+                                                        } else if (status.toString().replace("\"", "") == "READY TO SHIP") {
+                                                            binding.orderStatusText.text = status.toString().replace("\"", "")
                                                             binding.trackBtn.setOnClickListener {
-                                                                val snackBar = Snackbar.make(
-                                                                    requireActivity().findViewById(
-                                                                        android.R.id.content
-                                                                    ),
-                                                                    "Please wait the order will be tracked soon.",
-                                                                    3000
-                                                                )
-                                                                snackBar.setBackgroundTint(
-                                                                    resources.getColor(
-                                                                        R.color.red
-                                                                    )
-                                                                )
-                                                                snackBar.setTextColor(
-                                                                    resources.getColor(
-                                                                        R.color.white
-                                                                    )
-                                                                )
-                                                                snackBar.show()
-                                                                vibratePhone()
+                                                                val url = "https://shiprocket.co/tracking/$awb"
+                                                                val builder = CustomTabsIntent.Builder()
+                                                                builder.setToolbarColor(context?.resources!!.getColor(R.color.black))
+                                                                builder.addDefaultShareMenuItem()
+
+                                                                val anotherCustomTab = CustomTabsIntent.Builder().build()
+
+                                                                val intent = anotherCustomTab.intent
+                                                                intent.data = Uri.parse("https://shiprocket.co/tracking/$awb")
+
+                                                                builder.setShowTitle(true)
+
+                                                                val customTabsIntent = builder.build()
+                                                                customTabsIntent.launchUrl(requireContext(), Uri.parse(url))
                                                             }
 
                                                             binding.cancelBtn.setOnClickListener {
@@ -2968,6 +2967,23 @@ class OrderDetailFragment : Fragment() {
 
                                                             }
                                                         } else {
+                                                            binding.orderStatusText.text = status.toString().replace("\"", "")
+                                                            binding.trackBtn.setOnClickListener {
+                                                                val url = "https://shiprocket.co/tracking/$awb"
+                                                                val builder = CustomTabsIntent.Builder()
+                                                                builder.setToolbarColor(context?.resources!!.getColor(R.color.black))
+                                                                builder.addDefaultShareMenuItem()
+
+                                                                val anotherCustomTab = CustomTabsIntent.Builder().build()
+
+                                                                val intent = anotherCustomTab.intent
+                                                                intent.data = Uri.parse("https://shiprocket.co/tracking/$awb")
+
+                                                                builder.setShowTitle(true)
+
+                                                                val customTabsIntent = builder.build()
+                                                                customTabsIntent.launchUrl(requireContext(), Uri.parse(url))
+                                                            }
                                                             binding.cancelBtn.text = "Cancel Order"
                                                             binding.cancelBtn.setOnClickListener {
                                                                 val dialog =
@@ -3543,32 +3559,23 @@ class OrderDetailFragment : Fragment() {
                                                             binding.cancelBtn.visibility =
                                                                 View.INVISIBLE
                                                             binding.cancelBtn.isClickable = false
-                                                        } else if (status.toString().replace(
-                                                                "\"",
-                                                                ""
-                                                            ) == "READY TO SHIP"
-                                                        ) {
-                                                            binding.orderStatusText.text = "Packing"
+                                                        } else if (status.toString().replace("\"", "") == "READY TO SHIP") {
+                                                            binding.orderStatusText.text = status.toString().replace("\"", "")
                                                             binding.trackBtn.setOnClickListener {
-                                                                val snackBar = Snackbar.make(
-                                                                    requireActivity().findViewById(
-                                                                        android.R.id.content
-                                                                    ),
-                                                                    "Please wait the order will be tracked soon.",
-                                                                    3000
-                                                                )
-                                                                snackBar.setBackgroundTint(
-                                                                    resources.getColor(
-                                                                        R.color.red
-                                                                    )
-                                                                )
-                                                                snackBar.setTextColor(
-                                                                    resources.getColor(
-                                                                        android.R.color.white
-                                                                    )
-                                                                )
-                                                                snackBar.show()
-                                                                vibratePhone()
+                                                                val url = "https://shiprocket.co/tracking/$awb"
+                                                                val builder = CustomTabsIntent.Builder()
+                                                                builder.setToolbarColor(context?.resources!!.getColor(R.color.black))
+                                                                builder.addDefaultShareMenuItem()
+
+                                                                val anotherCustomTab = CustomTabsIntent.Builder().build()
+
+                                                                val intent = anotherCustomTab.intent
+                                                                intent.data = Uri.parse("https://shiprocket.co/tracking/$awb")
+
+                                                                builder.setShowTitle(true)
+
+                                                                val customTabsIntent = builder.build()
+                                                                customTabsIntent.launchUrl(requireContext(), Uri.parse(url))
                                                             }
 
                                                             binding.cancelBtn.setOnClickListener {
@@ -4211,6 +4218,24 @@ class OrderDetailFragment : Fragment() {
 
                                                             }
                                                         } else {
+                                                            binding.orderStatusText.text = status.toString().replace("\"", "")
+                                                            binding.trackBtn.setOnClickListener {
+                                                                val url = "https://shiprocket.co/tracking/$awb"
+                                                                val builder = CustomTabsIntent.Builder()
+                                                                builder.setToolbarColor(context?.resources!!.getColor(R.color.black))
+                                                                builder.addDefaultShareMenuItem()
+
+                                                                val anotherCustomTab = CustomTabsIntent.Builder().build()
+
+                                                                val intent = anotherCustomTab.intent
+                                                                intent.data = Uri.parse("https://shiprocket.co/tracking/$awb")
+
+                                                                builder.setShowTitle(true)
+
+                                                                val customTabsIntent = builder.build()
+                                                                customTabsIntent.launchUrl(requireContext(), Uri.parse(url))
+                                                            }
+
                                                             binding.cancelBtn.text = "Cancel Order"
                                                             binding.cancelBtn.setOnClickListener {
                                                                 val dialog =

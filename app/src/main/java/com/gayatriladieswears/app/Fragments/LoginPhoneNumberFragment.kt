@@ -48,27 +48,25 @@ class LoginPhoneNumberFragment : Fragment() {
         bundle = Bundle()
 
 
-        binding.editTextPhoneNumberLogin.setOnFocusChangeListener { view, hasChanged ->
+        binding.editTextPhoneNumberLogin.setOnFocusChangeListener { _, hasChanged ->
             if(hasChanged){
-                Selection.setSelection(binding.editTextPhoneNumberLogin.getText(), binding.editTextPhoneNumberLogin.getText().length)
+                Selection.setSelection(binding.editTextPhoneNumberLogin.text, binding.editTextPhoneNumberLogin.text.length)
 
 
                 binding.editTextPhoneNumberLogin.addTextChangedListener(object : TextWatcher {
                     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                        // TODO Auto-generated method stub
                     }
 
                     override fun beforeTextChanged(
                         s: CharSequence, start: Int, count: Int,
                         after: Int
                     ) {
-                        // TODO Auto-generated method stub
                     }
 
                     override fun afterTextChanged(s: Editable) {
                         if (!s.toString().startsWith("+91")) {
                             binding.editTextPhoneNumberLogin.setText("+91")
-                            Selection.setSelection(binding.editTextPhoneNumberLogin.getText(), binding.editTextPhoneNumberLogin.getText().length)
+                            Selection.setSelection(binding.editTextPhoneNumberLogin.text, binding.editTextPhoneNumberLogin.text.length)
                         }
                     }
                 })
@@ -88,7 +86,7 @@ class LoginPhoneNumberFragment : Fragment() {
 
             } else {
 
-                var docRef = FirestoreClass().mFirestore.collection("users").document(binding.editTextPhoneNumberLogin.text.toString());
+                val docRef = FirestoreClass().mFirestore.collection("users").document(binding.editTextPhoneNumberLogin.text.toString())
 
                 docRef.get().addOnCompleteListener { task ->
                     if (task.isSuccessful) {
@@ -158,8 +156,8 @@ class LoginPhoneNumberFragment : Fragment() {
     }
 
 
-    fun login(phoneNumber: String) {
-        var number = phoneNumber.trim()
+    private fun login(phoneNumber: String) {
+        val number = phoneNumber.trim()
         binding.imageView5.visibility = View.INVISIBLE
         binding.progressBarLinear.visibility = View.VISIBLE
         if (!number.isEmpty()) {
@@ -170,7 +168,7 @@ class LoginPhoneNumberFragment : Fragment() {
         }
     }
 
-    fun sendVerificationcode(number: String) {
+    private fun sendVerificationcode(number: String) {
         Log.i(TAG, "sendVerificationcode: got it")
         options = PhoneAuthOptions.newBuilder(auth)
             .setPhoneNumber(number) // Phone number to verify
@@ -181,9 +179,9 @@ class LoginPhoneNumberFragment : Fragment() {
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
 
-    fun removePhoneKeypad() {
+    private fun removePhoneKeypad() {
         val inputManager: InputMethodManager = view
-            ?.getContext()
+            ?.context
             ?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         val binder = requireView().windowToken
         inputManager.hideSoftInputFromWindow(
