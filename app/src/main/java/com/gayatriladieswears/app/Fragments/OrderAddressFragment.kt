@@ -98,6 +98,22 @@ class OrderAddressFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        dialog.show()
+
+        if(fromProfile){
+            binding.productNameTextTop.text = "Address"
+            binding.bagBtn.visibility = View.GONE
+            binding.textView28.visibility = View.GONE
+            binding.textView36.visibility = View.GONE
+            binding.nextBtn.visibility = View.GONE
+        }
+
+
+        FirestoreClass().getAddress(this,FirebaseAuth.getInstance().currentUser!!.uid)
+    }
+
     fun getAddressList(addressList: ArrayList<Address>) {
         if (addressList.isEmpty()){
             binding.emptyAddressText.visibility = View.VISIBLE

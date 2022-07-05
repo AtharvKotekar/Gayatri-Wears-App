@@ -72,7 +72,7 @@ class OrderAddAdressFragment : Fragment() {
                                         binding.fullName.text.toString(),binding.phoneNumber.text.toString(),
                                         binding.pincode.text.toString(),binding.address.text.toString(),binding.landMark.text.toString(),tag,FirebaseAuth.getInstance().currentUser!!.uid.toString(),binding.email.text.toString())
                                     FirestoreClass().addAddress(this,addressModel)
-                                    findNavController().navigate(R.id.action_orderAddAdressFragment_to_orderAddressFragment)
+                                    activity?.onBackPressed()
                                 }
 
 
