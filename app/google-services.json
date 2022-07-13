@@ -8,6 +8,35 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:896168280622:android:a04ec96d9d16a408b9d5bf",
+        "android_client_info": {
+          "package_name": "com.example.gayatriladieswearsadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "896168280622-lcmaptja7p1fj4hm1s4i6u3o67h0f8m7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcOKRoFSbFVuLx16O6GNqEnBDnblYQsPI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "896168280622-lcmaptja7p1fj4hm1s4i6u3o67h0f8m7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:896168280622:android:2633b04327554c12b9d5bf",
         "android_client_info": {
           "package_name": "com.gayatriladieswears.app"

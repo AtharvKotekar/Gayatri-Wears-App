@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
+import java.util.concurrent.Executor
 
 class LoginOtpFragment : Fragment() {
 
@@ -80,7 +81,7 @@ class LoginOtpFragment : Fragment() {
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
         val auth = FirebaseAuth.getInstance()
         auth.signInWithCredential(credential)
-            .addOnCompleteListener(LoginActivity()) { task ->
+            .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     binding.progressBarLinear.visibility = View.GONE
 

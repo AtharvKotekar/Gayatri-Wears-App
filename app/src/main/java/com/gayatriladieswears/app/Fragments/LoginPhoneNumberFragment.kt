@@ -45,6 +45,7 @@ class LoginPhoneNumberFragment : Fragment() {
 
 
         auth = FirebaseAuth.getInstance()
+        auth.firebaseAuthSettings.forceRecaptchaFlowForTesting(false)
         bundle = Bundle()
 
 
@@ -173,7 +174,7 @@ class LoginPhoneNumberFragment : Fragment() {
         options = PhoneAuthOptions.newBuilder(auth)
             .setPhoneNumber(number) // Phone number to verify
             .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-            .setActivity(LoginActivity()) // Activity (for callback binding)
+            .setActivity(requireActivity()) // Activity (for callback binding)
             .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
             .build()
         PhoneAuthProvider.verifyPhoneNumber(options)
