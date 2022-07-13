@@ -84,7 +84,7 @@ class SignupOtpFragment : Fragment() {
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
         val auth = FirebaseAuth.getInstance()
         auth.signInWithCredential(credential)
-            .addOnCompleteListener(LoginActivity()) { task ->
+            .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     firebaseUser = task.result!!.user!!
                     uid = firebaseUser.uid

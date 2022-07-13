@@ -17,6 +17,40 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/edittext_bg"
+        android:textColorHint="@color/drakwhite"
+        app:hintTextColor="@color/drakwhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:prefixText="+91"
+        app:prefixTextColor="@color/drakwhite">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextPhonenumberSignup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:fontFamily="@font/roboto_medium"
+            android:inputType="phone"
+            android:maxLength="10"
+            android:padding="16dp"
+            android:textColor="@color/drakwhite"
+            android:textColorHint="@color/drakwhite"
+            android:autofillHints="phoneNumber"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -48,7 +82,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
 
     <EditText
         android:id="@+id/editTextLastNameSignup"
@@ -70,26 +104,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextFirstNameSignup" />
 
-    <EditText
-        android:id="@+id/editTextPhonenumberSignup"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/edittext_bg"
-        android:ems="10"
-        android:fontFamily="@font/roboto_medium"
-        android:hint="@string/phonenumber_hint"
-        android:inputType="phone"
-        android:padding="16dp"
-        android:textColor="@color/drakwhite"
-        android:textColorHint="@color/drakwhite"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextLastNameSignup" />
-
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/get_otp_btn_signup"
@@ -107,7 +121,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPhonenumberSignup" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextLastNameSignup" />
 
     <ImageView
         android:id="@+id/imageView5"

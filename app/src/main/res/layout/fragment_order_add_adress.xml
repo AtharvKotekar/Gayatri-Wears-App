@@ -18,7 +18,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/black_card">
 
 
             <ImageView
@@ -237,9 +238,8 @@
                     android:layout_gravity="center|center_vertical"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
-                    android:background="@color/size_chip_selection_color"
-                    android:backgroundTint="@color/size_chip_selection_color"
                     android:button="@color/transparent"
+                    android:background="@drawable/tag_bg"
                     android:checked="false"
                     android:clickable="true"
                     android:elevation="16dp"
@@ -248,7 +248,8 @@
                     android:text="Home"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/size_chip_text_color"
-                    app:useMaterialThemeColors="false" />
+                    app:useMaterialThemeColors="false"
+                    android:focusable="true" />
 
                 <RadioButton
                     android:id="@+id/office_btn"
@@ -258,10 +259,8 @@
                     android:layout_gravity="center|center_vertical"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
-                    android:background="@color/size_chip_selection_color"
-                    android:backgroundTint="@color/size_chip_selection_color"
                     android:button="@color/transparent"
-                    android:checked="false"
+                    android:background="@drawable/tag_bg"                    android:checked="false"
                     android:clickable="true"
                     android:elevation="16dp"
                     android:fontFamily="@font/roboto_medium"
@@ -269,7 +268,8 @@
                     android:text="Office"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/size_chip_text_color"
-                    app:useMaterialThemeColors="false" />
+                    app:useMaterialThemeColors="false"
+                    android:focusable="true" />
 
                 <RadioButton
                     android:id="@+id/other_btn"
@@ -279,10 +279,8 @@
                     android:layout_gravity="center|center_vertical"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
-                    android:background="@color/size_chip_selection_color"
-                    android:backgroundTint="@color/size_chip_selection_color"
                     android:button="@color/transparent"
-                    android:checked="false"
+                    android:background="@drawable/tag_bg"                    android:checked="false"
                     android:clickable="true"
                     android:elevation="16dp"
                     android:fontFamily="@font/roboto_medium"
@@ -290,7 +288,8 @@
                     android:text="Other"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/size_chip_text_color"
-                    app:useMaterialThemeColors="false" />
+                    app:useMaterialThemeColors="false"
+                    android:focusable="true" />
 
 
             </RadioGroup>

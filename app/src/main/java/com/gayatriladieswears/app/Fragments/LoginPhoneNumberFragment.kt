@@ -45,33 +45,12 @@ class LoginPhoneNumberFragment : Fragment() {
 
 
         auth = FirebaseAuth.getInstance()
+        auth.firebaseAuthSettings.forceRecaptchaFlowForTesting(false)
         bundle = Bundle()
 
+        binding.editTextPhoneNumberLogin.isFocusableInTouchMode = true
+        binding.editTextPhoneNumberLogin.requestFocus()
 
-        binding.editTextPhoneNumberLogin.setOnFocusChangeListener { _, hasChanged ->
-            if(hasChanged){
-                Selection.setSelection(binding.editTextPhoneNumberLogin.text, binding.editTextPhoneNumberLogin.text.length)
-
-
-                binding.editTextPhoneNumberLogin.addTextChangedListener(object : TextWatcher {
-                    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                    }
-
-                    override fun beforeTextChanged(
-                        s: CharSequence, start: Int, count: Int,
-                        after: Int
-                    ) {
-                    }
-
-                    override fun afterTextChanged(s: Editable) {
-                        if (!s.toString().startsWith("+91")) {
-                            binding.editTextPhoneNumberLogin.setText("+91")
-                            Selection.setSelection(binding.editTextPhoneNumberLogin.text, binding.editTextPhoneNumberLogin.text.length)
-                        }
-                    }
-                })
-            }
-        }
 
 
 
@@ -86,7 +65,7 @@ class LoginPhoneNumberFragment : Fragment() {
 
             } else {
 
-                val docRef = FirestoreClass().mFirestore.collection("users").document(binding.editTextPhoneNumberLogin.text.toString())
+                val docRef = FirestoreClass().mFirestore.collection("users").document("+91${binding.editTextPhoneNumberLogin.text.toString()}")
 
                 docRef.get().addOnCompleteListener { task ->
                     if (task.isSuccessful) {
@@ -157,7 +136,7 @@ class LoginPhoneNumberFragment : Fragment() {
 
 
     private fun login(phoneNumber: String) {
-        val number = phoneNumber.trim()
+        val number = "+91$phoneNumber"
         binding.imageView5.visibility = View.INVISIBLE
         binding.progressBarLinear.visibility = View.VISIBLE
         if (!number.isEmpty()) {
@@ -173,7 +152,7 @@ class LoginPhoneNumberFragment : Fragment() {
         options = PhoneAuthOptions.newBuilder(auth)
             .setPhoneNumber(number) // Phone number to verify
             .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-            .setActivity(LoginActivity()) // Activity (for callback binding)
+            .setActivity(requireActivity()) // Activity (for callback binding)
             .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
             .build()
         PhoneAuthProvider.verifyPhoneNumber(options)

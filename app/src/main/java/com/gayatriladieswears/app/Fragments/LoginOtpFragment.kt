@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.gayatriladieswears.app.Activities.HomeActivity
-import com.gayatriladieswears.app.Activities.LoginActivity
 import com.gayatriladieswears.app.R
 import com.gayatriladieswears.app.databinding.FragmentLoginOtpBinding
 import com.gayatriladieswears.app.vibratePhone
@@ -30,14 +29,7 @@ class LoginOtpFragment : Fragment() {
         binding = FragmentLoginOtpBinding.inflate(inflater, container, false)
 
         auth = FirebaseAuth.getInstance()
-
         storedVerificationId = arguments?.getString("id").toString()
-
-
-
-
-
-
 
 
             binding.submitBnt.setOnClickListener {
@@ -80,7 +72,7 @@ class LoginOtpFragment : Fragment() {
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
         val auth = FirebaseAuth.getInstance()
         auth.signInWithCredential(credential)
-            .addOnCompleteListener(LoginActivity()) { task ->
+            .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     binding.progressBarLinear.visibility = View.GONE
 

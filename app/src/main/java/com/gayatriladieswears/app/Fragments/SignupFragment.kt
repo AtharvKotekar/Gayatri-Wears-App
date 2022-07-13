@@ -45,44 +45,20 @@ class SignupFragment : Fragment() {
         binding = FragmentSignupBinding.inflate(inflater,container,false)
 
         auth = FirebaseAuth.getInstance()
+        auth.firebaseAuthSettings.forceRecaptchaFlowForTesting(false)
         bundle = Bundle()
 
+        binding.editTextPhonenumberSignup.isFocusableInTouchMode = true
+        binding.editTextPhonenumberSignup.requestFocus()
 
 
-       binding.editTextPhonenumberSignup.setOnFocusChangeListener { view, hasChanged ->
-           if(hasChanged){
-               Selection.setSelection(binding.editTextPhonenumberSignup.getText(), binding.editTextPhonenumberSignup.getText().length)
-               binding.editTextPhonenumberSignup.addTextChangedListener(object : TextWatcher {
-                   override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                       // TODO Auto-generated method stub
-                   }
-
-                   override fun beforeTextChanged(
-                       s: CharSequence, start: Int, count: Int,
-                       after: Int
-                   ) {
-                       // TODO Auto-generated method stub
-                   }
-
-                   override fun afterTextChanged(s: Editable) {
-                       if (!s.toString().startsWith("+91")) {
-                           binding.editTextPhonenumberSignup.setText("+91")
-                           Selection.setSelection(binding.editTextPhonenumberSignup.getText(), binding.editTextPhonenumberSignup.getText().length)
-                       }
-                   }
-               })
-           }
-       }
-
-
-
-
-
-
-
-
-
-
+        binding.editTextPhonenumberSignup.setOnFocusChangeListener { view, b ->
+            if(b){
+                binding.editTextPhonenumberSignup.hint = ""
+            }else{
+                binding.editTextPhonenumberSignup.hint = resources.getString(R.string.phonenumber_hint)
+            }
+        }
 
 
 
@@ -109,7 +85,7 @@ class SignupFragment : Fragment() {
 
 
 
-                        var docRef = FirestoreClass().mFirestore.collection("users").document(binding.editTextPhonenumberSignup.text.toString());
+                        val docRef = FirestoreClass().mFirestore.collection("users").document("+91${binding.editTextPhonenumberSignup.text.toString()}");
 
                         docRef.get().addOnCompleteListener { task ->
                             if (task.isSuccessful) {
@@ -184,11 +160,11 @@ class SignupFragment : Fragment() {
 
 
 
-fun login(phoneNumber: String) {
-    var number = phoneNumber.trim()
+private fun login(phoneNumber: String) {
+    val number = "+91${phoneNumber.trim()}"
     binding.progressBarLinear.visibility = View.VISIBLE
     binding.imageView5.visibility = View.INVISIBLE
-    if (!number.isEmpty()) {
+    if (number.isNotEmpty()) {
         Log.i(ContentValues.TAG, "login: Getting otp")
         sendVerificationcode(number)
     } else {
@@ -196,18 +172,18 @@ fun login(phoneNumber: String) {
     }
 }
 
-fun sendVerificationcode(number: String) {
+private fun sendVerificationcode(number: String) {
     Log.i(ContentValues.TAG, "sendVerificationcode: got it")
     options = PhoneAuthOptions.newBuilder(auth)
         .setPhoneNumber(number) // Phone number to verify
         .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-        .setActivity(LoginActivity()) // Activity (for callback binding)
+        .setActivity(requireActivity()) // Activity (for callback binding)
         .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
         .build()
     PhoneAuthProvider.verifyPhoneNumber(options)
 }
 
-    fun removePhoneKeypad() {
+    private fun removePhoneKeypad() {
         val inputManager: InputMethodManager = view
             ?.context
             ?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.gayatriladieswears.app"
-        minSdk 21
+        minSdk 26
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -82,7 +82,10 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava:2.1.0"
     implementation 'com.squareup.okhttp3:logging-interceptor:3.4.0'
     implementation "com.squareup.okhttp3:okhttp-urlconnection:3.4.0"
-    implementation 'androidx.browser:browser:1.4.0'
-
+    implementation "androidx.browser:browser:1.4.0"
+    implementation 'com.google.android.gms:play-services-safetynet:18.0.1'
+    implementation 'com.google.android.gms:play-services-auth:20.2.0'
+    implementation 'com.google.android.gms:play-services-auth-api-phone:18.0.1'
+    implementation 'com.google.android.gms:play-services-base:18.1.0'
 
 }
