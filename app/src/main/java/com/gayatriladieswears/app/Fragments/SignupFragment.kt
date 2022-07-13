@@ -48,17 +48,42 @@ class SignupFragment : Fragment() {
         auth.firebaseAuthSettings.forceRecaptchaFlowForTesting(false)
         bundle = Bundle()
 
-        binding.editTextPhonenumberSignup.isFocusableInTouchMode = true
-        binding.editTextPhonenumberSignup.requestFocus()
 
 
-        binding.editTextPhonenumberSignup.setOnFocusChangeListener { view, b ->
-            if(b){
-                binding.editTextPhonenumberSignup.hint = ""
-            }else{
-                binding.editTextPhonenumberSignup.hint = resources.getString(R.string.phonenumber_hint)
-            }
-        }
+       binding.editTextPhonenumberSignup.setOnFocusChangeListener { view, hasChanged ->
+           if(hasChanged){
+               Selection.setSelection(binding.editTextPhonenumberSignup.getText(), binding.editTextPhonenumberSignup.getText().length)
+               binding.editTextPhonenumberSignup.addTextChangedListener(object : TextWatcher {
+                   override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                       // TODO Auto-generated method stub
+                   }
+
+                   override fun beforeTextChanged(
+                       s: CharSequence, start: Int, count: Int,
+                       after: Int
+                   ) {
+                       // TODO Auto-generated method stub
+                   }
+
+                   override fun afterTextChanged(s: Editable) {
+                       if (!s.toString().startsWith("+91")) {
+                           binding.editTextPhonenumberSignup.setText("+91")
+                           Selection.setSelection(binding.editTextPhonenumberSignup.getText(), binding.editTextPhonenumberSignup.getText().length)
+                       }
+                   }
+               })
+           }
+       }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -85,7 +110,7 @@ class SignupFragment : Fragment() {
 
 
 
-                        val docRef = FirestoreClass().mFirestore.collection("users").document("+91${binding.editTextPhonenumberSignup.text.toString()}");
+                        val docRef = FirestoreClass().mFirestore.collection("users").document(binding.editTextPhonenumberSignup.text.toString());
 
                         docRef.get().addOnCompleteListener { task ->
                             if (task.isSuccessful) {
@@ -161,7 +186,7 @@ class SignupFragment : Fragment() {
 
 
 private fun login(phoneNumber: String) {
-    val number = "+91${phoneNumber.trim()}"
+    val number = phoneNumber.trim()
     binding.progressBarLinear.visibility = View.VISIBLE
     binding.imageView5.visibility = View.INVISIBLE
     if (number.isNotEmpty()) {
